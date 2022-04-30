@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Etzi</string>
+    <string name="app_name" translatable="false">Etzi</string>
+    <string name="password_label">Password</string>
+    <string name="password_placeholder">Password</string>
+    <string name="password_icon_visible">Password visible</string>
+    <string name="password_icon_hidden">Password hidden</string>
+    <string name="biometric_auth_failed_toast_message">Authentication Failed. Try again.</string>
+    <string name="biometric_auth_error_toast_message">Authentication error: %1$s</string>
+    <string name="biometric_auth_prompt_title">Login as %1$s</string>
+    <string name="biometric_auth_prompt_text">Log in using your device\'s biometric credentials</string>
+    <string name="cancel_button">Cancel</string>
 </resources>
