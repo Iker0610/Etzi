@@ -1,8 +1,12 @@
 package das.losaparecidos.etzi.di
 
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import das.losaparecidos.etzi.app.utils.AESCipher
+import das.losaparecidos.etzi.app.utils.CipherUtil
+import javax.inject.Singleton
 
 
 /*******************************************************************************
@@ -20,8 +24,37 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    init {
-        TODO("IMPLEMENTAR")
-    }
+    // With Singleton we tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationComponent (i.e. everywhere in the application)
+
+    /*************************************************
+     **           ROOM Database Instances           **
+     *************************************************/
+/*
+    @Singleton
+    @Provides
+    fun providesOmegaterapiaVisitsDatabase(@ApplicationContext app: Context) =
+        Room.databaseBuilder(app, EtziDatabase::class.java, "etzi_database").build()
+*/
+
+
+    //------------------   DAOs   ------------------//
+
+    // TODO
+
+
+    /*************************************************
+     **                 Repositories                **
+     *************************************************/
+
+    // TODO
+
+
+    /*************************************************
+     **                    Utils                    **
+     *************************************************/
+
+    @Singleton
+    @Provides
+    fun provideCipher(): CipherUtil = AESCipher()
 }
 

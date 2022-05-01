@@ -20,6 +20,8 @@ import java.time.ZonedDateTime
  * Defined DAOs: TODO
  *
  */
+
+/* REMOVE COMMENT WHEN WE HAVE AT LEAST ONE ENTITY
 @Database(
     version = 1,
     entities = [],
@@ -30,7 +32,7 @@ abstract class EtziDatabase : RoomDatabase() {
         TODO("ADD DAOs")
     }
 }
-
+*/
 
 //-----------------------------------------------------------------------------------------------------
 

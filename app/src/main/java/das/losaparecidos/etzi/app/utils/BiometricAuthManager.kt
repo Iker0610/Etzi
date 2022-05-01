@@ -12,12 +12,37 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.utils.BiometricAuthenticationStatus.*
 import das.losaparecidos.etzi.app.utils.DeviceBiometricsSupport.*
 
 
 /*******************************************************************************
  ****                            Biometrics Utils                           ****
  *******************************************************************************/
+
+
+/*************************************************
+ **       Biometric Authentication Status       **
+ *************************************************/
+
+/**
+ * Enum class representing possible biometric authentication status.
+ *
+ * [AUTHENTICATED] - Authentication has been Successful
+ * [NO_CREDENTIALS] - There are no credentials
+ * [CREDENTIALS_ERROR] - Credentials are not valid
+ * [ERROR] - Another error has occurred and authentication has not been possible
+ * [NOT_AUTHENTICATED_YET] - Neutral state
+ */
+enum class BiometricAuthenticationStatus {
+    AUTHENTICATED,
+    NO_CREDENTIALS,
+    CREDENTIALS_ERROR,
+    ERROR,
+    NOT_AUTHENTICATED_YET
+
+}
+
 
 
 /*************************************************
@@ -55,7 +80,7 @@ enum class DeviceBiometricsSupport {
  * @param onAuthenticationSucceeded Callback to invoke when the authentication with biometrics has been successful.
  */
 class BiometricAuthManager(
-    private val context: Context, authUsername: String, onAuthenticationSucceeded: () -> Unit,
+    context: Context, authUsername: String, onAuthenticationSucceeded: () -> Unit,
 ) {
 
     /*------------------------------------------------
