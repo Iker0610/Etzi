@@ -5,7 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.20'
-    // id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -142,13 +142,15 @@ dependencies {
     //noinspection GradleDependency
     // implementation "androidx.glance:glance-appwidget:1.0.0-alpha03"
 
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
+
+
     // Google Play Services
     // implementation 'com.google.android.gms:play-services-location:19.0.1'
     // implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0'
 
-    // Firebase
-    // implementation 'com.google.firebase:firebase-messaging:23.0.3'
-    // implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
 
     // Google Maps
     // implementation "com.google.maps.android:maps-compose:1.0.0"
