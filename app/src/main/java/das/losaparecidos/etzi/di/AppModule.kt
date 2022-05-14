@@ -1,11 +1,15 @@
 package das.losaparecidos.etzi.di
 
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import das.losaparecidos.etzi.app.utils.AESCipher
 import das.losaparecidos.etzi.app.utils.CipherUtil
+import das.losaparecidos.etzi.model.database.EtziDatabase
 import javax.inject.Singleton
 
 
@@ -29,12 +33,10 @@ object AppModule {
     /*************************************************
      **           ROOM Database Instances           **
      *************************************************/
-/*
     @Singleton
     @Provides
-    fun providesOmegaterapiaVisitsDatabase(@ApplicationContext app: Context) =
-        Room.databaseBuilder(app, EtziDatabase::class.java, "etzi_database").build()
-*/
+    fun providesEtziDatabase(@ApplicationContext app: Context) =
+        Room.databaseBuilder(app, EtziDatabase::class.java, "etzi").build()
 
 
     //------------------   DAOs   ------------------//

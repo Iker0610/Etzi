@@ -4,12 +4,16 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import das.losaparecidos.etzi.model.entities.Building
+import das.losaparecidos.etzi.model.entities.Lecture
+import das.losaparecidos.etzi.model.entities.Professor
+import das.losaparecidos.etzi.model.entities.Subject
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.*
+import java.time.chrono.ChronoLocalDate
+import java.time.temporal.Temporal
 
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).
@@ -21,10 +25,9 @@ import java.time.ZonedDateTime
  *
  */
 
-/* REMOVE COMMENT WHEN WE HAVE AT LEAST ONE ENTITY
 @Database(
     version = 1,
-    entities = [],
+    entities = [Lecture::class, Subject::class, Building::class, Professor::class],
 )
 @TypeConverters(Converters::class)
 abstract class EtziDatabase : RoomDatabase() {
@@ -32,7 +35,6 @@ abstract class EtziDatabase : RoomDatabase() {
         TODO("ADD DAOs")
     }
 }
-*/
 
 //-----------------------------------------------------------------------------------------------------
 
@@ -50,14 +52,23 @@ class Converters {
     // They convert from ZonedDateTime to long format and backwards. Time zone value is kept.
 
     @TypeConverter
-    fun fromTimestamp(value: Long): ZonedDateTime {
-        return ZonedDateTime.ofInstant(Instant.ofEpochSecond(value), ZoneId.systemDefault())
-    }
+    fun fromLongToDate(value: Long): LocalDate =
+        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDate()
+
 
     @TypeConverter
-    fun dateToTimestamp(date: ZonedDateTime): Long {
-        return date.toEpochSecond()
-    }
+    fun fromLongToDatetime(value: Long): LocalDateTime =
+        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDateTime()
+
+
+    @TypeConverter
+    fun dateToTimestamp(date: LocalDate): Long =
+        date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+
+
+    @TypeConverter
+    fun datetimeToTimestamp(date: LocalDateTime): Long =
+        date.atZone(ZoneId.systemDefault()).toEpochSecond()
 
 
     //---------   String List Converters   ---------//
