@@ -9,9 +9,18 @@
     <string name="biometric_auth_prompt_title">Login as %1$s</string>
     <string name="biometric_auth_prompt_text">Log in using your device\'s biometric credentials</string>
     <string name="cancel_button">Cancel</string>
-    <string name="ehu_information_channel_name">EHU Information</string>
+    <string name="ehu_information_channel_name">UPV/EHU Information</string>
     <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
 
-
+    <!-- Screen titles -->
     <string name="timetable_screen_title">Timetable</string>
+    <string name="tutotials_section_screen_title">Tutorials</string>
+    <string name="tutotials_screen_title">Tutorials</string>
+    <string name="tutorial_reminders_screen_title">Tutorial reminders</string>
+    <string name="record_screen_title">Record</string>
+    <string name="subjects_screen_title">Subjects</string>
+    <string name="credits_screen_title">Credits</string>
+    <string name="grades_screen_title">Grades</string>
+    <string name="account_screen_title">Account</string>
+    <string name="egela_screen_title">eGela</string>
 </resources>

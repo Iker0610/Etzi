@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Etzi</string>
+    <string name="password_label">Pasahitza</string>
+    <string name="password_placeholder">Pasahitza</string>
+    <string name="password_icon_visible">Pasahitza ikusgai</string>
+    <string name="password_icon_hidden">Pasahitza ezkututa</string>
+    <string name="biometric_auth_failed_toast_message">Autentifikazio baliogabea, saiatu berriz.</string>
+    <string name="biometric_auth_error_toast_message">Autentifikazio errorea: %1$s</string>
+    <string name="biometric_auth_prompt_title">%1$s gisa hasi saioa</string>
+    <string name="biometric_auth_prompt_text">Hasi saioa zure gailuaren kredentzial biometrikoekin</string>
+    <string name="cancel_button">Utzi</string>
+    <string name="ehu_information_channel_name">EHU informazioa</string>
+    <string name="ehu_information_channel_description">EHUk jakinarazpen informatiboak eta alertak bidali ditu.</string>
+
+    <!-- Screen titles -->
+    <string name="timetable_screen_title">Ordutegia</string>
+    <string name="tutotials_section_screen_title">Tutoretzak</string>
+    <string name="tutotials_screen_title">Tutoretzak</string>
+    <string name="tutorial_reminders_screen_title">Tutoretzen oroigarriak</string>
+    <string name="record_screen_title">Espedientea</string>
+    <string name="subjects_screen_title">Irakasgaiak</string>
+    <string name="credits_screen_title">Kredituak</string>
+    <string name="grades_screen_title">Graduak</string>
+    <string name="account_screen_title">Kontua</string>
+    <string name="egela_screen_title">eGela</string>
 </resources>
