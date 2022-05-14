@@ -11,4 +11,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="ehu_information_channel_name">EHU Information</string>
     <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
+
+
+    <string name="timetable_screen_title">Timetable</string>
 </resources>
