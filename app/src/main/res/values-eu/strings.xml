@@ -24,4 +24,7 @@
     <string name="grades_screen_title">Graduak</string>
     <string name="account_screen_title">Kontua</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="login_label">Sartu</string>
+    <string name="remind_me_label">Recuérdame</string>
+    <string name="biometrics_button">Sartu biometria bidez</string>
 </resources>
