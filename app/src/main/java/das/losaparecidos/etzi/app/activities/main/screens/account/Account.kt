@@ -17,18 +17,17 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen(windowSizeClass: WindowWidthSizeClass) {
+fun AccountScreen() {
     val rememberNavController = rememberNavController()
     Scaffold(
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Account.title(LocalContext.current)) },
                 navigationIcon = {
-                    if (windowSizeClass != WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { rememberNavController.navigateUp()}) {
-                            Icon(Icons.Filled.ArrowBack, null)
-                        }
+                    IconButton(onClick = { rememberNavController.navigateUp() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
                     }
+
                 })
         }
     ) { paddingValues ->
@@ -38,8 +37,8 @@ fun AccountScreen(windowSizeClass: WindowWidthSizeClass) {
 
 @Composable
 @Preview
-fun AccountScreenPreview(){
+fun AccountScreenPreview() {
     EtziTheme() {
-        AccountScreen(windowSizeClass = WindowWidthSizeClass.Expanded)
+        AccountScreen()
     }
 }

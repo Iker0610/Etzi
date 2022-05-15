@@ -221,7 +221,7 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Account.route) {
-            AccountScreen(windowSizeClass)
+            AccountScreen()
         }
 
 

@@ -23,7 +23,7 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass) {
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Timetable.title(LocalContext.current)) },
                 navigationIcon = {
-                    if (windowSizeClass != WindowWidthSizeClass.Compact) {
+                    if (windowSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
                             Icon(Icons.Rounded.Menu, null)
                         }

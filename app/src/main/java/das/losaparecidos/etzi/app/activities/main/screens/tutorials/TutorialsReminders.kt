@@ -20,7 +20,7 @@ fun TutorialsRemindersScreen(windowSizeClass: WindowWidthSizeClass) {
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.TutorialReminders.title(LocalContext.current)) },
                 navigationIcon = {
-                    if (windowSizeClass != WindowWidthSizeClass.Compact) {
+                    if (windowSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
                             Icon(Icons.Rounded.Menu, null)
                         }
