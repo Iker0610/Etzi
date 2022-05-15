@@ -15,8 +15,8 @@
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>
-    <string name="tutotials_section_screen_title">Tutorías</string>
-    <string name="tutotials_screen_title">Tutorías</string>
+    <string name="tutorials_section_screen_title">Tutorías</string>
+    <string name="tutorials_screen_title">Tutorías</string>
     <string name="tutorial_reminders_screen_title">Recordatorios de tutorías</string>
     <string name="record_screen_title">Expediente</string>
     <string name="subjects_screen_title">Asignaturas</string>

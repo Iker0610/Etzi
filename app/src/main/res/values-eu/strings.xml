@@ -15,8 +15,8 @@
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>
-    <string name="tutotials_section_screen_title">Tutoretzak</string>
-    <string name="tutotials_screen_title">Tutoretzak</string>
+    <string name="tutorials_section_screen_title">Tutoretzak</string>
+    <string name="tutorials_screen_title">Tutoretzak</string>
     <string name="tutorial_reminders_screen_title">Tutoretzen oroigarriak</string>
     <string name="record_screen_title">Espedientea</string>
     <string name="subjects_screen_title">Irakasgaiak</string>
