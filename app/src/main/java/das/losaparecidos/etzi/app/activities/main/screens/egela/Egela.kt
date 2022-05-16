@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import das.losaparecidos.etzi.app.activities.main.screens.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

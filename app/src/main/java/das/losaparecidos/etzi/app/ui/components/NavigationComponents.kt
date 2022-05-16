@@ -41,7 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
-import das.losaparecidos.etzi.app.activities.main.screens.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import kotlinx.coroutines.launch
 

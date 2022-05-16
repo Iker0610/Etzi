@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -110,12 +111,20 @@ fun ValidatorTextField(
 fun PasswordField(
     value: String,
     onValueChange: (String) -> Unit,
+
     modifier: Modifier = Modifier,
+
+    isValid: Boolean = true,
+    ignoreFirstTime: Boolean = false,
+
+    enabled: Boolean = true,
+
     label: @Composable (() -> Unit) = { Text(stringResource(R.string.password_label)) },
     placeholder: @Composable (() -> Unit)? = { Text(stringResource(R.string.password_placeholder)) },
     leadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Filled.VpnKey, contentDescription = stringResource(R.string.password_label)) },
-    isValid: Boolean = true,
-    ignoreFirstTime: Boolean = false,
+
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    imeAction: ImeAction,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -124,8 +133,9 @@ fun PasswordField(
         onValueChange = { if (canBePassword(it)) onValueChange(it) }, // Update value only if the new value can be a valid password.
 
         modifier = modifier,
+        enabled = enabled,
 
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = imeAction),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
 
         label = label,
@@ -141,12 +151,14 @@ fun PasswordField(
 
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 AnimatedVisibility(passwordVisible, enter = fadeIn(), exit = fadeOut()) {
-                    Icon(imageVector = Icons.Filled.Visibility, description, tint = MaterialTheme.colorScheme.secondary)
+                    Icon(imageVector = Icons.Filled.Visibility, description, tint = MaterialTheme.colorScheme.tertiary)
                 }
                 AnimatedVisibility(!passwordVisible, enter = fadeIn(), exit = fadeOut()) {
                     Icon(imageVector = Icons.Filled.VisibilityOff, description)
                 }
             }
-        }
+        },
+
+        keyboardActions = keyboardActions,
     )
 }

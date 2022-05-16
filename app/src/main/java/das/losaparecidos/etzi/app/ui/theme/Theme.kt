@@ -97,7 +97,7 @@ fun EtziTheme(
 
     MaterialTheme(
         colorScheme = colors,
-        typography = AppTypography,
+        typography = EtziTypography,
         content = content
     )
 }

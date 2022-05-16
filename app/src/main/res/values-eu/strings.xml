@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Etzi</string>
     <string name="password_label">Pasahitza</string>
     <string name="password_placeholder">Pasahitza</string>
     <string name="password_icon_visible">Pasahitza ikusgai</string>
@@ -28,4 +27,6 @@
     <string name="login_label">Sartu</string>
     <string name="remind_me_label">Recuérdame</string>
     <string name="biometrics_button">Sartu biometria bidez</string>
+    <string name="ok_button">Baieztatu</string>
+    <string name="select_date_label">Eguna hautatu</string>
 </resources>

@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -38,8 +37,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
-import das.losaparecidos.etzi.app.activities.main.screens.AnimatedSplashScreen
-import das.losaparecidos.etzi.app.activities.main.screens.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
 import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
@@ -239,20 +236,8 @@ private fun MainNavigationGraph(
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = MainActivityScreens.Splash.route
+        startDestination = MainActivityScreens.Timetable.route
     ) {
-
-
-        composable(
-            route = MainActivityScreens.Splash.route,
-            exitTransition = { fadeOut(animationSpec = tween(500)) }
-        ) {
-            AnimatedSplashScreen {
-                navController.popBackStack() // Empty the backstack so the user doesn't return to splash screen
-                navController.navigate(MainActivityScreens.Timetable.route)
-            }
-        }
-
         composable(
             route = MainActivityScreens.Timetable.route,
             enterTransition = { fadeIn() },

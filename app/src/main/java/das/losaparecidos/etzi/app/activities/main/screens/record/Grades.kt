@@ -7,7 +7,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import das.losaparecidos.etzi.app.activities.main.screens.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
