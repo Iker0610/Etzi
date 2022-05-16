@@ -3,13 +3,29 @@ package das.losaparecidos.etzi.app.activities.authentication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.app.activities.authentication.screens.AnimatedSplashScreen
+import das.losaparecidos.etzi.app.activities.authentication.screens.AuthenticationScreen
+import das.losaparecidos.etzi.app.activities.main.MainActivity
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.BiometricAuthManager
 import das.losaparecidos.etzi.model.entities.AuthUser
@@ -21,7 +37,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthenticationActivity : ComponentActivity() {
+class AuthenticationActivity : FragmentActivity() {
 
     /*************************************************
      **     ViewModels and other manager classes    **
@@ -37,6 +53,7 @@ class AuthenticationActivity : ComponentActivity() {
      **          Activity Lifecycle Methods         **
      *************************************************/
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,12 +77,59 @@ class AuthenticationActivity : ComponentActivity() {
         |                 User Interface                 |
         ------------------------------------------------*/
         setContent {
-            EtziTheme { AuthenticationScreen(
-                authenticationViewModel = authViewModel,
-                onSuccessfulLogin = ::onSuccessfulLogin,
-                biometricSupportChecker = biometricAuthManager::checkBiometricSupport,
-                onBiometricAuthRequested = biometricAuthManager::submitBiometricAuthorization
-            ) }
+            EtziTheme {
+                val scope = rememberCoroutineScope()
+
+                // Initialize Navigation (used for transition between splash screen and auth screen)
+                val navController = rememberAnimatedNavController()
+
+                var splashScreenFinished by remember { mutableStateOf(false) }
+                var preLoginFinished by remember { mutableStateOf(false) }
+                var preLoginSuccessful by remember { mutableStateOf(false) }
+
+                AnimatedNavHost(
+                    navController = navController,
+                    startDestination = "splash_screen"
+                ) {
+                    //-------------   Splash Screen   --------------//
+                    composable(
+                        route = "splash_screen",
+                        exitTransition = { fadeOut(animationSpec = tween(500)) }
+                    ) {
+                        AnimatedSplashScreen { splashScreenFinished = true }
+                    }
+
+                    //----------   Authorization Screen   ----------//
+                    composable(
+                        route = "auth_screen",
+                        enterTransition = { fadeIn(animationSpec = tween(500)) }
+                    ) {
+                        AuthenticationScreen(
+                            authenticationViewModel = authViewModel,
+                            onSuccessfulLogin = ::onSuccessfulLogin,
+                            biometricSupportChecker = biometricAuthManager::checkBiometricSupport,
+                            onBiometricAuthRequested = biometricAuthManager::submitBiometricAuthorization
+                        )
+                    }
+                }
+
+                scope.launch(Dispatchers.IO) {
+                    if (authViewModel.checkRemindLogin() != null) launch(Dispatchers.Main) { preLoginSuccessful = true }
+                    launch(Dispatchers.Main) { preLoginFinished = true }
+                }
+
+                LaunchedEffect(preLoginFinished, splashScreenFinished) {
+                    if (preLoginFinished && splashScreenFinished) {
+                        if (preLoginSuccessful) onSuccessfulLogin(authViewModel.lastLoggedUser!!)
+                        else {
+                            launch(Dispatchers.Main) {
+                                navController.popBackStack() // Empty the backstack so the user doesn't return to splash screen
+                                navController.navigate("auth_screen")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -75,7 +139,7 @@ class AuthenticationActivity : ComponentActivity() {
      *************************************************/
 
     /**
-     * TODO
+     * It updates the last logged user on the Datastore and launches the Main Activity
      *
      * @param user Logged in user's username
      */
@@ -83,8 +147,20 @@ class AuthenticationActivity : ComponentActivity() {
         // Set the last logged user
         authViewModel.updateLastLoggedUsername(user)
 
+        // Subscribe user
+        subscribeUser()
 
-        TODO("Falta ver como conectarlo con la actividad principal")
+        // Update Widgets
+//        val updateIntent = Intent(this, VisitsWidgetReceiver::class.java).apply { action = UPDATE_ACTION }
+//        this.sendBroadcast(updateIntent)
+
+        // Open the main activity
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("LOGGED_USER_LDAP", user.ldap)
+        }
+
+        startActivity(intent)
+        finish()
     }
 
 

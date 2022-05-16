@@ -1,4 +1,4 @@
-package das.losaparecidos.etzi.app.activities.authentication
+package das.losaparecidos.etzi.app.activities.authentication.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.rounded.Fingerprint
+import androidx.compose.material.icons.rounded.PersonOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -26,6 +28,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -45,15 +47,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.activities.authentication.AuthenticationViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.components.form.PasswordField
 import das.losaparecidos.etzi.app.ui.components.form.ValidatorTextField
-import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.BiometricAuthManager
 import das.losaparecidos.etzi.app.utils.BiometricAuthenticationStatus
 import das.losaparecidos.etzi.app.utils.DeviceBiometricsSupport
@@ -157,33 +159,16 @@ fun AuthenticationScreen(
     |                    Dialogs                     |
     ------------------------------------------------*/
 
-    if (authenticationViewModel.backgroundBlockingTaskOnCourse) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = { CenteredColumn(modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.processing)) } },
-            text = {
-                CenteredColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(64.dp)
-                ) { CircularProgressIndicator() }
-            },
-            shape = RectangleShape,
-            confirmButton = {}
-        )
-    }
-
     //----------   Generic Error Dialog   ----------//
     if (showGenericErrorDialog) {
         AlertDialog(
-            text = { Text(text = stringResource(R.string.server_error_dialog_title)) },
+            text = { Text(text = stringResource(R.string.server_error_dialog_title), textAlign = TextAlign.Justify) },
             onDismissRequest = { showGenericErrorDialog = false },
             confirmButton = {
                 TextButton(onClick = { showGenericErrorDialog = false }) {
                     Text(text = stringResource(id = R.string.ok_button))
                 }
             },
-            shape = RectangleShape
         )
     }
 
@@ -191,25 +176,25 @@ fun AuthenticationScreen(
     //-----------   Login Error Dialog   -----------//
     if (showLoginErrorDialog) {
         AlertDialog(
-            text = { Text(text = stringResource(R.string.incorrect_login_error_message)) },
+            text = { Text(text = stringResource(R.string.incorrect_login_error_message), textAlign = TextAlign.Justify) },
             onDismissRequest = { showLoginErrorDialog = false },
             confirmButton = {
                 TextButton(onClick = { showLoginErrorDialog = false }) {
                     Text(text = stringResource(R.string.ok_button))
                 }
             },
-            shape = RectangleShape
         )
     }
 
     //---   Biometric Login User Error Dialog   ----//
     if (showBiometricErrorNotPreviousLoggedUserDialog) {
         AlertDialog(
-            shape = RectangleShape,
-            title = { Text(text = stringResource(R.string.invalid_account_login_dialog_title)) },
+            icon = { Icon(Icons.Rounded.PersonOff, contentDescription = null) },
+            title = { Text(text = stringResource(R.string.invalid_account_login_dialog_title), textAlign = TextAlign.Center) },
             text = {
                 Text(
                     text = stringResource(R.string.invalid_account_login_dialog_text),
+                    textAlign = TextAlign.Justify
                 )
             },
             onDismissRequest = { showBiometricErrorNotPreviousLoggedUserDialog = false },
@@ -224,15 +209,17 @@ fun AuthenticationScreen(
     //---   Credentials Not Valid Error Dialog   ---//
     if (showBiometricErrorCredentialsNotLongerValidDialog) {
         AlertDialog(
-            shape = RectangleShape,
-            title = { Text(text = stringResource(R.string.saved_credentials_not_longer_valid_dialog_title)) },
+            icon = { Icon(Icons.Rounded.PersonOff, contentDescription = null) },
+            title = { Text(text = stringResource(R.string.saved_credentials_not_longer_valid_dialog_title), textAlign = TextAlign.Center) },
             text = {
                 Column {
                     Text(
                         text = stringResource(R.string.saved_credentials_not_longer_valid_dialog_text),
+                        textAlign = TextAlign.Justify
                     )
                     Text(
                         text = stringResource(R.string.saved_credentials_not_longer_valid_dialog_solution_text),
+                        textAlign = TextAlign.Justify
                     )
                 }
             },
@@ -249,13 +236,13 @@ fun AuthenticationScreen(
     //-------   Biometric's Enroll Dialog   --------//
     if (showBiometricEnrollDialog) {
         AlertDialog(
-            shape = RectangleShape,
-            title = { Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_title)) },
+            icon = { Icon(Icons.Rounded.Fingerprint, contentDescription = null) },
+            title = { Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_title), textAlign = TextAlign.Center) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-                    Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_text_1))
-                    Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_text_2))
+                    Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_text_1), textAlign = TextAlign.Justify)
+                    Text(text = stringResource(R.string.no_biometrics_enrolled_dialog_text_2), textAlign = TextAlign.Justify)
 
                 }
             },
@@ -388,9 +375,8 @@ fun AuthenticationScreen(
                     CenteredRow {
                         Text(
                             text = stringResource(R.string.remind_me_label),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.labelMedium
                         )
-
                         Checkbox(
                             checked = authenticationViewModel.rememberLogin,
                             onCheckedChange = authenticationViewModel::rememberLogin::set,
@@ -398,13 +384,15 @@ fun AuthenticationScreen(
                         )
                     }
 
-                    Divider()
+                    Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f))
 
                     if (authenticationViewModel.backgroundBlockingTaskOnCourse) {
 
                         CircularProgressIndicator(
-                            modifier = Modifier.size(50.dp),
-                            strokeWidth = 6.dp
+                            modifier = Modifier
+                                .padding(32.dp)
+                                .size(40.dp),
+                            strokeWidth = 5.dp
                         )
 
                     } else {
@@ -420,9 +408,7 @@ fun AuthenticationScreen(
                         }
 
                         if (biometricSupport != DeviceBiometricsSupport.UNSUPPORTED) {
-                            Spacer(Modifier.height(8.dp))
-
-                            TextButton(
+                            OutlinedButton(
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = onBiometricAuth
                             ) {
@@ -435,6 +421,5 @@ fun AuthenticationScreen(
                 }
             }
         }
-
     }
 }

@@ -12,6 +12,7 @@
 
     <!-- Buttons -->
     <string name="cancel_button">Cancelar</string>
+    <string name="ok_button">Aceptar</string>
 
 
     <!-- Login Screen -->
@@ -23,7 +24,7 @@
     <string name="biometric_auth_error_toast_message">Error de autentificación: %1$s</string>
     <string name="biometric_auth_prompt_title">Iniciar sesión como %1$s</string>
     <string name="biometric_auth_prompt_text">Iniciar sesión con las credenciales biométricas de su dispositivo</string>
-    <string name="login_label">Entrar</string>
+    <string name="login_label">Iniciar Sesión</string>
     <string name="remind_me_label">Recuerdame</string>
     <string name="no_biometrics_enrolled_dialog_title">Acceso biometrico no configurado</string>
     <string name="no_biometrics_enrolled_dialog_text_1">El dispositivo permite acceso biométrico, pero no está configurado.</string>
@@ -39,6 +40,10 @@
     <string name="invalid_account_login_dialog_text">No ha iniciado sesión con una cuenta válida previamente. Acceda con una cuenta y contraseña válidas para poder hacer uso de la autentifcación biométrica.</string>
 
 
+    <!-- Date time picker -->
+    <string name="select_date_label">Seleccione fecha</string>
+
+
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>
     <string name="tutorials_section_screen_title">Tutorías</string>
@@ -50,9 +55,5 @@
     <string name="grades_screen_title">Notas</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
-    <string name="login_label">Entrar</string>
-    <string name="remind_me_label">Gogoratu</string>
-    <string name="biometrics_button">Autenticación Biométrica</string>
-    <string name="ok_button">Aceptar</string>
-    <string name="select_date_label">Seleccione fecha</string>
+
 </resources>
