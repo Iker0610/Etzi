@@ -1,6 +1,7 @@
 package das.losaparecidos.etzi.model.entities
 
 import android.graphics.Bitmap
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -11,6 +12,14 @@ data class Student(
     val email: String,
     val name: String,
     val surname: String,
-    val enrolled_degree: String,
-    @Ignore val profileImage: Bitmap?,
-)
+    @ColumnInfo(name = "enrolled_degree") val enrolledDegree: String,
+    @Ignore val profileImage: Bitmap? = null,
+) {
+    constructor(
+        ldap: String,
+        email: String,
+        name: String,
+        surname: String,
+        enrolledDegree: String,
+    ) : this(ldap, email, name, surname, enrolledDegree, null)
+}
