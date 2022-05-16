@@ -117,12 +117,14 @@ fun PasswordField(
     isValid: Boolean = true,
     ignoreFirstTime: Boolean = false,
 
+    enabled: Boolean = true,
+
     label: @Composable (() -> Unit) = { Text(stringResource(R.string.password_label)) },
     placeholder: @Composable (() -> Unit)? = { Text(stringResource(R.string.password_placeholder)) },
     leadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Filled.VpnKey, contentDescription = stringResource(R.string.password_label)) },
 
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    imeAction: ImeAction
+    imeAction: ImeAction,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -131,6 +133,7 @@ fun PasswordField(
         onValueChange = { if (canBePassword(it)) onValueChange(it) }, // Update value only if the new value can be a valid password.
 
         modifier = modifier,
+        enabled = enabled,
 
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = imeAction),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),

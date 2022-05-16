@@ -39,8 +39,8 @@ fun isAlphaNumeric(text: String): Boolean = text.all { it.isLetterOrDigit() }
  *************************************************/
 
 //----------   Username Validators   -----------//
-fun canBeValidUsername(username: String): Boolean = username.length == 6 && isAlphaNumeric(username)
-fun isValidUsername(username: String): Boolean = username.isNotBlank() && canBeValidUsername(username)
+fun canBeValidLdap(ldap: String): Boolean = ldap.length <= 6 && isNumeric(ldap)
+fun isValidLdap(ldap: String): Boolean = ldap.length == 6 && isNumeric(ldap)
 
 //----------   Password Validators   -----------//
 fun canBePassword(password: String): Boolean = password.length <= 100 && password.all { it != ' ' }

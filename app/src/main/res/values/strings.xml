@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name" translatable="false">Etzi</string>
+
+    <!-- Channels -->
+    <string name="ehu_information_channel_name">UPV/EHU Information</string>
+    <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
+
+    <!-- Buttons -->
+    <string name="ok_button" translatable="false">OK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
+    <string name="enroll_button">Enroll</string>
+
+    <!-- Login Screen -->
+    <string name="server_error_dialog_title">An unexpected error occurred. Try later.</string>
+    <string name="ldap_title" translatable="false">LDAP</string>
     <string name="password_label">Password</string>
     <string name="password_placeholder">Password</string>
     <string name="password_icon_visible">Password visible</string>
@@ -8,9 +22,19 @@
     <string name="biometric_auth_error_toast_message">Authentication error: %1$s</string>
     <string name="biometric_auth_prompt_title">Login as %1$s</string>
     <string name="biometric_auth_prompt_text">Log in using your device\'s biometric credentials</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="ehu_information_channel_name">UPV/EHU Information</string>
-    <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
+    <string name="login_label">Sign In</string>
+    <string name="remind_me_label">Remind me</string>
+    <string name="biometrics_button">Biometric Authetication</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Saved credentials are not valid</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">The previus logged user\'s credentials are not longer valid. This may be because the user does not longer exist or due to a password change.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">In order to continue you must logging again with the username and password.</string>
+    <string name="processing">Processing</string>
+    <string name="incorrect_login_error_message">Incorrect username or password.</string>
+    <string name="invalid_account_login_dialog_title">Invalid Account</string>
+    <string name="invalid_account_login_dialog_text">You haven\'t logged with a valid account before. Log with into an account with a valid password in order to enable biometrics.</string>
+    <string name="no_biometrics_enrolled_dialog_title">No biometrics enrolled</string>
+    <string name="no_biometrics_enrolled_dialog_text_1">Your device is capable of biometric login but none is enrolled.</string>
+    <string name="no_biometrics_enrolled_dialog_text_2">Do you want to configure them?</string>
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Timetable</string>
