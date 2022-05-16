@@ -2,25 +2,8 @@ package das.losaparecidos.etzi.app.activities.main.screens
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.CardMembership
-import androidx.compose.material.icons.filled.Cases
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Grade
-import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PestControlRodent
-import androidx.compose.material.icons.filled.Preview
-import androidx.compose.material.icons.filled.RecentActors
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.SupervisedUserCircle
-import androidx.compose.material.icons.filled.Today
-import androidx.compose.material.icons.filled.Watch
-import androidx.compose.material.icons.filled.Web
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
-import kotlin.math.E
 
 
 /**
@@ -35,7 +18,7 @@ import kotlin.math.E
  * (Principal) Horario ✓
  * Tutorias ✓
  *   - (Principal) Tutorias ✓
- *   - (Secundaria) Alarmas de tutorias ✓
+ *   - (Secundaria) Recordatorios de tutorias ✓
  * Expediente ✓
  *   - Asignaturas ✓
  *   - Creditos superados/restantes ✓
@@ -48,11 +31,11 @@ import kotlin.math.E
  */
 enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     Splash("splash", Icons.Filled.Preview),
-    Timetable("timetable", Icons.Filled.Watch),
+    Timetable("timetable", Icons.Filled.CalendarToday),
     TutorialsSection("tutorials_section", Icons.Filled.SupervisedUserCircle),
     Tutorials("tutorials", Icons.Filled.SupervisedUserCircle),
     TutorialReminders("tutorial_reminders", Icons.Filled.SupervisedUserCircle),
-    Record("record", Icons.Filled.Cases),
+    Record("record", Icons.Filled.FileOpen),
     Subjects("subjects",Icons.Filled.Book),
     Credits("credits", Icons.Filled.CardMembership),
     Grades("grades", Icons.Filled.Grade),
@@ -61,7 +44,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
 
 
     // Get if this MainActivityScreen is one of the main screens
-    fun isNavigable(): Boolean = this in mainScreens
+    fun hasNavigationElements(): Boolean = this in screensWithNavigationElements
 
     // Get the title of the screen from R.strings
     fun title(context: Context): String {
@@ -72,14 +55,35 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     // Utility variables and methods
     companion object {
 
-        // List of screens that must appear in navigation rail / navigation drawer etc...
-        val mainScreens = setOf(Timetable, Tutorials, Record, Egela)
+        val screensWithNavigationElements = setOf(Timetable, Tutorials, TutorialReminders, Grades, Credits, Subjects, Egela)
+
+        // List of screens that must appear in navigation rail / navigation bar
+        val mainSections = setOf(Timetable, TutorialsSection, Record, Egela)
+
+        // List of screens that must appear in navigation drawer
+        val menuScreens = mapOf(
+            Timetable to setOf(Timetable),
+            TutorialsSection to setOf(Tutorials, TutorialReminders),
+            Record to setOf(Grades, Subjects, Credits),
+            Egela to setOf(Egela)
+        )
+
+        val screenRouteToSectionRouteMapping = mapOf(
+            Timetable.route to Timetable.route,
+            Tutorials.route to TutorialsSection.route,
+            TutorialReminders.route to TutorialsSection.route,
+            Grades.route to Record.route,
+            Subjects.route to Record.route,
+            Credits.route to Record.route,
+            Egela.route to Egela.route,
+            Account.route to Account.route
+        ).withDefault { Timetable.route }
 
         // Given a route get the corresponding MainActivityScreen
         // Original code from Google's Compose Navigation Codelab
         fun fromRoute(route: String?): MainActivityScreens =
             when (route?.substringBefore("/")) {
-                Splash.route -> Timetable
+                Splash.route -> Splash
                 Timetable.route -> Timetable
                 TutorialsSection.route -> TutorialsSection
                 Tutorials.route -> Tutorials
@@ -95,6 +99,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
             }
 
         // Get if the given route is one of the main screens
-        fun isNavigable(route: String?): Boolean = fromRoute(route).isNavigable()
+        fun hasNavigationElements(route: String?): Boolean = fromRoute(route).hasNavigationElements()
     }
 }
