@@ -235,7 +235,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen()
+            TimetableScreen(windowSizeClass)
         }
 
         navigation(
@@ -243,11 +243,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen()
+                TutorialsScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
-                TutorialsRemindersScreen()
+                TutorialsRemindersScreen(windowSizeClass)
             }
         }
 
@@ -256,20 +256,20 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen()
+                GradesScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen()
+                SubjectsScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
-                CreditsScreen()
+                CreditsScreen(windowSizeClass)
             }
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen()
+            EgelaScreen(windowSizeClass)
         }
 
         composable(route = MainActivityScreens.Account.route) {
