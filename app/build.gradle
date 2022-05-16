@@ -105,6 +105,9 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.navigation:navigation-compose:2.4.2"
 
+    // Google font
+    implementation "androidx.compose.ui:ui-text-google-fonts:1.2.0-beta01"
+
     // System UI compose control
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"
 
