@@ -15,16 +15,15 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimetableScreen(windowSizeClass: WindowWidthSizeClass) {
-    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-    val scope = rememberCoroutineScope()
+fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
+
     Scaffold (
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Timetable.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
+                        IconButton(onClick = onMenuOpen ) {
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
@@ -40,6 +39,6 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass) {
 @Composable
 fun TimetableScreenPreview() {
     EtziTheme {
-        TimetableScreen(WindowWidthSizeClass.Expanded)
+        TimetableScreen(WindowWidthSizeClass.Expanded, {})
     }
 }

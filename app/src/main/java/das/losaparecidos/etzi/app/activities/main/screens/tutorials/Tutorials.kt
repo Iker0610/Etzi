@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TutorialsScreen(windowSizeClass: WindowWidthSizeClass) {
+fun TutorialsScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -23,7 +23,7 @@ fun TutorialsScreen(windowSizeClass: WindowWidthSizeClass) {
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
+                        IconButton(onClick = onMenuOpen) {
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
@@ -38,7 +38,7 @@ fun TutorialsScreen(windowSizeClass: WindowWidthSizeClass) {
 @Preview
 fun TutorialsScreenPreview() {
     EtziTheme() {
-        TutorialsScreen(windowSizeClass = WindowWidthSizeClass.Expanded)
+        TutorialsScreen(windowSizeClass = WindowWidthSizeClass.Expanded, {})
     }
 }
 

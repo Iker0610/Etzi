@@ -39,6 +39,8 @@
     <string name="invalid_account_login_dialog_title">Cuenta no válida</string>
     <string name="invalid_account_login_dialog_text">No ha iniciado sesión con una cuenta válida previamente. Acceda con una cuenta y contraseña válidas para poder hacer uso de la autentifcación biométrica.</string>
 
+    <!-- Horario -->
+    <string name="subgroup">Subgrupo</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Seleccione fecha</string>

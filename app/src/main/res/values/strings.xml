@@ -36,6 +36,8 @@
     <string name="no_biometrics_enrolled_dialog_text_1">Your device is capable of biometric login but none is enrolled.</string>
     <string name="no_biometrics_enrolled_dialog_text_2">Do you want to configure them?</string>
 
+    <!-- Horario -->
+    <string name="subgroup">Subgroup</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Select date</string>
