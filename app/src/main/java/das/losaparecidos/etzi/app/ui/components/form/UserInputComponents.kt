@@ -110,12 +110,17 @@ fun ValidatorTextField(
 fun PasswordField(
     value: String,
     onValueChange: (String) -> Unit,
+
     modifier: Modifier = Modifier,
+
+    isValid: Boolean = true,
+    ignoreFirstTime: Boolean = false,
+
     label: @Composable (() -> Unit) = { Text(stringResource(R.string.password_label)) },
     placeholder: @Composable (() -> Unit)? = { Text(stringResource(R.string.password_placeholder)) },
     leadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Filled.VpnKey, contentDescription = stringResource(R.string.password_label)) },
-    isValid: Boolean = true,
-    ignoreFirstTime: Boolean = false,
+
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -147,6 +152,8 @@ fun PasswordField(
                     Icon(imageVector = Icons.Filled.VisibilityOff, description)
                 }
             }
-        }
+        },
+
+        keyboardActions = keyboardActions,
     )
 }

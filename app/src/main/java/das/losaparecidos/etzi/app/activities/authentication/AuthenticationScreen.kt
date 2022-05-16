@@ -56,6 +56,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.form.PasswordField
+import das.losaparecidos.etzi.app.ui.components.form.ValidatorTextField
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.DeviceBiometricsSupport
 import das.losaparecidos.etzi.model.entities.AuthUser
@@ -73,8 +75,8 @@ fun AuthenticationScreen(
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     //-----------   Form inputs   ------------//
-    val ldapValue = rememberSaveable { mutableStateOf("") }
-    val passwordValue = rememberSaveable { mutableStateOf("") }
+    val (ldapValue, setLdapValue) = rememberSaveable { mutableStateOf("") }
+    val (passwordValue, setPasswordValue) = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val isChecked = rememberSaveable { mutableStateOf(false) }
     val displayProgressBar = rememberSaveable { mutableStateOf(false) }
@@ -143,10 +145,12 @@ fun AuthenticationScreen(
 
                     //campos del formulario, el cual el de la contraseña tiene
                     //para ver la contraseña que estás escribiendo.
+                    ValidatorTextField(value = ldapValue, onValueChange = setLdapValue)
+
                     TransparentTextField(
                         textFieldValue = ldapValue,
                         textLabel = "LDAP",
-                        keyboardType = KeyboardType.Email,
+                        keyboardType = KeyboardType.Number,
                         keyboardActions = KeyboardActions(
                             onNext = {
                                 focusManager.moveFocus(FocusDirection.Down)
@@ -155,39 +159,12 @@ fun AuthenticationScreen(
                         imeAction = ImeAction.Next,
                     )
 
-                    TransparentTextField(
-                        textFieldValue = passwordValue,
-                        textLabel = stringResource(R.string.password_placeholder),
-                        keyboardType = KeyboardType.Password,
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                                //cuando haya hecho tap en el OK del teclado, iniciamos sesión tb
-                            }
-                        ),
-                        imeAction = ImeAction.Done,
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    passwordVisibility = !passwordVisibility
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = if (passwordVisibility) {
-                                        Icons.Default.Visibility
-                                    } else {
-                                        Icons.Default.VisibilityOff
-                                    },
-                                    contentDescription = "Toggle Password Icon"
-                                )
-                            }
-                        },
-                        visualTransformation = if (passwordVisibility) {
-                            VisualTransformation.None
-                        } else {
-                            PasswordVisualTransformation()
-                        },
+                    PasswordField(
+                        value = passwordValue,
+                        onValueChange = setPasswordValue,
+                        modifier = Modifier.fillMaxWidth()
                     )
+
 
                     CenteredRow {
                         Text(
