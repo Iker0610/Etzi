@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Etzi</string>
     <string name="password_label">Contraseña</string>
     <string name="password_placeholder">Contraseña</string>
     <string name="password_icon_visible">Contraseña visible</string>
@@ -27,4 +26,6 @@
     <string name="login_label">Entrar</string>
     <string name="remind_me_label">Gogoratu</string>
     <string name="biometrics_button">Autenticación Biométrica</string>
+    <string name="ok_button">Aceptar</string>
+    <string name="select_date_label">Seleccione fecha</string>
 </resources>
