@@ -21,8 +21,6 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreditsScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
-    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-    val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             SmallTopAppBar(

@@ -23,8 +23,6 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TutorialsScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
-    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-    val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             SmallTopAppBar(

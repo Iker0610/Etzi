@@ -22,7 +22,6 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EgelaScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
-
     Scaffold(
         topBar = {
             SmallTopAppBar(
