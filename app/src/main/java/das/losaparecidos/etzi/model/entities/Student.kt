@@ -1,12 +1,16 @@
 package das.losaparecidos.etzi.model.entities
 
 import android.graphics.Bitmap
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "student")
 data class Student(
-    val ldap: String,
+    @PrimaryKey val ldap: String,
     val email: String,
     val name: String,
     val surname: String,
     val enrolled_degree: String,
-    val profile_image: Bitmap?
+    @Ignore val profileImage: Bitmap?,
 )

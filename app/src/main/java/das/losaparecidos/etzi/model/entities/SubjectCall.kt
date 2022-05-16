@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 
 data class SubjectCall(
     val subject: Subject,
-    val academic_year: LocalDate,
+    val academicYear: LocalDate,
     val degree: String,
-    val call_type: String,
-    val exam_date: LocalDateTime
+    val callType: String,
+    val examDate: LocalDateTime,
 )

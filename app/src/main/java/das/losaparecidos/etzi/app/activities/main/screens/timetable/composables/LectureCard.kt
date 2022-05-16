@@ -11,18 +11,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.room.ColumnInfo
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import das.losaparecidos.etzi.model.entities.Lecture
+import das.losaparecidos.etzi.model.entities.LectureEntity
 import lectures
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.LocalDate as LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LectureCard(lecture: Lecture) {
+fun LectureCard(lecture: LectureEntity) {
 
     val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 

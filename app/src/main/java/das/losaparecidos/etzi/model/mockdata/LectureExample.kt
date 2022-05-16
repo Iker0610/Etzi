@@ -1,11 +1,11 @@
-import das.losaparecidos.etzi.model.entities.Lecture
+import das.losaparecidos.etzi.model.entities.LectureEntity
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 val lectures = mutableListOf(
 
-    Lecture(
+    LectureEntity(
         subjectName = "Desarrollo Avanzado de Software",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -17,7 +17,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 16, 15, 0),
         endDate = LocalDateTime.of(2022, 5, 16, 17, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Desarrollo de Aplicaciones Web Enriquecidas",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -29,7 +29,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 16, 17, 0),
         endDate = LocalDateTime.of(2022, 5, 16, 19, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Minería de Datos",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -41,7 +41,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 17, 18, 0),
         endDate = LocalDateTime.of(2022, 5, 17, 20, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Técnicas de Inteligencia Artificial",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -53,7 +53,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 18, 15, 0),
         endDate = LocalDateTime.of(2022, 5, 18, 17, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Administración de Sistemas",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -65,7 +65,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 18, 17, 0),
         endDate = LocalDateTime.of(2022, 5, 18, 19, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Cálculo",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -77,7 +77,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 18, 19, 0),
         endDate = LocalDateTime.of(2022, 5, 18, 21, 0)
     ),
-    Lecture(
+    LectureEntity(
         subjectName = "Álgebra",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",
@@ -90,7 +90,7 @@ val lectures = mutableListOf(
         endDate = LocalDateTime.of(2022, 5, 19, 19, 30)
     ),
 
-    Lecture(
+    LectureEntity(
         subjectName = "Métodos Estadísticos de la Ingeniería",
         academicYear = LocalDate.of(2022, 1, 1),
         degree = "Ingeniería Informática de Gestión y Sistemas de Información",

@@ -5,15 +5,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import das.losaparecidos.etzi.model.entities.Building
-import das.losaparecidos.etzi.model.entities.Lecture
+import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
-import das.losaparecidos.etzi.model.entities.Subject
+import das.losaparecidos.etzi.model.entities.Student
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.*
-import java.time.chrono.ChronoLocalDate
-import java.time.temporal.Temporal
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).
@@ -26,8 +27,8 @@ import java.time.temporal.Temporal
  */
 
 @Database(
-    version = 1,
-    entities = [Lecture::class, Subject::class, Building::class, Professor::class],
+    version = 2,
+    entities = [LectureEntity::class, Building::class, Professor::class, Student::class],
 )
 @TypeConverters(Converters::class)
 abstract class EtziDatabase : RoomDatabase() {
