@@ -92,19 +92,14 @@ private fun EtziAppScreen(
 
     //-------------   Nav-Controller   -------------//
     val currentNavBackStackEntry by navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
-    val currentRoute by derivedStateOf {
-        MainActivityScreens.screenRouteToSectionRouteMapping.getValue(
-            currentNavBackStackEntry?.destination?.route ?: "noRoute"
-        )
-    }
+    val currentRoute by derivedStateOf { currentNavBackStackEntry?.destination?.route }
+    val currentSection by derivedStateOf { MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute] }
 
 
     //-----------   Navigation States   ------------//
-    val enableNavigationElements = MainActivityScreens.hasNavigationElements(currentRoute)
-    val enableBottomNavigation =
-        enableNavigationElements && windowSizeClass == WindowWidthSizeClass.Compact
-    val enableNavigationRail =
-        enableNavigationElements && windowSizeClass != WindowWidthSizeClass.Compact
+    val enableNavigationElements by derivedStateOf { MainActivityScreens.hasNavigationElements(currentRoute) }
+    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass == WindowWidthSizeClass.Compact }
+    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass != WindowWidthSizeClass.Compact }
 
 
     //-----------   Navigation-drawer   ------------//
@@ -135,7 +130,7 @@ private fun EtziAppScreen(
      *************************************************/
 
     /*
-     TODO ENVOLVER EL NAVIGATION GRAPH CON LOS ELEMENTOS DE NAVEGACIÓN:
+     ENVOLVER EL NAVIGATION GRAPH CON LOS ELEMENTOS DE NAVEGACIÓN:
 
      - Primero con el navigation drawer
      - Luego con el navigation rail SI FUERA NECESARIO
@@ -145,18 +140,16 @@ private fun EtziAppScreen(
 
     EtziNavigationDrawer(currentRoute, onNavigate, navigationDrawerState, true) {
         Scaffold(
-            bottomBar = { if (enableBottomNavigation) EtziNavigationBar(currentRoute, onNavigate) }
+            bottomBar = { if (enableBottomNavigation) EtziNavigationBar(currentSection, onNavigate) }
         ) { paddingValues ->
             Row(
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                if (enableNavigationRail) EtziNavigationRail(
-                    currentRoute,
-                    onNavigate,
-                    onNavigationMenuOpen
-                )
+                if (enableNavigationRail) {
+                    EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen)
+                }
                 MainNavigationGraph(userDataViewModel, navController, windowSizeClass)
             }
         }

@@ -69,6 +69,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         )
 
         val screenRouteToSectionRouteMapping = mapOf(
+            Splash.route to Splash.route,
             Timetable.route to Timetable.route,
             Tutorials.route to TutorialsSection.route,
             TutorialReminders.route to TutorialsSection.route,
@@ -77,11 +78,11 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
             Credits.route to Record.route,
             Egela.route to Egela.route,
             Account.route to Account.route
-        ).withDefault { Timetable.route }
+        )
 
         // Given a route get the corresponding MainActivityScreen
         // Original code from Google's Compose Navigation Codelab
-        fun fromRoute(route: String?): MainActivityScreens =
+        private fun fromRoute(route: String?): MainActivityScreens =
             when (route?.substringBefore("/")) {
                 Splash.route -> Splash
                 Timetable.route -> Timetable
@@ -94,8 +95,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
                 Grades.route -> Grades
                 Account.route -> Account
                 Egela.route -> Egela
-                null -> Timetable
-                else -> throw IllegalArgumentException("Route $route is not recognized.")
+                else -> Splash
             }
 
         // Get if the given route is one of the main screens
