@@ -1,10 +1,15 @@
 package das.losaparecidos.etzi.app.activities.authentication
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -12,10 +17,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
@@ -23,10 +45,13 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
@@ -52,7 +77,7 @@ fun AuthenticationScreen(
     val passwordValue = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val isChecked = rememberSaveable { mutableStateOf(false) }
-    val displayProgressBar = rememberSaveable{mutableStateOf(false) }
+    val displayProgressBar = rememberSaveable { mutableStateOf(false) }
 
 
     //-----------------   States   -----------------//
@@ -64,6 +89,8 @@ fun AuthenticationScreen(
     var showBiometricErrorCredentialsNotLongerValidDialog by rememberSaveable { mutableStateOf(false) }
     var showBiometricEnrollDialog by rememberSaveable { mutableStateOf(false) }
     var showGenericErrorDialog by rememberSaveable { mutableStateOf(false) }
+
+
     Scaffold { paddingValues ->
         /**
          * Características:
@@ -76,46 +103,44 @@ fun AuthenticationScreen(
          * - Un botón para autenticación por biometrics
          *
          */
-        CenteredColumn(modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-            ) {
-            Column{
-                CenteredRow() {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_ehu_logo),
-                        contentDescription = "UPV/EHU logo",
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
+        CenteredColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+        ) {
+            CenteredRow {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_ehu_logo),
+                    contentDescription = "UPV/EHU logo",
+                    modifier = Modifier.size(50.dp)
+                )
+
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
+                    modifier = Modifier.padding(start = 12.dp)
+                )
             }
+
             // padding 32.dp verticales
             Spacer(modifier = Modifier.height(32.dp))
-            OutlinedCard(modifier = Modifier.padding(32.dp)){
-                Column(
+
+
+            ElevatedCard(modifier = Modifier.padding(32.dp)) {
+                CenteredColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(vertical = 24.dp, horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(8.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.login_label),
-                            fontWeight = FontWeight.Bold,
-                            //modifier = Modifier.padding(16.dp)
-                        )
-                    }
+
+                    Text(
+                        text = stringResource(id = R.string.login_label),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    )
+
                     //campos del formulario, el cual el de la contraseña tiene
                     //para ver la contraseña que estás escribiendo.
                     TransparentTextField(
@@ -128,7 +153,6 @@ fun AuthenticationScreen(
                             }
                         ),
                         imeAction = ImeAction.Next,
-                        modifier = Modifier.padding(16.dp)
                     )
 
                     TransparentTextField(
@@ -163,37 +187,35 @@ fun AuthenticationScreen(
                         } else {
                             PasswordVisualTransformation()
                         },
-                        modifier = Modifier.padding(16.dp)
                     )
 
-                    Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    CenteredRow {
                         Text(
                             text = stringResource(R.string.remind_me_label),
-                            modifier = Modifier.padding(13.dp)
+                            style = MaterialTheme.typography.bodyMedium
                         )
+
                         Checkbox(
                             checked = isChecked.value,
                             onCheckedChange = { isChecked.value = it },
                             enabled = true
                         )
                     }
-                    Divider(modifier = Modifier.padding(top = 7.dp, bottom = 1.dp))
-                    Row (modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(2.dp)){
-                        RoundedButton(
-                            text = stringResource(R.string.login_label),
-                            displayProgressBar = displayProgressBar.value,
-                            onClick = {
-                                // aser kositas cuando le den al botón
-                                //onLogin(emailValue.value, passwordValue.value, isChecked.value)
-                                // Poner cuando inicemos sesión: displayProgressBar.value = true
-                            },
 
-                        )
-                    }
+                    Divider()
+
+                    RoundedButton(
+                        text = stringResource(R.string.login_label),
+                        displayProgressBar = displayProgressBar.value,
+                        onClick = {
+                            // aser kositas cuando le den al botón
+                            //onLogin(emailValue.value, passwordValue.value, isChecked.value)
+                            // Poner cuando inicemos sesión: displayProgressBar.value = true
+                        },
+                    )
+
                     if (biometricSupport != DeviceBiometricsSupport.UNSUPPORTED) {
-                        Divider(modifier = Modifier.padding(top = 7.dp, bottom = 1.dp))
+                        Divider(modifier = Modifier.padding(vertical = 8.dp))
                         TextButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = onBiometricAuth
@@ -215,19 +237,14 @@ fun RoundedButton(
     modifier: Modifier = Modifier,
     text: String,
     displayProgressBar: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     if (!displayProgressBar) {
         Button(
-            modifier = modifier
-                .width(280.dp)
-                .height(50.dp),
+            modifier = modifier.fillMaxWidth(),
             onClick = onClick,
-            shape = RoundedCornerShape(50),
         ) {
-            Text(
-                text = text,
-            )
+            Text(text = text)
         }
     } else {
         CircularProgressIndicator(
@@ -249,7 +266,7 @@ fun TransparentTextField(
     imeAction: ImeAction,
     trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    enable: Boolean = true
+    enable: Boolean = true,
 ) {
     TextField(
         modifier = modifier.fillMaxWidth(),
