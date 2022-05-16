@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Etzi</string>
+
+
+    <!-- Channels -->
+    <string name="ehu_information_channel_name">Información de la UPV</string>
+    <string name="ehu_information_channel_description">La UPV ha enviado notificaciones y alertas informativas.</string>
+    <string name="save_button">Guardar</string>
+    <string name="enroll_button">Configurar</string>
+
+
+    <!-- Buttons -->
+    <string name="cancel_button">Cancelar</string>
+
+
+    <!-- Login Screen -->
     <string name="password_label">Contraseña</string>
     <string name="password_placeholder">Contraseña</string>
     <string name="password_icon_visible">Contraseña visible</string>
@@ -9,9 +23,21 @@
     <string name="biometric_auth_error_toast_message">Error de autentificación: %1$s</string>
     <string name="biometric_auth_prompt_title">Iniciar sesión como %1$s</string>
     <string name="biometric_auth_prompt_text">Iniciar sesión con las credenciales biométricas de su dispositivo</string>
-    <string name="cancel_button">Cancelar</string>
-    <string name="ehu_information_channel_name">Información de la UPV</string>
-    <string name="ehu_information_channel_description">La UPV ha enviado notificaciones y alertas informativas.</string>
+    <string name="login_label">Entrar</string>
+    <string name="remind_me_label">Recuerdame</string>
+    <string name="no_biometrics_enrolled_dialog_title">Acceso biometrico no configurado</string>
+    <string name="no_biometrics_enrolled_dialog_text_1">El dispositivo permite acceso biométrico, pero no está configurado.</string>
+    <string name="no_biometrics_enrolled_dialog_text_2">¿Desea configurarlo?</string>
+    <string name="biometrics_button">Autentificación Biométrica</string>
+    <string name="server_error_dialog_title">Ha ocurrido un error inesperado. Inténtelo más tarde.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Las credenciales guardadas no son válidas</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">Las credenciales del usuario anterior no son actualmente válidas. Esto puede deberse a que el usuario ya no existe o a un cambio de contraseña.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Para continuar vuelve a iniciar sesión con el nombre de usuario y la ocntraseña.</string>
+    <string name="processing">Procesando</string>
+    <string name="incorrect_login_error_message">Nombre de usuario o contraseña incorrectas.</string>
+    <string name="invalid_account_login_dialog_title">Cuenta no válida</string>
+    <string name="invalid_account_login_dialog_text">No ha iniciado sesión con una cuenta válida previamente. Acceda con una cuenta y contraseña válidas para poder hacer uso de la autentifcación biométrica.</string>
+
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>
@@ -24,7 +50,4 @@
     <string name="grades_screen_title">Notas</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
-    <string name="login_label">Entrar</string>
-    <string name="remind_me_label">Gogoratu</string>
-    <string name="biometrics_button">Autenticación Biométrica</string>
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,11 +40,32 @@ class AuthenticationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Initialize biometric authentication manager (only if it is uninitialized)
+        if (!this::biometricAuthManager.isInitialized) {
+            biometricAuthManager = BiometricAuthManager(
+                context = this,
+                authUsername = authViewModel.lastLoggedUser?.ldap ?: "",
+                onAuthenticationSucceeded = {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val loggedUser = authViewModel.checkBiometricLogin()
+                        if (loggedUser != null) onSuccessfulLogin(loggedUser)
+                        else authViewModel.backgroundBlockingTaskOnCourse = false
+                    }
+                }
+            )
+        }
+
+
         /*------------------------------------------------
         |                 User Interface                 |
         ------------------------------------------------*/
         setContent {
-            EtziTheme { AuthenticationScreen() }
+            EtziTheme { AuthenticationScreen(
+                authenticationViewModel = authViewModel,
+                onSuccessfulLogin = ::onSuccessfulLogin,
+                biometricSupportChecker = biometricAuthManager::checkBiometricSupport,
+                onBiometricAuthRequested = biometricAuthManager::submitBiometricAuthorization
+            ) }
         }
     }
 
@@ -58,6 +80,10 @@ class AuthenticationActivity : ComponentActivity() {
      * @param user Logged in user's username
      */
     private fun onSuccessfulLogin(user: AuthUser) {
+        // Set the last logged user
+        authViewModel.updateLastLoggedUsername(user)
+
+
         TODO("Falta ver como conectarlo con la actividad principal")
     }
 
