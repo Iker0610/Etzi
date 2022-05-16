@@ -60,6 +60,9 @@ import das.losaparecidos.etzi.app.ui.components.form.PasswordField
 import das.losaparecidos.etzi.app.ui.components.form.ValidatorTextField
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.DeviceBiometricsSupport
+import das.losaparecidos.etzi.app.utils.isNonEmptyText
+import das.losaparecidos.etzi.app.utils.isNumeric
+import das.losaparecidos.etzi.app.utils.isValidUsername
 import das.losaparecidos.etzi.model.entities.AuthUser
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,24 +148,39 @@ fun AuthenticationScreen(
 
                     //campos del formulario, el cual el de la contraseña tiene
                     //para ver la contraseña que estás escribiendo.
-                    ValidatorTextField(value = ldapValue, onValueChange = setLdapValue)
-
-                    TransparentTextField(
-                        textFieldValue = ldapValue,
-                        textLabel = "LDAP",
-                        keyboardType = KeyboardType.Number,
+                    //isValidUsername(textFieldValue.value) && isNumeric(textFieldValue.value) --> al viewmodel
+                    ValidatorTextField(
+                        value = ldapValue,
+                        onValueChange = setLdapValue,
+                        label = { Text(text = "LDAP")},
                         keyboardActions = KeyboardActions(
                             onNext = {
                                 focusManager.moveFocus(FocusDirection.Down)
                             }
                         ),
-                        imeAction = ImeAction.Next,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
+                        modifier = Modifier.fillMaxWidth().padding(8.dp)
                     )
+
 
                     PasswordField(
                         value = passwordValue,
                         onValueChange = setPasswordValue,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            },
+                            onDone = {
+                                //si el usuario le da al ok del teclado
+                                focusManager.clearFocus()
+                                //aqui debería haber una llamada a iniciar sesión
+                            }
+                        ),
+                        imeAction = ImeAction.Done
                     )
 
 
@@ -229,39 +247,6 @@ fun RoundedButton(
             strokeWidth = 6.dp
         )
     }
-}
-
-@Composable
-fun TransparentTextField(
-    modifier: Modifier = Modifier,
-    textFieldValue: MutableState<String>,
-    textLabel: String,
-    maxChar: Int? = null,
-    capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
-    keyboardType: KeyboardType,
-    keyboardActions: KeyboardActions,
-    imeAction: ImeAction,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    enable: Boolean = true,
-) {
-    TextField(
-        modifier = modifier.fillMaxWidth(),
-        value = textFieldValue.value.take(maxChar ?: 40),
-        onValueChange = { textFieldValue.value = it },
-        label = {
-            Text(text = textLabel)
-        },
-        trailingIcon = trailingIcon,
-        keyboardOptions = KeyboardOptions(
-            capitalization = capitalization,
-            keyboardType = keyboardType,
-            imeAction = imeAction
-        ),
-        keyboardActions = keyboardActions,
-        visualTransformation = visualTransformation,
-        enabled = enable,
-    )
 }
 
 // Preview

@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -121,6 +122,7 @@ fun PasswordField(
     leadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Filled.VpnKey, contentDescription = stringResource(R.string.password_label)) },
 
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    imeAction: ImeAction
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -130,7 +132,7 @@ fun PasswordField(
 
         modifier = modifier,
 
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = imeAction),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
 
         label = label,
