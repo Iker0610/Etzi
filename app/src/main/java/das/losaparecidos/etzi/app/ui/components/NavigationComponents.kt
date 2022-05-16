@@ -1,11 +1,35 @@
 package das.losaparecidos.etzi.app.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,25 +88,16 @@ fun EtziNavigationRail(currentRoute: String?, onNavigate: (String) -> Unit, onMe
         ) {
 
             MainActivityScreens.mainSections.forEach { screen ->
-
-                if (currentRoute == screen.route) {
-                    NavigationRailItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
-                        label = { Text(screen.title(context)) },
-                        selected = true,
-                        onClick = { onNavigate(screen.route) }
-                    )
-                } else {
-                    NavigationRailItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
-                        selected = false,
-                        onClick = { onNavigate(screen.route) }
-                    )
-                }
+                NavigationRailItem(
+                    icon = { Icon(screen.icon, contentDescription = null) },
+                    label = { Text(screen.title(context)) },
+                    selected = currentRoute == screen.route,
+                    alwaysShowLabel = false,
+                    onClick = { onNavigate(screen.route) },
+                )
             }
         }
     }
-
 }
 
 
@@ -100,6 +115,7 @@ fun EtziNavigationDrawer(
     var itsFirst = true
 
     ModalNavigationDrawer(
+        gesturesEnabled = gesturesEnabled,
         drawerState = drawerState,
         drawerContent = {
 
@@ -108,7 +124,6 @@ fun EtziNavigationDrawer(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 12.dp, vertical = 32.dp)) {
                 MainActivityScreens.menuScreens.forEach { (section, screens) ->
-
                     // Separador de secciones
                     if (itsFirst) itsFirst = false
                     else Divider(
@@ -117,7 +132,9 @@ fun EtziNavigationDrawer(
                             .padding(top = 16.dp))
 
                     // Título de sección
-                    Text(text = section.title(context), style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp))
+                    Text(text = section.title(context),
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp))
 
                     // Secciones
                     screens.forEach { screen ->

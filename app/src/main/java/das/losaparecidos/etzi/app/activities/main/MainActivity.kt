@@ -6,10 +6,19 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -107,6 +116,19 @@ private fun EtziAppScreen(
 
 
     /*************************************************
+     **                    Events                   **
+     *************************************************/
+
+    // Close bottom navigation menu if it was open and we changed layout to the one with a navigation rail
+    LaunchedEffect(navigationDrawerState) {
+        if (!enableBottomNavigation && navigationDrawerState.currentValue != DrawerValue.Closed) {
+            scope.launch { navigationDrawerState.close() }
+        }
+    }
+
+
+
+    /*************************************************
      **            Common Event Callbacks           **
      *************************************************/
 
@@ -138,18 +160,26 @@ private fun EtziAppScreen(
 
       */
 
-    EtziNavigationDrawer(currentRoute, onNavigate, navigationDrawerState, true) {
+    EtziNavigationDrawer(currentRoute, onNavigate, navigationDrawerState, enableNavigationElements) {
         Scaffold(
-            bottomBar = { if (enableBottomNavigation) EtziNavigationBar(currentSection, onNavigate) }
+            bottomBar = {
+                AnimatedVisibility(enableBottomNavigation,
+                    enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
+                    exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
+                ) { EtziNavigationBar(currentSection, onNavigate) }
+            }
         ) { paddingValues ->
             Row(
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                if (enableNavigationRail) {
-                    EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen)
-                }
+                AnimatedVisibility(
+                    enableNavigationRail,
+                    enter = slideInHorizontally(initialOffsetX = { -it }) + expandHorizontally(),
+                    exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
+                ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
+
                 MainNavigationGraph(userDataViewModel, navController, windowSizeClass)
             }
         }
@@ -199,8 +229,7 @@ private fun MainNavigationGraph(
     }
 
     // Navigate to the current user's account page. (Passing the current user as a parameter in the route)
-    val onNavigateToAccount =
-        { navController.navigate(MainActivityScreens.Account.route) { launchSingleTop = true } }
+    val onNavigateToAccount = { navController.navigate(MainActivityScreens.Account.route) { launchSingleTop = true } }
 
 
     /*************************************************
