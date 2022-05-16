@@ -180,7 +180,7 @@ private fun EtziAppScreen(
                     exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
                 ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
 
-                MainNavigationGraph(userDataViewModel, navController, windowSizeClass)
+                MainNavigationGraph(userDataViewModel, navController, windowSizeClass, onNavigationMenuOpen)
             }
         }
     }
@@ -205,6 +205,7 @@ private fun MainNavigationGraph(
     userDataViewModel: UserDataViewModel,
     navController: NavHostController,
     windowSizeClass: WindowWidthSizeClass,
+    onNavigationMenuOpen: () -> Unit
 ) {
     /*************************************************
      **             Variables and States            **
@@ -257,7 +258,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(windowSizeClass)
+            TimetableScreen(windowSizeClass, onNavigationMenuOpen)
         }
 
         navigation(
@@ -265,11 +266,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen(windowSizeClass)
+                TutorialsScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
-                TutorialsRemindersScreen(windowSizeClass)
+                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
             }
         }
 
@@ -278,20 +279,20 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen(windowSizeClass)
+                GradesScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen(windowSizeClass)
+                SubjectsScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
-                CreditsScreen(windowSizeClass)
+                CreditsScreen(windowSizeClass, onNavigationMenuOpen)
             }
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen(windowSizeClass)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen)
         }
 
         composable(route = MainActivityScreens.Account.route) {

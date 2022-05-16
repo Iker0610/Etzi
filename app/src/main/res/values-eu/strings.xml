@@ -12,6 +12,7 @@
     <string name="cancel_button">Utzi</string>
     <string name="ehu_information_channel_name">EHU informazioa</string>
     <string name="ehu_information_channel_description">EHUk jakinarazpen informatiboak eta alertak bidali ditu.</string>
+    <string name="subgroup">Azpitalde</string>
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>

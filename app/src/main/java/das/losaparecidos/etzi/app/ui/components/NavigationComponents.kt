@@ -68,7 +68,11 @@ fun EtziNavigationBar(currentRoute: String?, onNavigate: (String) -> Unit) {
 
 
 @Composable
-fun EtziNavigationRail(currentRoute: String?, onNavigate: (String) -> Unit, onMenuOpen: () -> Unit) {
+fun EtziNavigationRail(
+    currentRoute: String?,
+    onNavigate: (String) -> Unit,
+    onMenuOpen: () -> Unit
+) {
 
     val context = LocalContext.current
 
@@ -112,6 +116,7 @@ fun EtziNavigationDrawer(
 ) {
 
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var itsFirst = true
 
     ModalNavigationDrawer(
@@ -122,8 +127,12 @@ fun EtziNavigationDrawer(
             Column(
                 Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 12.dp, vertical = 32.dp)) {
+                    .padding(horizontal = 12.dp, vertical = 32.dp)
+            ) {
                 MainActivityScreens.menuScreens.forEach { (section, screens) ->
+
+                    /*
+
                     // Separador de secciones
                     if (itsFirst) itsFirst = false
                     else Divider(
@@ -131,10 +140,14 @@ fun EtziNavigationDrawer(
                             .padding(horizontal = 12.dp)
                             .padding(top = 16.dp))
 
+                     */
+
                     // Título de sección
-                    Text(text = section.title(context),
+                    Text(
+                        text = section.title(context),
                         style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp))
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp)
+                    )
 
                     // Secciones
                     screens.forEach { screen ->
@@ -143,7 +156,12 @@ fun EtziNavigationDrawer(
                             icon = { Icon(screen.icon, contentDescription = null) },
                             label = { Text(screen.title(context)) },
                             selected = currentRoute == screen.route,
-                            onClick = { onNavigate(screen.route) }
+                            onClick = {
+                                scope.launch {
+                                    onNavigate(screen.route)
+                                    drawerState.close()
+                                }
+                            }
                         )
                     }
                 }

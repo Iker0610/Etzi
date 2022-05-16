@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TutorialsRemindersScreen(windowSizeClass: WindowWidthSizeClass) {
+fun TutorialsRemindersScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
     val scope = rememberCoroutineScope()
     Scaffold (
@@ -21,7 +21,7 @@ fun TutorialsRemindersScreen(windowSizeClass: WindowWidthSizeClass) {
                 title = { Text(text = MainActivityScreens.TutorialReminders.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
+                        IconButton(onClick = onMenuOpen) {
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }

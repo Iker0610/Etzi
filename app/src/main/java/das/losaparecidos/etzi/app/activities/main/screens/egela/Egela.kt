@@ -1,5 +1,6 @@
 package das.losaparecidos.etzi.app.activities.main.screens.egela
 
+import android.webkit.WebView
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
@@ -17,16 +18,15 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EgelaScreen(windowSizeClass: WindowWidthSizeClass) {
-    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-    val scope = rememberCoroutineScope()
+fun EgelaScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
+
     Scaffold (
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Egela.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
+                        IconButton(onClick = onMenuOpen) {
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
@@ -44,5 +44,5 @@ fun EgelaScreen(windowSizeClass: WindowWidthSizeClass) {
 @Composable
 @Preview
 fun EgelaScreenPreview(){
-    EgelaScreen(WindowWidthSizeClass.Expanded)
+    EgelaScreen(WindowWidthSizeClass.Expanded, {})
 }

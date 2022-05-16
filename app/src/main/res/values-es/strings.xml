@@ -12,6 +12,7 @@
     <string name="cancel_button">Cancelar</string>
     <string name="ehu_information_channel_name">Información de la UPV</string>
     <string name="ehu_information_channel_description">La UPV ha enviado notificaciones y alertas informativas.</string>
+    <string name="subgroup">Subgrupo</string>
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>

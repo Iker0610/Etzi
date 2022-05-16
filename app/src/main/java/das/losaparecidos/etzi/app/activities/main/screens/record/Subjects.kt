@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectsScreen(windowSizeClass: WindowWidthSizeClass) {
+fun SubjectsScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Open)
     val scope = rememberCoroutineScope()
     Scaffold (
@@ -21,7 +21,7 @@ fun SubjectsScreen(windowSizeClass: WindowWidthSizeClass) {
                 title = { Text(text = MainActivityScreens.Subjects.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
+                        IconButton(onClick = onMenuOpen) {
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
