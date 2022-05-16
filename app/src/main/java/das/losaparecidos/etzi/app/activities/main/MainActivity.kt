@@ -3,9 +3,9 @@ package das.losaparecidos.etzi.app.activities.main
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandHorizontally
@@ -28,9 +28,15 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -54,7 +60,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     /*************************************************
      **                  ViewModel                  **
      *************************************************/
@@ -122,7 +128,6 @@ private fun EtziAppScreen(
             scope.launch { navigationDrawerState.close() }
         }
     }
-
 
 
     /*************************************************
@@ -202,7 +207,7 @@ private fun MainNavigationGraph(
     userDataViewModel: UserDataViewModel,
     navController: NavHostController,
     windowSizeClass: WindowWidthSizeClass,
-    onNavigationMenuOpen: () -> Unit
+    onNavigationMenuOpen: () -> Unit,
 ) {
     /*************************************************
      **             Variables and States            **
