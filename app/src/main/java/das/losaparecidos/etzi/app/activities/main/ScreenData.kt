@@ -1,4 +1,4 @@
-package das.losaparecidos.etzi.app.activities.main.screens
+package das.losaparecidos.etzi.app.activities.main
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Acceso a egela ✓
  */
 enum class MainActivityScreens(var route: String, var icon: ImageVector) {
-    Splash("splash", Icons.Filled.Preview),
     Timetable("timetable", Icons.Filled.CalendarToday),
     TutorialsSection("tutorials_section", Icons.Filled.SupervisedUserCircle),
     Tutorials("tutorials", Icons.Filled.SupervisedUserCircle),
@@ -69,7 +68,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         )
 
         val screenRouteToSectionRouteMapping = mapOf(
-            Splash.route to Splash.route,
             Timetable.route to Timetable.route,
             Tutorials.route to TutorialsSection.route,
             TutorialReminders.route to TutorialsSection.route,
@@ -84,7 +82,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         // Original code from Google's Compose Navigation Codelab
         private fun fromRoute(route: String?): MainActivityScreens =
             when (route?.substringBefore("/")) {
-                Splash.route -> Splash
                 Timetable.route -> Timetable
                 TutorialsSection.route -> TutorialsSection
                 Tutorials.route -> Tutorials
@@ -95,7 +92,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
                 Grades.route -> Grades
                 Account.route -> Account
                 Egela.route -> Egela
-                else -> Splash
+                else -> Timetable
             }
 
         // Get if the given route is one of the main screens

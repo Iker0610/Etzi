@@ -32,7 +32,7 @@ class AuthenticationViewModel @Inject constructor(private val loginRepository: I
 
     // Property that has the last logged user (if it exists else null)
     val lastLoggedUser: AuthUser? = runBlocking { return@runBlocking loginRepository.getLastLoggedUser() } // Get last logged user synchronously
-
+    private val remindLastLoggedUser = runBlocking { return@runBlocking loginRepository.getRememberLogin() }
 
     // Biometric authentication state
     var biometricAuthenticationStatus: BiometricAuthenticationStatus by mutableStateOf(if (lastLoggedUser != null) BiometricAuthenticationStatus.NOT_AUTHENTICATED_YET else BiometricAuthenticationStatus.NO_CREDENTIALS)
@@ -44,7 +44,7 @@ class AuthenticationViewModel @Inject constructor(private val loginRepository: I
 
     var loginUsername by mutableStateOf(lastLoggedUser?.ldap ?: "")
     var loginPassword by mutableStateOf("")
-    var rememberLogin by mutableStateOf(false)
+    var rememberLogin by mutableStateOf(remindLastLoggedUser)
 
 
     // Property that defines if a background task that must block the UI is on course
@@ -60,7 +60,7 @@ class AuthenticationViewModel @Inject constructor(private val loginRepository: I
     /**
      * Checks if the given [authUser] is a valid user in the system.
      */
-    suspend fun checkUserLogin(authUser: AuthUser): Boolean {
+    private suspend fun checkUserLogin(authUser: AuthUser): Boolean {
         backgroundBlockingTaskOnCourse = true
         return loginRepository.authenticateUser(authUser)
     }
@@ -81,6 +81,12 @@ class AuthenticationViewModel @Inject constructor(private val loginRepository: I
         }
         return if (biometricAuthenticationStatus == BiometricAuthenticationStatus.AUTHENTICATED) lastLoggedUser else null
     }
+
+    /**
+     * TODO
+     */
+    suspend fun checkRemindLogin(): AuthUser? =
+        if (remindLastLoggedUser && lastLoggedUser != null && checkUserLogin(lastLoggedUser)) lastLoggedUser else null
 
 
     /**

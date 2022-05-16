@@ -151,7 +151,7 @@ fun PasswordField(
 
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 AnimatedVisibility(passwordVisible, enter = fadeIn(), exit = fadeOut()) {
-                    Icon(imageVector = Icons.Filled.Visibility, description, tint = MaterialTheme.colorScheme.secondary)
+                    Icon(imageVector = Icons.Filled.Visibility, description, tint = MaterialTheme.colorScheme.tertiary)
                 }
                 AnimatedVisibility(!passwordVisible, enter = fadeIn(), exit = fadeOut()) {
                     Icon(imageVector = Icons.Filled.VisibilityOff, description)
