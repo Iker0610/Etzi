@@ -1,5 +1,7 @@
 package das.losaparecidos.etzi.app.ui.components
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -8,8 +10,11 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 
-fun showDatePicker(activity: FragmentActivity, onDateSelected: (LocalDate) -> Unit) {
+fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
+    val activity = context as AppCompatActivity
+
     val picker = MaterialDatePicker.Builder.datePicker().build()
+
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { dateMillis ->
@@ -20,11 +25,14 @@ fun showDatePicker(activity: FragmentActivity, onDateSelected: (LocalDate) -> Un
 }
 
 
-fun showDateRangePicker(activity: FragmentActivity, onDateSelected: (LocalDate, LocalDate) -> Unit) {
+fun showDateRangePicker(context: Context, onDateSelected: (LocalDate, LocalDate) -> Unit) {
+    val activity = context as AppCompatActivity
+
     val picker = MaterialDatePicker.Builder.dateRangePicker().setSelection(Pair(
         MaterialDatePicker.todayInUtcMilliseconds(),
-        MaterialDatePicker.todayInUtcMilliseconds() + (86400000 * 5)
+        MaterialDatePicker.todayInUtcMilliseconds() + (86400000 * 5) // 5 days
     )).build()
+
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { selectionMillis ->
