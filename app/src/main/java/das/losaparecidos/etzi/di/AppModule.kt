@@ -10,6 +10,10 @@ import dagger.hilt.components.SingletonComponent
 import das.losaparecidos.etzi.app.utils.AESCipher
 import das.losaparecidos.etzi.app.utils.CipherUtil
 import das.losaparecidos.etzi.model.database.EtziDatabase
+import das.losaparecidos.etzi.model.datastore.Datastore
+import das.losaparecidos.etzi.model.repositories.ILoginRepository
+import das.losaparecidos.etzi.model.repositories.LoginRepository
+import das.losaparecidos.etzi.model.webclients.AuthenticationClient
 import javax.inject.Singleton
 
 
@@ -48,7 +52,10 @@ object AppModule {
      **                 Repositories                **
      *************************************************/
 
-    // TODO
+    @Singleton
+    @Provides
+    fun provideLoginRepository(authenticationClient: AuthenticationClient, datastore: Datastore): ILoginRepository =
+        LoginRepository(authenticationClient, datastore)
 
 
     /*************************************************
