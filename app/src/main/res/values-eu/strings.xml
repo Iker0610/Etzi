@@ -11,7 +11,11 @@
     <string name="cancel_button">Utzi</string>
     <string name="ehu_information_channel_name">EHU informazioa</string>
     <string name="ehu_information_channel_description">EHUk jakinarazpen informatiboak eta alertak bidali ditu.</string>
+
+    <!-- Horario -->
     <string name="subgroup">Azpitalde</string>
+    <string name="professor">Irakaslea</string>
+    <string name="subject">Irakasgaia</string>
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>

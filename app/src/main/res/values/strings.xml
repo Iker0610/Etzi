@@ -38,6 +38,8 @@
 
     <!-- Horario -->
     <string name="subgroup">Subgroup</string>
+    <string name="professor">Professor</string>
+    <string name="subject">Subject</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Select date</string>
