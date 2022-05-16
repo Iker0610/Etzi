@@ -15,13 +15,16 @@
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>
-    <string name="tutotials_section_screen_title">Tutoretzak</string>
-    <string name="tutotials_screen_title">Tutoretzak</string>
-    <string name="tutorial_reminders_screen_title">Tutoretzen oroigarriak</string>
+    <string name="tutorials_section_screen_title">Tutoretzak</string>
+    <string name="tutorials_screen_title">Tutoretzak</string>
+    <string name="tutorial_reminders_screen_title">Tutoretzen abisuak</string>
     <string name="record_screen_title">Espedientea</string>
     <string name="subjects_screen_title">Irakasgaiak</string>
     <string name="credits_screen_title">Kredituak</string>
-    <string name="grades_screen_title">Graduak</string>
+    <string name="grades_screen_title">Notak</string>
     <string name="account_screen_title">Kontua</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="login_label">Sartu</string>
+    <string name="remind_me_label">Recuérdame</string>
+    <string name="biometrics_button">Sartu biometria bidez</string>
 </resources>

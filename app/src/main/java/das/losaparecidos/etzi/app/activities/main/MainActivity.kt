@@ -2,6 +2,7 @@ package das.losaparecidos.etzi.app.activities.main
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -9,16 +10,18 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
@@ -37,6 +40,9 @@ import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScr
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
 import das.losaparecidos.etzi.app.activities.main.viewmodels.UserDataViewModel
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationRail
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,8 +89,27 @@ private fun EtziAppScreen(
     val scope = rememberCoroutineScope()
     val windowSizeClass = calculateWindowSizeClass(context as Activity).widthSizeClass
 
+
     //-------------   Nav-Controller   -------------//
-    val currentRoute by navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
+    val currentNavBackStackEntry by navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
+    val currentRoute by derivedStateOf {
+        MainActivityScreens.screenRouteToSectionRouteMapping.getValue(
+            currentNavBackStackEntry?.destination?.route ?: "noRoute"
+        )
+    }
+
+
+    //-----------   Navigation States   ------------//
+    val enableNavigationElements = MainActivityScreens.hasNavigationElements(currentRoute)
+    val enableBottomNavigation =
+        enableNavigationElements && windowSizeClass == WindowWidthSizeClass.Compact
+    val enableNavigationRail =
+        enableNavigationElements && windowSizeClass != WindowWidthSizeClass.Compact
+
+
+    //-----------   Navigation-drawer   ------------//
+    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
 
     /*************************************************
      **            Common Event Callbacks           **
@@ -93,13 +118,16 @@ private fun EtziAppScreen(
     // Navigate to a route
     val onNavigate = { route: String ->
         navController.navigate(route) {
-            popUpTo(navController.graph.startDestinationId) {
+            popUpTo(MainActivityScreens.Timetable.route) {
                 saveState = true
             }
             launchSingleTop = true
             restoreState = true
         }
     }
+
+    // Open menu
+    val onNavigationMenuOpen: () -> Unit = { scope.launch { navigationDrawerState.open() } }
 
 
     /*************************************************
@@ -113,13 +141,37 @@ private fun EtziAppScreen(
      - Luego con el navigation rail SI FUERA NECESARIO
      - Luego añadir el bottom navigation bar SI FUERA NECESARIO
 
-      * Recordatorio: para el navigation drawer hay que crear aquí el drawerState y pasarlo a las cosas que lo necesiten
       */
-    Scaffold(
-        topBar = { TODO() },
-        bottomBar = { TODO() }
-    ) { paddingValues ->
-        MainNavigationGraph(userDataViewModel, navController, windowSizeClass, paddingValues)
+
+    EtziNavigationDrawer(currentRoute, onNavigate, navigationDrawerState, true) {
+        Scaffold(
+            bottomBar = { if (enableBottomNavigation) EtziNavigationBar(currentRoute, onNavigate) }
+        ) { paddingValues ->
+            Row(
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                if (enableNavigationRail) EtziNavigationRail(
+                    currentRoute,
+                    onNavigate,
+                    onNavigationMenuOpen
+                )
+                MainNavigationGraph(userDataViewModel, navController, windowSizeClass)
+            }
+        }
+    }
+
+
+    //------------   Debug Log Screen   ------------//
+    LaunchedEffect(currentRoute) {
+        Log.d("navigation",
+            "Back stack changed $currentRoute \n ${
+                navController.backQueue.joinToString(
+                    "  -  "
+                ) { it.destination.route ?: "root_path" }
+            }"
+        )
     }
 }
 
@@ -130,7 +182,6 @@ private fun MainNavigationGraph(
     userDataViewModel: UserDataViewModel,
     navController: NavHostController,
     windowSizeClass: WindowWidthSizeClass,
-    paddingValues: PaddingValues,
 ) {
     /*************************************************
      **             Variables and States            **
@@ -155,7 +206,8 @@ private fun MainNavigationGraph(
     }
 
     // Navigate to the current user's account page. (Passing the current user as a parameter in the route)
-    val onNavigateToAccount = { navController.navigate(MainActivityScreens.Account.route) { launchSingleTop = true } }
+    val onNavigateToAccount =
+        { navController.navigate(MainActivityScreens.Account.route) { launchSingleTop = true } }
 
 
     /*************************************************
@@ -174,7 +226,7 @@ private fun MainNavigationGraph(
         ) {
             AnimatedSplashScreen {
                 navController.popBackStack() // Empty the backstack so the user doesn't return to splash screen
-                navController.navigate("home")
+                navController.navigate(MainActivityScreens.Timetable.route)
             }
         }
 
@@ -183,7 +235,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen()
+            TimetableScreen(windowSizeClass)
         }
 
         navigation(
@@ -191,11 +243,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen()
+                TutorialsScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
-                TutorialsRemindersScreen()
+                TutorialsRemindersScreen(windowSizeClass)
             }
         }
 
@@ -204,78 +256,24 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen()
+                GradesScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen()
+                SubjectsScreen(windowSizeClass)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
-                CreditsScreen()
+                CreditsScreen(windowSizeClass)
             }
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen()
+            EgelaScreen(windowSizeClass)
         }
 
         composable(route = MainActivityScreens.Account.route) {
             AccountScreen()
         }
-
-
-        // TODO: Borrar cuando tengamos pantallas
-        /*composable(
-            route = "home",
-            enterTransition = { fadeIn(animationSpec = tween(500)) }
-        ) {
-            Home()
-        }*/
     }
 }
-
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Home() {
-    val context = LocalContext.current
-
-    Scaffold(
-        topBar = {
-            SmallTopAppBar(
-                title = { Text("Inicio", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
-                actions = {
-                    IconButton(onClick = { Toast.makeText(context, "TODO: Perfil de usuario", Toast.LENGTH_SHORT).show() }) {
-                        Icon(Icons.Rounded.AccountCircle, null)
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(vertical = 32.dp, horizontal = 16.dp)
-        ) {
-            Card {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(vertical = 32.dp, horizontal = 64.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_ehu_logo),
-                        contentDescription = null,
-                        modifier = Modifier.size(120.dp))
-                    Text(
-                        text = "Etzi",
-                        style = MaterialTheme.typography.displayLarge,
-                    )
-                }
-            }
-        }
-    }
-}*/

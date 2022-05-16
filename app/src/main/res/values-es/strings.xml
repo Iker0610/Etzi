@@ -15,13 +15,16 @@
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>
-    <string name="tutotials_section_screen_title">Tutorías</string>
-    <string name="tutotials_screen_title">Tutorías</string>
+    <string name="tutorials_section_screen_title">Tutorías</string>
+    <string name="tutorials_screen_title">Tutorías</string>
     <string name="tutorial_reminders_screen_title">Recordatorios de tutorías</string>
     <string name="record_screen_title">Expediente</string>
     <string name="subjects_screen_title">Asignaturas</string>
     <string name="credits_screen_title">Créditos</string>
-    <string name="grades_screen_title">Grados</string>
+    <string name="grades_screen_title">Notas</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="login_label">Entrar</string>
+    <string name="remind_me_label">Gogoratu</string>
+    <string name="biometrics_button">Autenticación Biométrica</string>
 </resources>

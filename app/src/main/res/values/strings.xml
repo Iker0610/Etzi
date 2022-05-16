@@ -14,8 +14,8 @@
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Timetable</string>
-    <string name="tutotials_section_screen_title">Tutorials</string>
-    <string name="tutotials_screen_title">Tutorials</string>
+    <string name="tutorials_section_screen_title">Tutorials</string>
+    <string name="tutorials_screen_title">Tutorials</string>
     <string name="tutorial_reminders_screen_title">Tutorial reminders</string>
     <string name="record_screen_title">Record</string>
     <string name="subjects_screen_title">Subjects</string>
@@ -23,4 +23,7 @@
     <string name="grades_screen_title">Grades</string>
     <string name="account_screen_title">Account</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="login_label">Sign In</string>
+    <string name="remind_me_label">Remind my password</string>
+    <string name="biometrics_button">Biometric Authetication</string>
 </resources>
