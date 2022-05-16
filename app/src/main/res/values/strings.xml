@@ -47,4 +47,9 @@
     <string name="grades_screen_title">Grades</string>
     <string name="account_screen_title">Account</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="login_label">Sign In</string>
+    <string name="remind_me_label">Remind my password</string>
+    <string name="biometrics_button">Biometric Authetication</string>
+    <string name="ok_button">OK</string>
+    <string name="select_date_label">Select date</string>
 </resources>
