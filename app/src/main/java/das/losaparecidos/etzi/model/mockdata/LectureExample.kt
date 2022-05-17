@@ -21,7 +21,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 16, 15, 0),
             endDate = LocalDateTime.of(2022, 5, 16, 17, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Iker", "Sobrón", "iker.sobron@ehu.eus")
 
     ),
@@ -30,7 +30,7 @@ val lectures = mutableListOf(
             subjectName = "Desarrollo de Aplicaciones Web Enriquecidas",
             academicYear = LocalDate.of(2022, 1, 1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
-            subgroup = 16,
+            subgroup = -1,
             professorEmail = "ainhoa@ehu.eus",
             roomNumber = 7,
             roomFloor = 7,
@@ -38,7 +38,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 16, 17, 0),
             endDate = LocalDateTime.of(2022, 5, 16, 19, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Ainhoa", "Yera", "ainhoa.yera@ehu.eus")
 
     ),
@@ -55,7 +55,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 17, 18, 0),
             endDate = LocalDateTime.of(2022, 5, 17, 20, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Alicia", "Pérez", "alicia.perez@ehu.eus")
     ),
     Lecture(
@@ -63,7 +63,7 @@ val lectures = mutableListOf(
             subjectName = "Técnicas de Inteligencia Artificial",
             academicYear = LocalDate.of(2022, 1, 1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
-            subgroup = 16,
+            subgroup = -1,
             professorEmail = "aitziber@ehu.eus",
             roomNumber = 5,
             roomFloor = 6,
@@ -71,7 +71,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 18, 15, 0),
             endDate = LocalDateTime.of(2022, 5, 18, 17, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Aitziber", "Atutxa", "aitziber.atutxa@ehu.eus")
     ),
     Lecture(
@@ -87,7 +87,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 18, 17, 0),
             endDate = LocalDateTime.of(2022, 5, 18, 19, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Unai", "Lopez", "unai.lopez@ehu.eus")
     ),
     Lecture(
@@ -103,7 +103,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 18, 19, 0),
             endDate = LocalDateTime.of(2022, 5, 18, 21, 0)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Alguien", "Alguien", "alguien.alguien@ehu.eus")
     ),
     Lecture(
@@ -111,7 +111,7 @@ val lectures = mutableListOf(
             subjectName = "Álgebra",
             academicYear = LocalDate.of(2022, 1, 1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
-            subgroup = 1,
+            subgroup = -1,
             professorEmail = "alguien@ehu.eus",
             roomNumber = 5,
             roomFloor = 6,
@@ -119,7 +119,7 @@ val lectures = mutableListOf(
             startDate = LocalDateTime.of(2022, 5, 19, 17, 30),
             endDate = LocalDateTime.of(2022, 5, 19, 19, 30)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("Alguien", "Alguien", "alguien.alguien@ehu.eus")
     ),
 
@@ -136,7 +136,7 @@ val lectures = mutableListOf(
         startDate = LocalDateTime.of(2022, 5, 20, 17, 0),
         endDate = LocalDateTime.of(2022, 5, 20, 18, 30)
         ),
-        building = Building("id", "i", "name", "adress"),
+        building = Building("id", "I", "EIB/BIE II - I", "adress"),
         professor = Professor("JM", "porres", "porres@ehu.eus")
     )
 

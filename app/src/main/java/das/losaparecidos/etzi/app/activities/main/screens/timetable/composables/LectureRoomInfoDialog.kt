@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -44,46 +45,52 @@ fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
             }
         },
         text = {
+
+
             Column(
+
                 Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .clipToBounds()) {
+                    .fillMaxWidth()) {
+
+
+                Row(Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround) {
+
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("${stringResource(id = R.string.classroom)}:",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.tertiary)
+                        Text(text = lectureRoom.number.toString())
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("${stringResource(id = R.string.floor)}:",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.tertiary)
+                        Text(text = lectureRoom.floor.toString())
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("${stringResource(id = R.string.building)}:",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.tertiary)
+                        Text(text = lectureRoom.building.name)
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 GoogleMap(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(512.dp)
+                        .weight(1f)
                         .clip(shape = MaterialTheme.shapes.large),
                     cameraPositionState = CameraPositionState(
                         position = CameraPosition.fromLatLngZoom(room, 17f)
                     )
                 ) { Marker(position = room) }
 
-                Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column() {
-                        Text("${stringResource(id = R.string.building)}:",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.tertiary)
-                        Text(text = lectureRoom.building.abbreviation)
-                    }
-                    Column() {
-                        Text("${stringResource(id = R.string.floor)}:",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.tertiary)
-                        Text(text = lectureRoom.floor.toString())
-                    }
-                    Column() {
-                        Text("${stringResource(id = R.string.classroom)}:",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.tertiary)
-                        Text(text = lectureRoom.number.toString())
-                    }
-                }
             }
         },
-        confirmButton = {},
-        dismissButton = {}
-
+        confirmButton = {}
     )
 }

@@ -44,6 +44,7 @@
     <string name="floor">Floor</string>
     <string name="building">Building</string>
     <string name="classroom">Classroom</string>
+    <string name="masterclass">Masterclass</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Select date</string>
