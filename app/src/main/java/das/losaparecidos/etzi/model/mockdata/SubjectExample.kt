@@ -111,7 +111,8 @@ val subjects = mutableListOf(
         LocalDate.of(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
-        6
+        6,
+        2
     ),Subject(
         "Investigación Operativa",
         LocalDate.of(2019, 9, 1),
