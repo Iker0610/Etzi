@@ -86,7 +86,11 @@ class AuthenticationViewModel @Inject constructor(private val loginRepository: I
      * TODO
      */
     suspend fun checkRemindLogin(): AuthUser? =
-        if (remindLastLoggedUser && lastLoggedUser != null && checkUserLogin(lastLoggedUser)) lastLoggedUser else null
+        try {
+            if (remindLastLoggedUser && lastLoggedUser != null && checkUserLogin(lastLoggedUser)) lastLoggedUser else null
+        } catch (e: Exception) {
+            null
+        }
 
 
     /**
