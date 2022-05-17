@@ -1,47 +1,48 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable.composables
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
+import LectureRoomInfoDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Alarm
-import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.room.ColumnInfo
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Lecture
 import lectures
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.time.LocalDate as LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 
-    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
     val context = LocalContext.current
+
+    // Time fomat in Tametable
+    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
+
+    // Dialog
+    var showDialog by remember { mutableStateOf(false)  }
+
+    if (showDialog) {
+        LectureRoomInfoDialog(lectureRoom = lecture.lectureRoom){showDialog = false}
+    }
 
     ElevatedCard(modifier = modifier) {
 
@@ -103,12 +104,10 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .width(64.dp)
                             .clickable {
-                                Toast
-                                    .makeText(context, "MAPA", Toast.LENGTH_SHORT)
-                                    .show()
+                                showDialog = true
                             }
-                    ) {
 
+                    ) {
                         CenteredRow(
                             modifier = Modifier.padding(
                                 vertical = 4.dp,
@@ -180,6 +179,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

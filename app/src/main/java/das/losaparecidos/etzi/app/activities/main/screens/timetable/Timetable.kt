@@ -82,6 +82,7 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
     ) { paddingValues ->
 
         // TODO GET HORARIO REAL
+        // TODO ORDER BY startDate
         LazyColumn(
 
             modifier = Modifier.padding(paddingValues),
