@@ -41,6 +41,12 @@
 
     <!-- Horario -->
     <string name="subgroup">Subgrupo</string>
+    <string name="professor">Profesor</string>
+    <string name="subject">Asigantura</string>
+    <string name="roomInfo">Localización</string>
+    <string name="floor">Piso</string>
+    <string name="building">Edificio</string>
+    <string name="classroom">Aula</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Seleccione fecha</string>

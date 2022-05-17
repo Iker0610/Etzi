@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 data class Professor(
     val name: String,
     val surname: String,
-    @PrimaryKey val email: String
-)
+    @PrimaryKey val email: String,
+) {
+    val fullName get() = "$name $surname"
+}
