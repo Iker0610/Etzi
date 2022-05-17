@@ -36,7 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -76,14 +76,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
             EtziTheme {
                 val navController: NavHostController = rememberAnimatedNavController()
                 EtziAppScreen(userDataViewModel, navController)
             }
-
         }
     }
 }
@@ -165,12 +162,7 @@ private fun EtziAppScreen(
 
       */
 
-    EtziNavigationDrawer(
-        currentRoute = currentRoute,
-        onNavigate = onNavigate,
-        drawerState = navigationDrawerState,
-        gesturesEnabled = enableNavigationElements,
-    ) {
+    EtziNavigationDrawer(currentRoute, onNavigate, navigationDrawerState, enableNavigationElements) {
         Scaffold(
             bottomBar = {
                 AnimatedVisibility(enableBottomNavigation,

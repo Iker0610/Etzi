@@ -4,21 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,15 +21,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -58,30 +52,16 @@ fun EtziNavigationBar(currentRoute: String?, onNavigate: (String) -> Unit) {
 
     val context = LocalContext.current
 
-    Surface(
-        color = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.surface),
-        tonalElevation = 3.0.dp,
-        modifier = Modifier
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .height(80.0.dp)
-                .selectableGroup(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            MainActivityScreens.mainSections.forEach { screen ->
+    NavigationBar {
 
-                NavigationBarItem(
-                    icon = { Icon(screen.icon, contentDescription = null) },
-                    label = { Text(screen.title(context)) },
-                    selected = currentRoute == screen.route,
-                    onClick = { onNavigate(screen.route) },
-                    modifier = Modifier.navigationBarsPadding()
-                )
-            }
+        MainActivityScreens.mainSections.forEach { screen ->
+
+            NavigationBarItem(
+                icon = { Icon(screen.icon, contentDescription = null) },
+                label = { Text(screen.title(context)) },
+                selected = currentRoute == screen.route,
+                onClick = { onNavigate(screen.route) }
+            )
         }
     }
 }
@@ -91,12 +71,12 @@ fun EtziNavigationBar(currentRoute: String?, onNavigate: (String) -> Unit) {
 fun EtziNavigationRail(
     currentRoute: String?,
     onNavigate: (String) -> Unit,
-    onMenuOpen: () -> Unit,
+    onMenuOpen: () -> Unit
 ) {
+
     val context = LocalContext.current
 
     NavigationRail(
-        modifier = Modifier.systemBarsPadding(),
         header = {
             IconButton(
                 onClick = onMenuOpen,
@@ -105,7 +85,11 @@ fun EtziNavigationRail(
         }
     ) {
 
-        CenteredColumn(Modifier.fillMaxHeight(1f)) {
+        CenteredColumn(
+            Modifier
+                .fillMaxHeight(1f)
+                .padding(bottom = 64.dp)
+        ) {
 
             MainActivityScreens.mainSections.forEach { screen ->
                 NavigationRailItem(
@@ -116,8 +100,6 @@ fun EtziNavigationRail(
                     onClick = { onNavigate(screen.route) },
                 )
             }
-
-            Spacer(modifier = Modifier.height(64.dp))
         }
     }
 }
@@ -129,23 +111,21 @@ fun EtziNavigationDrawer(
     currentRoute: String?,
     onNavigate: (String) -> Unit,
     drawerState: DrawerState,
-    modifier: Modifier = Modifier,
     gesturesEnabled: Boolean = true,
     content: (@Composable () -> Unit) = {},
 ) {
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    var itsFirst = true
 
     ModalNavigationDrawer(
-        modifier = modifier,
         gesturesEnabled = gesturesEnabled,
         drawerState = drawerState,
         drawerContent = {
 
             Column(
                 Modifier
-                    .systemBarsPadding()
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 12.dp, vertical = 32.dp)
             ) {
@@ -272,11 +252,7 @@ private fun EtziNavigationDrawerPreview() {
         val scope = rememberCoroutineScope()
         val (ventanaActual, setVentanaActual) = remember { mutableStateOf(MainActivityScreens.Tutorials.route) }
 
-        EtziNavigationDrawer(currentRoute = ventanaActual,
-            onNavigate = setVentanaActual,
-            drawerState = navigationDrawerState,
-            gesturesEnabled = true,
-            modifier = Modifier) {
+        EtziNavigationDrawer(ventanaActual, setVentanaActual, navigationDrawerState, true) {
             Scaffold(
                 topBar = {
                     SmallTopAppBar(

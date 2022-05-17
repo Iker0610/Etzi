@@ -5,10 +5,7 @@ import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Today
@@ -29,7 +26,6 @@ import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import lectures
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +56,6 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                modifier = Modifier.statusBarsPadding(),
                 title = { Text(text = MainActivityScreens.Timetable.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass == WindowWidthSizeClass.Compact) {
@@ -87,7 +82,8 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
 
             modifier = Modifier.padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)) {
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
+        ) {
             lectures.forEach { lecture ->
                 if (lecture.startDate.toLocalDate() == selectedDate) {
                     item { LectureCard(lecture = lecture) }

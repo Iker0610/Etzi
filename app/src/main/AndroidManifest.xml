@@ -18,8 +18,7 @@
         <activity
             android:name=".app.activities.main.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.Etzi"
-            android:windowSoftInputMode="adjustResize"/>
+            android:theme="@style/Theme.Etzi" />
 
         <!--Authentication Activity-->
         <activity
