@@ -22,6 +22,13 @@
     <string name="classroom">Ikasgela</string>
     <string name="masterclass">Magistrala</string>
 
+    <!-- Expediente -->
+    <string name="course">maila</string>
+    <string name="pending">Kredituak lortzeko zain</string>
+    <string name="unassessed">Kredituak ebaluatzeko zain</string>
+    <string name="expedient">Kreditu gainditutak</string>
+    <string name="course_total">Mailako kredituak guztira</string>
+
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>
     <string name="tutorials_section_screen_title">Tutoretzak</string>
@@ -38,4 +45,5 @@
     <string name="biometrics_button">Sartu biometria bidez</string>
     <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
+    <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
 </resources>

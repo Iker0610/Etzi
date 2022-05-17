@@ -46,9 +46,15 @@
     <string name="classroom">Classroom</string>
     <string name="masterclass">Masterclass</string>
 
+    <!-- Expediente -->
+    <string name="course">course</string>
+    <string name="pending">Credits pending to obtain</string>
+    <string name="unassessed">Credits pending evaluation</string>
+    <string name="expedient">Approved credits</string>
+    <string name="course_total">Total course credits</string>
+
     <!-- Date time picker -->
     <string name="select_date_label">Select date</string>
-
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Timetable</string>
@@ -61,4 +67,5 @@
     <string name="grades_screen_title">Grades</string>
     <string name="account_screen_title">Account</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="total_degree">Total credits approved in all courses</string>
 </resources>
