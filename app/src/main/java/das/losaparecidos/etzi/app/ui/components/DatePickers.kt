@@ -3,11 +3,11 @@ package das.losaparecidos.etzi.app.ui.components
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
-import androidx.fragment.app.FragmentActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.ZoneId
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 
 fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
@@ -18,7 +18,7 @@ fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { dateMillis ->
-            val selectedDate = Instant.ofEpochMilli(dateMillis).atZone(ZoneId.systemDefault()).toLocalDate()
+            val selectedDate = Instant.fromEpochMilliseconds(dateMillis).toLocalDateTime(TimeZone.currentSystemDefault()).date
             onDateSelected(selectedDate)
         }
     }
@@ -36,8 +36,8 @@ fun showDateRangePicker(context: Context, onDateSelected: (LocalDate, LocalDate)
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { selectionMillis ->
-            val firstSelectedDate = Instant.ofEpochMilli(selectionMillis.first).atZone(ZoneId.systemDefault()).toLocalDate()
-            val secondSelectedDate = Instant.ofEpochMilli(selectionMillis.second).atZone(ZoneId.systemDefault()).toLocalDate()
+            val firstSelectedDate = Instant.fromEpochMilliseconds(selectionMillis.first).toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val secondSelectedDate = Instant.fromEpochMilliseconds(selectionMillis.second).toLocalDateTime(TimeZone.currentSystemDefault()).date
 
             onDateSelected(firstSelectedDate, secondSelectedDate)
         }
