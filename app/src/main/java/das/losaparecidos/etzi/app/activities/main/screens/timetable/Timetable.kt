@@ -25,8 +25,8 @@ import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.
 import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import lectures
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

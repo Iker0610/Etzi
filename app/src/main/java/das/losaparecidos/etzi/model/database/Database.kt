@@ -11,10 +11,10 @@ import das.losaparecidos.etzi.model.entities.Student
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.ZoneId
 
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).

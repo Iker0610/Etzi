@@ -25,7 +25,7 @@ import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Lecture
 import lectures
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.format.DateTimeFormatter
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)

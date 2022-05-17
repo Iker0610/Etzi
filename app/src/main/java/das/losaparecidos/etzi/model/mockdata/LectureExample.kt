@@ -3,8 +3,8 @@ import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
 
-import java.time.LocalDate
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 val lectures = mutableListOf(
 

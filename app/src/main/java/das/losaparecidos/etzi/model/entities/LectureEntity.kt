@@ -8,8 +8,10 @@ import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.Relation
-import java.time.LocalDate
-import java.time.LocalDateTime
+import kotlinx.serialization.Serializable
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.SerialName
 
 @Entity(
     tableName = "lecture",
@@ -80,3 +82,15 @@ data class Lecture(
     @delegate:Ignore
     val endDate by lecture::endDate
 }
+
+@Serializable
+data class SerializableLecture(
+    @SerialName("subject_name") val subjectName: String,
+    @SerialName("academic_year") val academicYear: LocalDate,
+    val degree: String,
+    val subgroup: Int,
+    @SerialName("start_date") val startDate: LocalDateTime,
+    @SerialName("end_date") val endDate: LocalDateTime,
+    val professor: Professor,
+    @SerialName("lecture_room") val lectureRoom: LectureRoom
+)
