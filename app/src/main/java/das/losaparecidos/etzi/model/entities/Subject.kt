@@ -8,4 +8,5 @@ data class Subject(
     val degree: String,
     val type: String,
     val credits: Int,
+    val course: Int,
 )
