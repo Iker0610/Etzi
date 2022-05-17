@@ -1,8 +1,8 @@
 import das.losaparecidos.etzi.model.entities.Subject
 import das.losaparecidos.etzi.model.entities.SubjectCall
 import das.losaparecidos.etzi.model.entities.SubjectCallAttendance
-import java.time.LocalDate
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 val subtectsCallAttendance = mutableListOf(
 
@@ -11,16 +11,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Minería de datos",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,1,15,18,0)
+            examDate = LocalDateTime(2022,1,15,18,0)
 
         ),
         grade = "10",
@@ -32,16 +32,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo Avanzado de Software",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,30,15,0)
+            examDate = LocalDateTime(2022,5,30,15,0)
 
         ),
         grade = "",
@@ -53,16 +53,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Técnicas de Inteligencia Artificial",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,1,15,15,0)
+            examDate = LocalDateTime(2022,1,15,15,0)
 
         ),
         grade = "9",
@@ -74,16 +74,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "",
@@ -95,16 +95,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,6,1),
+            academicYear = LocalDate(2022,6,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "",
@@ -116,16 +116,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "3",
@@ -137,16 +137,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "5",
@@ -158,16 +158,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,9,1),
+            academicYear = LocalDate(2022,9,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "",
@@ -179,16 +179,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "8",
@@ -200,16 +200,16 @@ val subtectsCallAttendance = mutableListOf(
         SubjectCall(
             subject = Subject(
                 "Desarrollo de Aplicaciones Web Enriquecidas",
-                LocalDate.of(2021, 9, 1),
+                LocalDate(2021, 9, 1),
                 "Ingeniería Informática de Gestión y Sistemas de Información",
                 "Optativa",
                 6,
                 4
             ),
-            academicYear = LocalDate.of(2022,1,1),
+            academicYear = LocalDate(2022,1,1),
             degree = "Ingeniería Informática de Gestión y Sistemas de Información",
             callType = "",
-            examDate = LocalDateTime.of(2022,5,15,15,0)
+            examDate = LocalDateTime(2022,5,15,15,0)
 
         ),
         grade = "",

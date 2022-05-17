@@ -1,27 +1,20 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
-import CreditsCard
-import android.graphics.Color
-import androidx.compose.foundation.background
+import YearCreditsScreen
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
-import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
+import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.model.mockdata.subjects
-import myCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,10 +56,9 @@ fun CreditsScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit)
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            LazyColumn(
+            CenteredColumn(modifier = Modifier.fillMaxSize()) {
 
-            ) {
-                item { CreditsCard(selectedTab) }
+                YearCreditsScreen(selectedTab)
             }
         }
 

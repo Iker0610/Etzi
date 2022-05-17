@@ -46,7 +46,7 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
     val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     // Se inicializa conla fecha actual
-    val (selectedDate, setSelectedDate) = rememberSaveable {
+    val (selectedDate, setSelectedDate) = remember {
         mutableStateOf(
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         )

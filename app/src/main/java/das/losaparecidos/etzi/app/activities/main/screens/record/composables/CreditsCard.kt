@@ -1,8 +1,7 @@
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,14 +10,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
-import das.losaparecidos.etzi.model.mockdata.subjects
+import kotlinx.datetime.toJavaLocalDate
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreditsCard(selectedTab: Int) {
+fun YearCreditsScreen(selectedTab: Int, modifier: Modifier = Modifier) {
 
     var total_credits = 0
     var approved_credits = 0
@@ -43,7 +41,9 @@ fun CreditsCard(selectedTab: Int) {
 
             // Si la fecha de matriculación ya ha pasado y no tiene nota, marcar como sin evaluar
             else if (subjectCallAttendace.grade == ""
-                && LocalDate.now().isAfter(subjectCallAttendace.subjectCall.academicYear)) {
+                && LocalDate.now()
+                    .isAfter(subjectCallAttendace.subjectCall.academicYear.toJavaLocalDate())
+            ) {
 
                 unassessed_credits += subjectCallAttendace.subjectCall.subject.credits
             }
@@ -51,79 +51,85 @@ fun CreditsCard(selectedTab: Int) {
         }
     }
 
-    // Créditos pendientes
-    myCard(
-        title = stringResource(id = R.string.pending),
-        numCredits = 60 - approved_credits - unassessed_credits
-    )
-    Spacer(modifier = Modifier.height(16.dp))
+    CenteredColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.verticalScroll(rememberScrollState())
+    ) {
 
-    // Créditos sin evaluar
-    myCard(title = stringResource(id = R.string.unassessed), numCredits = unassessed_credits)
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Créditos en expediente
-    myCard(title = stringResource(id = R.string.expedient), numCredits = approved_credits)
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Créditos totales
-    myCard(title = stringResource(id = R.string.course_total), numCredits = 60)
-    Divider(
-        Modifier
-            .padding(12.dp)
-            .fillMaxWidth()
-            .height(1.dp)
-    )
-
-    // Créditos totales de la carrera
-    myCard(title = stringResource(id = R.string.total_degree), numCredits = total_credits)
-    Spacer(modifier = Modifier.height(32.dp))
+        // Créditos pendientes
+        CreditCard(
+            title = stringResource(id = R.string.pending),
+            numCredits = 60 - approved_credits - unassessed_credits
+        )
 
 
+        // Créditos sin evaluar
+        CreditCard(
+            title = stringResource(id = R.string.unassessed),
+            numCredits = unassessed_credits
+        )
+
+        // Créditos en expediente
+        CreditCard(title = stringResource(id = R.string.expedient), numCredits = approved_credits)
+
+
+        // Créditos totales
+        CreditCard(title = stringResource(id = R.string.course_total), numCredits = 60)
+
+        Divider(Modifier.fillMaxWidth(0.25f).padding(vertical=16.dp))
+
+        // Créditos totales de la carrera
+        CreditCard(title = stringResource(id = R.string.total_degree), numCredits = total_credits)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun myCard(title: String, numCredits: Int) {
+private fun CreditCard(title: String, numCredits: Int, modifier: Modifier = Modifier) {
 
 
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxSize()
-            .height(64.dp)
+    OutlinedCard(
+        modifier = modifier.fillMaxWidth(),
+        //border = BorderStroke(2.dp, MaterialTheme.colorScheme.secondary)
     ) {
 
-        Row() {
+        Row(
+            Modifier
+                .height(IntrinsicSize.Min)
+                .padding(horizontal = 12.dp, vertical = 16.dp)
+        ) {
 
             // Text
             CenteredColumn(
                 Modifier
                     .weight(1f)
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.Start
             ) {
-                Text(title, modifier = Modifier.padding(12.dp), textAlign = TextAlign.Center)
+                Text(
+                    title,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
 
             // Linea
             Divider(
                 Modifier
-                    .padding(12.dp)
-                    .fillMaxHeight()
                     .width(1.dp)
+                    .fillMaxHeight()
             )
 
             CenteredColumn(
                 Modifier
-                    .weight(0.2f)
-                    .fillMaxHeight(), horizontalAlignment = Alignment.Start
+                    .fillMaxWidth(0.15f)
+                    .fillMaxHeight()
             ) {
                 Text(
                     numCredits.toString(),
-                    modifier = Modifier.padding(12.dp),
                     textAlign = TextAlign.End
                 )
             }
-
         }
     }
 
