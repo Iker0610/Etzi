@@ -64,5 +64,7 @@
     <string name="grades_screen_title">Notas</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="date_from_label">Desde</string>
+    <string name="date_to_label">Hasta</string>
 
 </resources>

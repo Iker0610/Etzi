@@ -8,3 +8,7 @@ data class Tutorial(
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
 )
+data class SubjectTutorial(
+    val subjectName: String,
+    val tutorial: Tutorial
+)

@@ -38,4 +38,6 @@
     <string name="biometrics_button">Sartu biometria bidez</string>
     <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
+    <string name="date_from_label">Nondik</string>
+    <string name="date_to_label">Nora</string>
 </resources>
