@@ -34,23 +34,30 @@ android:targetCellWidth/targetCellHeight :
   (that are available in API level < 31).
 android:maxResizeWidth/maxResizeHeight :
   Defines the maximum size of the widget in the launcher home.
--->
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.example.android.appwidget.ListWidgetConfigureActivity"
-    android:description="@string/app_widget_grocery_list_description"
-    android:initialKeyguardLayout="@layout/widget_grocery_list"
-    android:initialLayout="@layout/widget_grocery_list"
+  android:configure=""
+android:description=""
     android:maxResizeWidth="250dp"
     android:maxResizeHeight="220dp"
     android:minWidth="180dp"
     android:minHeight="180dp"
     android:minResizeWidth="180dp"
     android:minResizeHeight="180dp"
-    android:previewImage="@drawable/grocery_list_widget_preview"
-    android:previewLayout="@layout/widget_grocery_list"
+    android:maxResizeWidth="276dp"
+    android:maxResizeHeight="456dp"
+    android:minWidth="130dp"
+    android:minHeight="338dp"
+    android:minResizeWidth="130dp"
+    android:minResizeHeight="338dp"
+
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:initialLayout="@layout/agenda_widget_2x4"
+    android:previewLayout="@layout/agenda_widget_2x4"
     android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="3"
+    android:targetCellWidth="4"
     android:targetCellHeight="2"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen"
-    android:widgetFeatures="reconfigurable|configuration_optional" />
+    android:widgetFeatures="reconfigurable"
+    />

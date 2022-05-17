@@ -7,44 +7,6 @@
     android:background="?android:attr/colorBackground"
     android:orientation="horizontal"
     android:padding="15dp">
-        <!-- Fecha -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Agenda"
-                android:textSize="15dp"
-                android:textAlignment="center"
-                android:gravity="center"></TextView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="70dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mayo"
-                    android:gravity="center"
-                    android:id="@+id/agenda_widget_fecha_mes"
-                    android:textSize="20dp"></TextView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="18"
-                    android:gravity="center"
-                    android:id="@+id/agenda_widget_fecha_dia"
-                    android:textSize="40dp">
-                </TextView>
-            </LinearLayout>
-
-        </LinearLayout>
          <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="4"
@@ -103,4 +65,30 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+             <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+                 android:layout_weight="1"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
