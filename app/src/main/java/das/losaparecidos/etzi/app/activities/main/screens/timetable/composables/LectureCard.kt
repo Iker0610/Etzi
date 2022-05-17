@@ -24,7 +24,8 @@ import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Lecture
-import lectures
+import kotlinx.datetime.toJavaLocalDateTime
+import das.losaparecidos.etzi.model.mockdata.lectures
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -62,10 +63,10 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
             ) {
                 Icon(Icons.Rounded.Schedule, null, modifier = Modifier.padding(bottom = 16.dp))
                 Text(
-                    lecture.startDate.format(timeFormat),
+                    lecture.startDate.toJavaLocalDateTime().format(timeFormat),
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
-                Text(lecture.endDate.format(timeFormat))
+                Text(lecture.endDate.toJavaLocalDateTime().format(timeFormat))
             }
 
             // Linea

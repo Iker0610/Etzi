@@ -9,7 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Today
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,8 +30,10 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import lectures
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import das.losaparecidos.etzi.model.mockdata.lectures
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +48,7 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
     // Se inicializa conla fecha actual
     val (selectedDate, setSelectedDate) = rememberSaveable {
         mutableStateOf(
-            LocalDate.now()
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         )
     }
 
@@ -85,7 +93,7 @@ fun TimetableScreen(windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Uni
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
         ) {
             lectures.forEach { lecture ->
-                if (lecture.startDate.toLocalDate() == selectedDate) {
+                if (lecture.startDate.date == selectedDate) {
                     item { LectureCard(lecture = lecture) }
                 }
             }
