@@ -47,6 +47,7 @@
     <string name="floor">Piso</string>
     <string name="building">Edificio</string>
     <string name="classroom">Aula</string>
+    <string name="masterclass">Magistral</string>
 
     <!-- Date time picker -->
     <string name="select_date_label">Seleccione fecha</string>

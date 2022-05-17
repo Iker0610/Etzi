@@ -20,6 +20,7 @@
     <string name="floor">Solairua</string>
     <string name="building">Eraikina</string>
     <string name="classroom">Ikasgela</string>
+    <string name="masterclass">Magistrala</string>
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Ordutegia</string>

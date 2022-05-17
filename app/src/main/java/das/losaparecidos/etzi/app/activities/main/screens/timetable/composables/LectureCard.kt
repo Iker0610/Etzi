@@ -91,10 +91,14 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    Text(
-                        "${stringResource(R.string.subgroup)}: ${lecture.subgroup}".toUpperCase(
+
+                    Text( if (lecture.subgroup != -1) {
+                        "${stringResource(R.string.subgroup)} ${lecture.subgroup}".toUpperCase(
                             Locale.getDefault()
-                        ),
+                        )}
+                        else {
+                             stringResource(R.string.masterclass)
+                             },
                         style = MaterialTheme.typography.labelSmall
                     )
 
@@ -125,7 +129,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                 }
 
                 // Espacio
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -144,7 +148,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                             style = MaterialTheme.typography.bodyMedium
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
                         // Profesor(a)
                         Text(
