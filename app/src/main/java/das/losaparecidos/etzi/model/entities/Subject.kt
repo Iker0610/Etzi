@@ -9,7 +9,7 @@ import kotlinx.datetime.LocalDate
 data class Subject(
     val name: String,
 
-    @SerialName("academic_year")
+    @SerialName("academic_year_start")
     val academicYear: LocalDate, // Fecha de inicio del curso
     val degree: String, // Grado: Ing Informática, etc.
     val type: String, // Troncal, optativa...

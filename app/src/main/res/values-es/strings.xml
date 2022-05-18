@@ -65,12 +65,15 @@
     <string name="record_screen_title">Expediente</string>
     <string name="subjects_screen_title">Asignaturas</string>
     <string name="credits_screen_title">Créditos</string>
-    <string name="grades_screen_title">Notas</string>
+    <string name="grades_screen_title">Notas provisionales</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
-    <string name="total_degree">Maila guztietan onartutako kredituak</string>
+    <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
     <string name="call">Convocatoria</string>
     <string name="grade">Nota</string>
     <string name="noGrades">No hay notas provisionales</string>
+    <string name="distinction">Matrícula de honor</string>
+    <string name="type">Tipo</string>
+    <string name="date">Fecha</string>
 
 </resources>

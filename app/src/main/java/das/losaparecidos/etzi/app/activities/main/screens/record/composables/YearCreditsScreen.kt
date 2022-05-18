@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,92 +11,87 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
-import kotlinx.datetime.toJavaLocalDate
-import java.time.LocalDate
+import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 import kotlin.math.ln
 
 
 @Composable
-fun YearCreditsScreen(selectedCourse: Int, modifier: Modifier = Modifier) {
+fun YearCreditsScreen(subjectEnrollments: List<SubjectEnrollment>, totalCredits: Int, modifier: Modifier = Modifier) {
 
-    var total_credits = 0
-    var approved_credits = 0
-    var unassessed_credits = 0
+    var approvedCredits = 0
+    var unassessedCredits = 0
 
 
-    // Contar créditos
+    // Contar créditos (del curso)
     subjectEnrollments.forEach { subjectEnrollment ->
 
         // Si está matriculado (existe una convocatoria) en la asignatura
         if (subjectEnrollment.subjectCalls.isNotEmpty()) {
 
             // Si NO tiene corregida o la que tiene es provisional (del curso actual)
-            if ((subjectEnrollment.subjectCalls.last().subjectCallAttendances.isEmpty()
-                || subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional)
-                && subjectEnrollment.subject.course == selectedCourse) {
+            if (subjectEnrollment.subjectCalls.last().subjectCallAttendances.isEmpty()
+                || subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional
+            ) {
 
                 // Contar créditos como pendientes de evaluación
-                unassessed_credits += subjectEnrollment.subject.credits
+                unassessedCredits += subjectEnrollment.subject.credits
             }
 
             // Si la asignatura está aprobada y NO es provisional
-            else if (Integer.parseInt(subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade) >= 5
+            else if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.toFloat() >= 5f
                 && !subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional
             ) {
-                // Sumar al total del créditos aprobados de la carrera
-                total_credits += subjectEnrollment.subject.credits
 
-                // Si la asignatura es del curso seleccionado
-                if(subjectEnrollment.subject.course == selectedCourse){
-
-                    // Sumar al total del créditos aprobados del curso
-                    approved_credits += subjectEnrollment.subject.credits
-
-                }
+                // Sumar al total del créditos aprobados del curso
+                approvedCredits += subjectEnrollment.subject.credits
             }
         }
     }
 
 
 
-CenteredColumn(
-verticalArrangement = Arrangement.spacedBy(12.dp),
-modifier = modifier
-.fillMaxSize()
-.background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = (((4.5f * ln(3.0.dp.value + 1)) + 2f) / 100f)).compositeOver(MaterialTheme.colorScheme.surface))
-.verticalScroll(rememberScrollState())
-.padding(horizontal = 16.dp, vertical = 32.dp)
-) {
+    CenteredColumn(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                MaterialTheme.colorScheme.surfaceTint
+                    .copy(alpha = (((4.5f * ln(3.0.dp.value + 1)) + 2f) / 100f))
+                    .compositeOver(MaterialTheme.colorScheme.surface)
+            )
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 32.dp)
+    ) {
 
-    // Créditos pendientes
-    CreditCard(
-        title = stringResource(id = R.string.pending),
-        numCredits = 60 - approved_credits - unassessed_credits
-    )
-
-
-    // Créditos sin evaluar
-    CreditCard(
-        title = stringResource(id = R.string.unassessed),
-        numCredits = unassessed_credits
-    )
-
-    // Créditos en expediente
-    CreditCard(title = stringResource(id = R.string.expedient), numCredits = approved_credits)
+        // Créditos pendientes
+        CreditCard(
+            title = stringResource(id = R.string.pending),
+            numCredits = 60 - approvedCredits - unassessedCredits
+        )
 
 
-    // Créditos totales
-    CreditCard(title = stringResource(id = R.string.course_total), numCredits = 60)
+        // Créditos sin evaluar
+        CreditCard(
+            title = stringResource(id = R.string.unassessed),
+            numCredits = unassessedCredits
+        )
 
-    Divider(
-        Modifier
-            .fillMaxWidth(0.25f)
-            .padding(vertical = 16.dp)
-    )
+        // Créditos en expediente
+        CreditCard(title = stringResource(id = R.string.expedient), numCredits = approvedCredits)
 
-    // Créditos totales de la carrera
-    CreditCard(title = stringResource(id = R.string.total_degree), numCredits = total_credits)
-}
+
+        // Créditos totales
+        CreditCard(title = stringResource(id = R.string.course_total), numCredits = 60)
+
+        Divider(
+            Modifier
+                .fillMaxWidth(0.25f)
+                .padding(vertical = 16.dp)
+        )
+
+        // Créditos totales de la carrera
+        CreditCard(title = stringResource(id = R.string.total_degree), numCredits = totalCredits)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

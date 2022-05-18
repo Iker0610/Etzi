@@ -21,6 +21,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -35,6 +36,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
+import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
@@ -125,11 +127,10 @@ private fun EtziAppScreen(
     // Navigate to a route
     val onNavigate = { route: String ->
         navController.navigate(route) {
-            popUpTo(MainActivityScreens.Timetable.route) {
-                saveState = true
+            popUpTo(route) {
+                inclusive = true
             }
             launchSingleTop = true
-            restoreState = true
         }
     }
 
@@ -268,15 +269,24 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember {navController.getBackStackEntry(MainActivityScreens.Record.route)}
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember {navController.getBackStackEntry(MainActivityScreens.Record.route)}
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
-                CreditsScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember {navController.getBackStackEntry(MainActivityScreens.Record.route)}
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
         }
 
