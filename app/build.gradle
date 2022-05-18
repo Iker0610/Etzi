@@ -173,6 +173,9 @@ dependencies {
 
     // Permission Request
     // implementation "com.google.accompanist:accompanist-permissions:0.24.7-alpha"
+
+    //
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {

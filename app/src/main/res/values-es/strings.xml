@@ -40,7 +40,7 @@
     <!-- Horario -->
     <string name="subgroup">Subgrupo</string>
     <string name="professor">Profesor</string>
-    <string name="subject">Asigantura</string>
+    <string name="subject">Asignatura</string>
     <string name="roomInfo">Localización</string>
     <string name="floor">Piso</string>
     <string name="building">Edificio</string>
@@ -68,10 +68,13 @@
     <string name="grades_screen_title">Notas provisionales</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="date_from_label">Desde</string>
+    <string name="date_to_label">Hasta</string>
     <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
     <string name="call">Convocatoria</string>
     <string name="grade">Nota</string>
     <string name="noGrades">No hay notas provisionales</string>
+    <string name="professors_label">Professors</string>
     <string name="distinction">Matrícula de honor</string>
     <string name="type">Tipo</string>
     <string name="date">Fecha</string>

@@ -43,8 +43,9 @@
     <string name="login_label">Sartu</string>
     <string name="remind_me_label">Recuérdame</string>
     <string name="biometrics_button">Sartu biometria bidez</string>
-    <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
+    <string name="date_from_label">Nondik</string>
+    <string name="date_to_label">Nora</string>
     <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
     <string name="call">Deialdia</string>
     <string name="grade">Nota</string>
@@ -52,6 +53,7 @@
     <string name="save_button">Gorde</string>
     <string name="enroll_button">Konfiguratu</string>
     <string name="server_error_dialog_title">Errore bat gertatu da. Saiatu berriro.</string>
+    <string name="professors_label">Professors</string>
     <string name="saved_credentials_not_longer_valid_dialog_title">Gordetako kredentzialak baliogabeak dira</string>
     <string name="saved_credentials_not_longer_valid_dialog_text">Aurreko erabiltzaileko kedentzialak baliogabeak dira. Agian pasahitza aldatu du edo kontua ezabatu da.</string>
     <string name="saved_credentials_not_longer_valid_dialog_solution_text">Jarraitzeko, hasi saioa berriro zure erabiltzaile-izena eta pasahitzarekin.</string>

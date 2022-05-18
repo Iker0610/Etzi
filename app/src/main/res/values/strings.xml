@@ -67,10 +67,13 @@
     <string name="grades_screen_title">Provisional grades</string>
     <string name="account_screen_title">Account</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="date_from_label">From</string>
+    <string name="date_to_label">To</string>
     <string name="total_degree">Total credits approved in all courses</string>
     <string name="call">Call</string>
     <string name="grade">Grade</string>
     <string name="noGrades">There are not provisional grades</string>
+    <string name="professors_label">Professors</string>
     <string name="distinction">Distinction</string>
     <string name="type">Type</string>
     <string name="date">Date</string>
