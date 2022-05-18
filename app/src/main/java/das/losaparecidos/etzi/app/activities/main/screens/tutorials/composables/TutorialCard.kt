@@ -23,8 +23,9 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
+import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import das.losaparecidos.etzi.model.entities.Tutorial
-import das.losaparecidos.etzi.model.mockdata.tutorials
+import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -63,12 +64,12 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
 
             ) {
                 Icon(Icons.Rounded.Schedule, null, modifier = Modifier.padding(bottom = 16.dp))
-                Text(text = tutorial.startDate.format(dateFormat),modifier = Modifier.padding( 4.dp) )
+                Text(text = tutorial.startDate.toJavaLocalDateTime().format(dateFormat),modifier = Modifier.padding( 4.dp) )
                 Text(
-                    tutorial.startDate.format(timeFormat),
+                    tutorial.startDate.toJavaLocalDateTime().format(timeFormat),
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
-                Text(tutorial.endDate.format(timeFormat))
+                Text(tutorial.endDate.toJavaLocalDateTime().format(timeFormat))
             }
 
             // Linea
@@ -156,7 +157,7 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            text = tutorial.professor.fullName,
+                            text = tutorial.endDate.toString(),
                             style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.W400)
                         )
                     }
@@ -197,9 +198,6 @@ fun TutorialCardPreview() {
                     .padding(30.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
-                tutorials.forEach { tutorial ->
-                    TutorialCard(tutorial)
-                }
             }
 
         }
