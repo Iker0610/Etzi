@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.Subject
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
@@ -20,26 +22,32 @@ fun SubjectContainer(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Column() {
+        Column(
+            Modifier.padding(bottom = 8.dp)
+        ) {
             Text(
                 text = "Type:",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
             Text(text = subjectEnrollment.subject.type)
         }
-        Column() {
+        Column(
+            Modifier.padding(bottom = 8.dp)
+        ) {
             Text(
                 text = "Date:",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
             Text(text = subjectEnrollment.subject.academicYear.toString())
         }
-        Column() {
+        Column(
+            Modifier.padding(bottom = 8.dp)
+        ) {
             Text(
                 text = "Grade:",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
 
@@ -54,7 +62,7 @@ fun SubjectContainer(
 
                     // Si tiene matrícula de honor
                     if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction) {
-                        Text(text = stringResource(id = R.string.distinction))
+                        Text(text = " ${stringResource(id = R.string.distinction)}")
                     }
                 }
 

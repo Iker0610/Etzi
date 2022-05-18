@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +27,9 @@ fun CourseContainer(
     val (selectedSubject, setSelectedSubject) = remember { mutableStateOf("") }
 
     Column(
-        Modifier.verticalScroll(rememberScrollState())
+        Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
     ) {
 
         subjectEnrollments.forEach { subjectEnrollment ->
@@ -43,13 +46,18 @@ fun CourseContainer(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
-                    ) {
+                        .padding(8.dp)
+                ) {
                     // Si la asignatura es del curso
 
 
                     // Poner título
-                    Text(text = subjectEnrollment.subject.name)
+                    Text(
+                        text = subjectEnrollment.subject.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .padding(16.dp)
+                    )
 
                     // Si está seleccionada
                     if (selectedSubject == subjectEnrollment.subject.name) {
