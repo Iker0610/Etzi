@@ -71,4 +71,5 @@
     <string name="call">Call</string>
     <string name="grade">Grade</string>
     <string name="noGrades">There are not provisional grades</string>
+    <string name="no_lectures_dialog_message">There are no lectures for today</string>
 </resources>

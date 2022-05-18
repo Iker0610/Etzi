@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import com.google.android.material.datepicker.MaterialDatePicker
-import das.losaparecidos.etzi.app.utils.epochMilliseconds
+import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.app.utils.fromEpochMilliseconds
 import das.losaparecidos.etzi.app.utils.today
 import kotlinx.datetime.DatePeriod
@@ -14,13 +14,13 @@ import kotlinx.datetime.plus
 
 fun showDatePicker(
     context: Context,
-    initialDate: LocalDate = LocalDate.today,
     onDateSelected: (LocalDate) -> Unit,
+    initialDate: LocalDate = LocalDate.today,
 ) {
     val activity = context as AppCompatActivity
 
     val picker = MaterialDatePicker.Builder.datePicker()
-        .setSelection(initialDate.epochMilliseconds)
+        .setSelection(initialDate.epochUTCMilliseconds)
         .build()
 
     activity.let {
@@ -35,15 +35,15 @@ fun showDatePicker(
 
 fun showDateRangePicker(
     context: Context,
+    onDateSelected: (LocalDate, LocalDate) -> Unit,
     initialStartDate: LocalDate = LocalDate.today,
     initialEndDate: LocalDate = LocalDate.today + DatePeriod(0, 0, 5),
-    onDateSelected: (LocalDate, LocalDate) -> Unit,
 ) {
     val activity = context as AppCompatActivity
 
     val picker = MaterialDatePicker.Builder.dateRangePicker().setSelection(Pair(
-        initialStartDate.epochMilliseconds,
-        initialEndDate.epochMilliseconds
+        initialStartDate.epochUTCMilliseconds,
+        initialEndDate.epochUTCMilliseconds
     )).build()
 
     activity.let {
