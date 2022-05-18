@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import das.losaparecidos.etzi.model.entities.SubjectEntity
+import das.losaparecidos.etzi.model.entities.Subject
 
 enum class EstadoAsignaturas { VISIBLE, HIDDEN }
 
 @Composable
 fun SubjectContainer(
-    subject: SubjectEntity
+    subject: Subject
 ) {
 
     Row() {

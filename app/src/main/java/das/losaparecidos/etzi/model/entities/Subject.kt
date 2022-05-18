@@ -5,10 +5,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.datetime.LocalDate
 
 @Serializable
-data class SubjectEnrollment(
-    val subject: Subject,
+data class Subject(
+    val name: String,
+
     @SerialName("academic_year")
     val academicYear: LocalDate,
     val degree: String,
-    val subgroup: Int
+    val type: String,
+    val credits: Int,
+    val course: Int,
 )

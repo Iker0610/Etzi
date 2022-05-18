@@ -1,170 +1,170 @@
 package das.losaparecidos.etzi.model.mockdata
 
-import das.losaparecidos.etzi.model.entities.SubjectEntity
-import java.time.LocalDate
+import das.losaparecidos.etzi.model.entities.Subject
+import kotlinx.datetime.LocalDate
 
-val subjectEntitys = mutableListOf(
-    SubjectEntity(
+val subjects = mutableListOf(
+    Subject(
         "Minería de datos",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,
         4
     ),
-    SubjectEntity(
+    Subject(
         "Desarrollo Avanzado de Software",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,
         4
     ),
-    SubjectEntity(
+    Subject(
         "Desarrollo de Aplicaciones Web Enriquecidas",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,
         4
     ),
-    SubjectEntity(
+    Subject(
         "Técnicas de Inteligencia Artificial",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,
         4
     ),
-    SubjectEntity(
+    Subject(
         "Administración de Sistemas",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,
         4
     ),
-    SubjectEntity(
+    Subject(
         "Análisis Matemático",
-        LocalDate.of(2018, 9, 1),
+        LocalDate(2018, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Básica de rama",
         6,
         1
     ),
-    SubjectEntity(
+    Subject(
         "Fundamentos de Tecnología de Computadores",
-        LocalDate.of(2018, 9, 1),
+        LocalDate(2018, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Básica de rama",
         6,
         1
     ),
-    SubjectEntity(
+    Subject(
         "Cálculo",
-        LocalDate.of(2018, 9, 1),
+        LocalDate(2018, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Básica de rama",
         6,
         1
     ),
-    SubjectEntity(
+    Subject(
         "Programación Modular y Orientación a Objetos",
-        LocalDate.of(2018, 9, 1),
+        LocalDate(2018, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         1
     ),
-    SubjectEntity(
+    Subject(
         "Arquitectura de Computadores",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         2
     ),
-    SubjectEntity(
+    Subject(
         "Lenguajes, Computación y Sistemas Inteligentes",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         2
     ),
-    SubjectEntity(
+    Subject(
         "Métodos Estadísticos de la Ingeniería",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Básica de rama",
         6,
         2
-    ),SubjectEntity(
+    ),Subject(
         "Bases de Datos",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         2
-    ),SubjectEntity(
+    ),Subject(
         "Introducción a las Redes de Computadores\t",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         2
-    ),SubjectEntity(
+    ),Subject(
         "Investigación Operativa",
-        LocalDate.of(2019, 9, 1),
+        LocalDate(2019, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Básica de rama",
         6,
         2
-    ),SubjectEntity(
+    ),Subject(
         "Diseño de Bases de Datos",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "Organización de la Producción",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "Sistemas de Gestión de Seguridad de Sistemas de Información",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "Gestión de Proyectos",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "Sistemas de Apoyo a la Decisión",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "Sistemas Web",
-        LocalDate.of(2020, 9, 1),
+        LocalDate(2020, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Obligatoria",
         6,
         3
-    ),SubjectEntity(
+    ),Subject(
         "English for Information Technology",
-        LocalDate.of(2021, 9, 1),
+        LocalDate(2021, 9, 1),
         "Ingeniería Informática de Gestión y Sistemas de Información",
         "Optativa",
         6,

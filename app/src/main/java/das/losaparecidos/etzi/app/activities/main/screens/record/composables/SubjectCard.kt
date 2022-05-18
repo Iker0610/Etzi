@@ -1,6 +1,5 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,16 +8,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.model.entities.Subject
-import das.losaparecidos.etzi.model.entities.SubjectEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectCard(subject: SubjectEntity, modifier: Modifier = Modifier) {
+fun SubjectCard(subject: Subject, modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     // Dialog

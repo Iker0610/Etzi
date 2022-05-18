@@ -49,9 +49,15 @@
     <string name="classroom">Aula</string>
     <string name="masterclass">Magistral</string>
 
+    <!-- Expediente -->
+    <string name="course">curso</string>
+    <string name="pending">Créditos pendientes de obtener</string>
+    <string name="unassessed">Créditos pendientes de evaluar</string>
+    <string name="expedient">Créditos aprobados</string>
+    <string name="course_total">Total de créditos del curso</string>
+
     <!-- Date time picker -->
     <string name="select_date_label">Seleccione fecha</string>
-
 
     <!-- Screen titles -->
     <string name="timetable_screen_title">Horario</string>
@@ -64,5 +70,6 @@
     <string name="grades_screen_title">Notas</string>
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
+    <string name="total_degree">Maila guztietan onartutako kredituak</string>
 
 </resources>

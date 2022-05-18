@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import das.losaparecidos.etzi.model.mockdata.subjectEntitys
+import das.losaparecidos.etzi.model.mockdata.subjects
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun CourseContainer(
 
     Column {
 
-        subjectEntitys.forEach { subject ->
+        subjects.forEach { subject ->
 
             if (subject.course == selectedCourse) {
 
