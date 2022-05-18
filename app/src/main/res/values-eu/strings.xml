@@ -43,7 +43,6 @@
     <string name="login_label">Sartu</string>
     <string name="remind_me_label">Recuérdame</string>
     <string name="biometrics_button">Sartu biometria bidez</string>
-    <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
     <string name="date_from_label">Nondik</string>
     <string name="date_to_label">Nora</string>
@@ -51,4 +50,12 @@
     <string name="call">Deialdia</string>
     <string name="grade">Nota</string>
     <string name="noGrades">Ez daude behin-behineko notarik</string>
+    <string name="save_button">Gorde</string>
+    <string name="enroll_button">Konfiguratu</string>
+    <string name="server_error_dialog_title">Ustekabeko errore bat gertatu da. Saiatu geroago.</string>
+    <string name="professors_label">Professors</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Gordetako izendapen-agiriak ez dira baliozkoak</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">Aurreko erabiltzailearen kredentzialak gaur egun ez dira baliozkoak. Hori gerta daiteke erabiltzailea jada ez dagoelako edo pasahitza aldatu delako.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Jarraitu ahal izateko, saioa hasi berriro erabiltzaile-izenarekin eta pasahitzarekin.</string>
+    <string name="processing">Prozesatzen</string>
 </resources>

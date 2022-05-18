@@ -2,7 +2,6 @@ package das.losaparecidos.etzi.app.activities.main.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,6 @@ import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
@@ -28,7 +26,7 @@ class TutorialsViewModel @Inject constructor(
 
     private var allTutorials: List<SubjectTutorial> = emptyList()
     val professorsWithTutorials: MutableList<Professor> = mutableListOf()
-    val subjectTutorials: MutableList<String> = mutableListOf("Todos")
+    val subjectTutorials: MutableList<String> = mutableListOf("Todas")
 
     var tutorials: List<SubjectTutorial> by mutableStateOf(emptyList())
         private set

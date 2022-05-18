@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Filter
 import androidx.compose.material.icons.rounded.Menu
@@ -15,9 +18,12 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
@@ -51,24 +57,28 @@ fun TutorialsFilterDialog(
             DynamicMediumTopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
-                    IconButton(onClick = onMenuOpen) {
+                    IconButton(onClick = onBack) {
                         Icon(Icons.Rounded.Close, null)
                     }
                 },
-                actions = { IconButton(onClick = onBack) {
+                actions = {
                     // TODO poner text button 'save'
-                    Icon(Icons.Rounded.Save, contentDescription = null)
-                }
-                }, windowSizeClass = windowSizeClass)
+                    TextButton(onClick = { /*TODO aplicar lo seleccionado en los filtros*/ }) {
+                        Text(text = stringResource(id = R.string.save_button))
+                    }
+                          },
+                windowSizeClass = windowSizeClass)
         },
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
         CenteredColumn(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             //contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
         ) {
-
+            Text(text = stringResource(id = R.string.subject), modifier = Modifier.align(Alignment.Start).padding(horizontal = 16.dp))
             // TODO OBTENER ASIGNATURAS DE LA BBDD Y QUE SE MANIPULEN BIEN LOS DATOS
             SubjectsMenu(
                 asignaturas = tutorialsViewModel.subjectTutorials,
@@ -77,6 +87,16 @@ fun TutorialsFilterDialog(
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 onSubjectSelected = { /*TODO COGER VALOR DEL COMBOBOX*/ }
             )
+            Divider(
+                Modifier
+                    .fillMaxWidth(0.7f)
+                    .padding(vertical = 2.dp)
+            )
+            Row {
+                Icon(Icons.Rounded.Close , contentDescription = "")
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(text = "John Doe")
+            }
             // TODO OBTENER CORRECTAMENTE LAS FECHAS
             Row {
                 TransparentDatePicker(
@@ -92,16 +112,18 @@ fun TutorialsFilterDialog(
                     textFieldValue = fechaHasta,
                     textLabel = stringResource(id = R.string.date_to_label),
                     context = context,
-                    onDateRangeSelected = { f1, f2 ->
-                        Log.i("fechas", "$f1 $f2")
-                        //fechaDesde.value = f1.toString()
-                        //fechaHasta.value = f2.toString()
-                    },
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 6.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    onDateRangeSelected = {f1, f2 -> Log.i("fechas", "$f1 $f2")}
                 )
             }
+            Divider(
+                Modifier
+                    .fillMaxWidth(0.7f)
+                    .padding(vertical = 2.dp)
+            )
+            Text(text = stringResource(id = R.string.professors_label), modifier = Modifier.align(Alignment.Start).padding(horizontal = 16.dp))
             //TODO OBTENER PROFES DE LA BBDD Y MODIFICAR EL onSelectedChanged
             ChipGroup(
                 professors = tutorialsViewModel.professorsWithTutorials,

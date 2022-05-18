@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.rounded.Filter
+import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -75,7 +76,7 @@ fun TutorialsScreen(
                             }
                         },
                         actions = { IconButton(onClick = onFilter) {
-                            Icon(Icons.Rounded.Filter, contentDescription = null)
+                            Icon(Icons.Rounded.FilterAlt, contentDescription = null)
                         }})
             }
     ) { paddingValues ->
