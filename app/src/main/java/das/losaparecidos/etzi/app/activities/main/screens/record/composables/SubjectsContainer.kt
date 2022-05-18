@@ -6,28 +6,40 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import das.losaparecidos.etzi.model.entities.Subject
-
-enum class EstadoAsignaturas { VISIBLE, HIDDEN }
+import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
 @Composable
 fun SubjectContainer(
-    subject: Subject
+    subjectEnrollment: SubjectEnrollment
 ) {
 
     Row() {
         Column() {
             Text(text = "Type:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary)
-            Text(text = subject.type)
+            Text(text = subjectEnrollment.subject.type)
         }
         Column() {
             Text(text = "Date:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary)
-            Text(text = subject.academicYear.toString())
+            Text(text = subjectEnrollment.subject.academicYear.toString())
         }
         Column() {
             Text(text = "Grade:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary)
-            Text(text = "10")
+
+            // Si existe la convocatoria actual, está evaluada y la nota NO es provisional
+            if (subjectEnrollment.subjectCalls.isNotEmpty()
+                && subjectEnrollment.subjectCalls.last().subjectCallAttendances.isNotEmpty()
+                && !subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional) {
+
+                Row() {
+                    Text(text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade)
+
+                    // Si tiene matrícula de honor
+                    if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction){
+                        Text(text = "(Matrícula de Honor)")
+                    }
+                }
+
+            }
         }
     }
-
-
 }

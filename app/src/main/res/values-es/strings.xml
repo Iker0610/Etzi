@@ -71,5 +71,8 @@
     <string name="account_screen_title">Cuenta</string>
     <string name="egela_screen_title">eGela</string>
     <string name="total_degree">Maila guztietan onartutako kredituak</string>
+    <string name="call">Convocatoria</string>
+    <string name="grade">Nota</string>
+    <string name="noGrades">No hay notas provisionales</string>
 
 </resources>

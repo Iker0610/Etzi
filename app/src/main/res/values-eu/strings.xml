@@ -46,4 +46,7 @@
     <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
     <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
+    <string name="call">Deialdia</string>
+    <string name="grade">Nota</string>
+    <string name="noGrades">Ez daude behin-behineko notarik</string>
 </resources>

@@ -68,4 +68,7 @@
     <string name="account_screen_title">Account</string>
     <string name="egela_screen_title">eGela</string>
     <string name="total_degree">Total credits approved in all courses</string>
+    <string name="call">Call</string>
+    <string name="grade">Grade</string>
+    <string name="noGrades">There are not provisional grades</string>
 </resources>

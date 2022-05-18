@@ -56,7 +56,7 @@ fun CreditsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                     )
                 }
             }
-            YearCreditsScreen(selectedTab)
+            YearCreditsScreen(selectedTab+1)
         }
     }
 }

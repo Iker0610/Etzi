@@ -29,5 +29,6 @@ data class SubjectCall(
 @Serializable
 data class SubjectCallAttendance(
     val grade: String, // Nota
-    val distinction: Boolean = false // Matrícula de Honor
+    val distinction: Boolean = false, // Matrícula de Honor
+    val provisional: Boolean
 )

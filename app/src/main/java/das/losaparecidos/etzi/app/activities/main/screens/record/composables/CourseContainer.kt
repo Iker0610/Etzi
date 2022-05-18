@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.model.mockdata.subjects
+import subjectEnrollments
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,15 +24,15 @@ fun CourseContainer(
 
     Column {
 
-        subjects.forEach { subject ->
+        subjectEnrollments.forEach { subjectEnrollment ->
 
-            if (subject.course == selectedCourse) {
+            if (subjectEnrollment.subject.course == selectedCourse) {
 
                 Card(onClick = {
 
                     // Al clicar cambiar selección
-                    if (selectedSubject == subject.name) setSelectedSubject("")
-                    else setSelectedSubject(subject.name)
+                    if (selectedSubject == subjectEnrollment.subject.name) setSelectedSubject("")
+                    else setSelectedSubject(subjectEnrollment.subject.name)
 
                 }, modifier = Modifier
                     .fillMaxWidth()
@@ -40,13 +41,13 @@ fun CourseContainer(
 
 
                     // Poner título
-                    Text(text = subject.name)
+                    Text(text = subjectEnrollment.subject.name)
 
                     // Si está seleccionada
-                    if (selectedSubject == subject.name) {
+                    if (selectedSubject == subjectEnrollment.subject.name) {
 
                         // Poner info de la asignatura
-                        SubjectContainer(subject = subject)
+                        SubjectContainer(subjectEnrollment = subjectEnrollment)
                     }
                 }
             }
