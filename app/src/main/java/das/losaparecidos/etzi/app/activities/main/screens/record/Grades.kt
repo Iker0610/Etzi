@@ -119,17 +119,15 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                         if (selectedSubject == subjectEnrollment.subject.name) {
 
                             // Datos de la asignatura
-                            Column(
-                                modifier = Modifier
-                                    .padding(horizontal = 32.dp)
-                                    .padding(bottom = 16.dp)
+                            Row(
+                                Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
                             ) {
 
                                 // Convocatoria
                                 Column(
-                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-
                                     Text(
                                         text = "${stringResource(id = R.string.call)}:",
                                         style = MaterialTheme.typography.labelLarge,
@@ -143,10 +141,7 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
 
                                 //Nota
                                 Column(
-                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-
-
                                     Text(
                                         text = "${stringResource(id = R.string.grade)}:",
                                         style = MaterialTheme.typography.labelLarge,
