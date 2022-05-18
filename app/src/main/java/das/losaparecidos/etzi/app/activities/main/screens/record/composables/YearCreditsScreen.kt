@@ -44,8 +44,6 @@ fun YearCreditsScreen(subjectEnrollments: List<SubjectEnrollment>, totalCredits:
 
                 // Sumar al total del créditos aprobados del curso
                 approvedCredits += subjectEnrollment.subject.credits
-
-
             }
         }
     }
