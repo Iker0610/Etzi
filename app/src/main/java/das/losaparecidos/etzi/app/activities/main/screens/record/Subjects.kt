@@ -13,9 +13,11 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
@@ -48,7 +50,7 @@ fun SubjectsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
             TabRow(selectedTabIndex = selectedTab) {
                 cursos.forEachIndexed { index, course ->
                     Tab(
-                        text = { Text("${course}º curso") },
+                        text = { Text("${course}º ${stringResource(id = R.string.course)}") },
                         selected = selectedTab == index,
                         onClick = { selectedTab = index }
                     )

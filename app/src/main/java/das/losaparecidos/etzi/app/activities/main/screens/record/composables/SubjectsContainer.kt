@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.Subject
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
@@ -35,7 +37,7 @@ fun SubjectContainer(
 
                     // Si tiene matrícula de honor
                     if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction){
-                        Text(text = "(Matrícula de Honor)")
+                        Text(text = stringResource(id = R.string.distinction))
                     }
                 }
 
