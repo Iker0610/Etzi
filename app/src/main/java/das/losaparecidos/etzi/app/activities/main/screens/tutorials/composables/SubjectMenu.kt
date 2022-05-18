@@ -23,8 +23,7 @@ fun SubjectsMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSub
         onExpandedChange = {
             expanded = !expanded
         },
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         TextField(
             readOnly = true,
@@ -56,11 +55,12 @@ fun SubjectsMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSub
         }
     }
 }
+
 @Composable
 @Preview(showBackground = true)
-@Preview(showBackground = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun SubjectsMenuPreview() {
     EtziTheme {
-        SubjectsMenu(asignaturas = listOf("Asignatura 1","Asignatura 2","Asignatura 3",), onSubjectSelected = {})
+        SubjectsMenu(asignaturas = listOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
     }
 }
