@@ -4,6 +4,7 @@ import das.losaparecidos.etzi.model.entities.SubjectCallAttendance
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
+
 val subtectsCallAttendance = mutableListOf(
 
     // APROBADA
