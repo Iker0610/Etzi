@@ -2,18 +2,38 @@ package das.losaparecidos.etzi.app.activities.main.screens.timetable.composables
 
 import LectureRoomInfoDialog
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.NotificationsNone
 import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconToggleButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,26 +43,23 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
+import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.Lecture
-import kotlinx.datetime.toJavaLocalDateTime
 import das.losaparecidos.etzi.model.mockdata.lectures
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 
-    val context = LocalContext.current
-
     // Time fomat in Tametable
-    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
+    val timeFormat = "HH:mm"
 
     // Dialog
-    var showDialog by remember { mutableStateOf(false)  }
+    var showDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
-        LectureRoomInfoDialog(lectureRoom = lecture.lectureRoom){showDialog = false}
+        LectureRoomInfoDialog(lectureRoom = lecture.lectureRoom) { showDialog = false }
     }
 
     ElevatedCard(modifier = modifier) {
@@ -61,12 +78,20 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                     .width(64.dp)
 
             ) {
-                Icon(Icons.Rounded.Schedule, null, modifier = Modifier.padding(bottom = 16.dp))
+
+
+                Icon(Icons.Rounded.Schedule, null, modifier = Modifier.padding(bottom = 8.dp))
                 Text(
-                    lecture.startDate.toJavaLocalDateTime().format(timeFormat),
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    style = MaterialTheme.typography.labelMedium,
+                    text = lecture.endDate.format("MMM dd").uppercase(Locale.getDefault())
                 )
-                Text(lecture.endDate.toJavaLocalDateTime().format(timeFormat))
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                Text(lecture.startDate.format(timeFormat))
+                Text(lecture.endDate.format(timeFormat))
+
+
             }
 
             // Linea
@@ -93,13 +118,12 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                 ) {
 
 
-                    Text( if (lecture.subgroup != -1) {
-                        "${stringResource(R.string.subgroup)} ${lecture.subgroup}".toUpperCase(
-                            Locale.getDefault()
-                        )}
-                        else {
-                             stringResource(R.string.masterclass)
-                             },
+                    Text(
+                        if (lecture.subgroup != -1) {
+                            "${stringResource(R.string.subgroup)} ${lecture.subgroup}".uppercase(Locale.getDefault())
+                        } else {
+                            stringResource(R.string.masterclass)
+                        },
                         style = MaterialTheme.typography.labelSmall
                     )
 
@@ -168,16 +192,9 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                         verticalArrangement = Arrangement.SpaceAround
                     ) {
 
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.Notifications, null)
-
+                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
+                            Icon(Icons.Rounded.NotificationsNone, null)
                         }
-                        /*
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.Map, null)
-
-                        }
-                        */
                     }
                 }
             }
@@ -190,8 +207,6 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 @Composable
 @Preview
 fun LectureCardPreview() {
-
-
     EtziTheme {
         Scaffold() {
             Column(
@@ -200,14 +215,8 @@ fun LectureCardPreview() {
                     .padding(it)
                     .padding(30.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-
-                lectures.forEach { lecture ->
-                    LectureCard(lecture)
-                }
+                lectures.forEach { lecture -> LectureCard(lecture) }
             }
-
         }
-
     }
-
 }

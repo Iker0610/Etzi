@@ -4,17 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import das.losaparecidos.etzi.app.utils.epochSecond
+import das.losaparecidos.etzi.app.utils.epochSeconds
+import das.losaparecidos.etzi.app.utils.fromEpochSeconds
 import das.losaparecidos.etzi.model.entities.Building
 import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
 import das.losaparecidos.etzi.model.entities.Student
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -56,23 +54,19 @@ class Converters {
     // They convert from ZonedDateTime to long format and backwards. Time zone value is kept.
 
     @TypeConverter
-    fun fromLongToDate(value: Long): LocalDate =
-        Instant.fromEpochSeconds(value).toLocalDateTime(TimeZone.currentSystemDefault()).date
+    fun fromLongToDate(value: Long): LocalDate = LocalDate.fromEpochSeconds(value)
 
 
     @TypeConverter
-    fun fromLongToDatetime(value: Long): LocalDateTime =
-        Instant.fromEpochSeconds(value).toLocalDateTime(TimeZone.currentSystemDefault())
+    fun fromLongToDatetime(value: Long): LocalDateTime = LocalDateTime.fromEpochSeconds(value)
 
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDate): Long =
-        date.atStartOfDayIn(TimeZone.currentSystemDefault()).epochSeconds
+    fun dateToTimestamp(date: LocalDate): Long = date.epochSeconds
 
 
     @TypeConverter
-    fun datetimeToTimestamp(date: LocalDateTime): Long =
-        date.toInstant(TimeZone.currentSystemDefault()).epochSeconds
+    fun datetimeToTimestamp(date: LocalDateTime): Long = date.epochSecond
 
 
     //---------   String List Converters   ---------//

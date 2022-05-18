@@ -31,7 +31,8 @@ class StudentDataViewModel @Inject constructor(private val studentDataRepository
         viewModelScope.launch(Dispatchers.IO) { fullTimeTable = studentDataRepository.getTimeTable() }
     }
 
-    private var currentSelectedDay by mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
+    var currentSelectedDay by mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
+        private set
 
     var timeTable by mutableStateOf<List<Lecture>>(emptyList())
         private set

@@ -4,42 +4,59 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import com.google.android.material.datepicker.MaterialDatePicker
-import kotlinx.datetime.Instant
+import das.losaparecidos.etzi.app.utils.epochMilliseconds
+import das.losaparecidos.etzi.app.utils.fromEpochMilliseconds
+import das.losaparecidos.etzi.app.utils.today
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.plus
 
 
-fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
+fun showDatePicker(
+    context: Context,
+    initialDate: LocalDate = LocalDate.today,
+    onDateSelected: (LocalDate) -> Unit,
+) {
     val activity = context as AppCompatActivity
 
-    val picker = MaterialDatePicker.Builder.datePicker().build()
+    val picker = MaterialDatePicker.Builder.datePicker()
+        .setSelection(initialDate.epochMilliseconds)
+        .build()
 
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { dateMillis ->
-            val selectedDate = Instant.fromEpochMilliseconds(dateMillis).toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val selectedDate = LocalDate.fromEpochMilliseconds(dateMillis)
             onDateSelected(selectedDate)
         }
     }
 }
 
 
-fun showDateRangePicker(context: Context, onDateSelected: (LocalDate, LocalDate) -> Unit) {
+fun showDateRangePicker(
+    context: Context,
+    initialStartDate: LocalDate = LocalDate.today,
+    initialEndDate: LocalDate = LocalDate.today + DatePeriod(0, 0, 5),
+    onDateSelected: (LocalDate, LocalDate) -> Unit,
+) {
     val activity = context as AppCompatActivity
 
     val picker = MaterialDatePicker.Builder.dateRangePicker().setSelection(Pair(
-        MaterialDatePicker.todayInUtcMilliseconds(),
-        MaterialDatePicker.todayInUtcMilliseconds() + (86400000 * 5) // 5 days
+        initialStartDate.epochMilliseconds,
+        initialEndDate.epochMilliseconds
     )).build()
 
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())
         picker.addOnPositiveButtonClickListener { selectionMillis ->
-            val firstSelectedDate = Instant.fromEpochMilliseconds(selectionMillis.first).toLocalDateTime(TimeZone.currentSystemDefault()).date
-            val secondSelectedDate = Instant.fromEpochMilliseconds(selectionMillis.second).toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val firstSelectedDate = LocalDate.fromEpochMilliseconds(selectionMillis.first)
+            val secondSelectedDate = LocalDate.fromEpochMilliseconds(selectionMillis.second)
 
             onDateSelected(firstSelectedDate, secondSelectedDate)
         }
     }
 }
+
+
+
+
