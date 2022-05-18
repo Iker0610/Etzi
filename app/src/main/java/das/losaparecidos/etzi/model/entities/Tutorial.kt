@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Tutorial(
-    val professor: Professor,
     @SerialName("lecture_room")
     val lectureRoom: LectureRoom,
     @SerialName("start_date")
@@ -14,7 +13,24 @@ data class Tutorial(
     @SerialName("end_date")
     val endDate: LocalDateTime,
 )
+
+@Serializable
+data class ProfessorWithTutorials(
+    val name: String,
+    val surname: String,
+    val email: String,
+    val tutorials: List<Tutorial>
+) {
+    val fullName by lazy { "$name $surname" }
+
+    val professor: Professor by lazy {
+        Professor(name, surname, email)
+    }
+}
+
+@Serializable
 data class SubjectTutorial(
+    @SerialName("name")
     val subjectName: String,
-    val tutorial: Tutorial
+    val professors: List<ProfessorWithTutorials>
 )

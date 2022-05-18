@@ -11,5 +11,5 @@ data class Professor(
     val surname: String,
     @PrimaryKey val email: String,
 ) {
-    val fullName get() = "$name $surname"
+    val fullName by lazy { "$name $surname" }
 }
