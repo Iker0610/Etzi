@@ -1,8 +1,11 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record.composables
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -22,21 +25,26 @@ fun CourseContainer(
 
     val (selectedSubject, setSelectedSubject) = remember { mutableStateOf("") }
 
-    Column {
+    Column(
+        Modifier.verticalScroll(rememberScrollState())
+    ) {
 
         subjectEnrollments.forEach { subjectEnrollment ->
 
             if (subjectEnrollment.subject.course == selectedCourse) {
 
-                Card(onClick = {
+                Card(
+                    onClick = {
 
-                    // Al clicar cambiar selección
-                    if (selectedSubject == subjectEnrollment.subject.name) setSelectedSubject("")
-                    else setSelectedSubject(subjectEnrollment.subject.name)
+                        // Al clicar cambiar selección
+                        if (selectedSubject == subjectEnrollment.subject.name) setSelectedSubject("")
+                        else setSelectedSubject(subjectEnrollment.subject.name)
 
-                }, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)) {
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    ) {
                     // Si la asignatura es del curso
 
 
