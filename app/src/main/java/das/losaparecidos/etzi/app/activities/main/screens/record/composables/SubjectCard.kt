@@ -1,4 +1,4 @@
-package das.losaparecidos.etzi.app.activities.main.screens.record.composable
+package das.losaparecidos.etzi.app.activities.main.screens.record.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,6 +39,7 @@ fun SubjectCard(subject: SubjectEntity, modifier: Modifier = Modifier) {
             ) {
                 Icon(Icons.Rounded.Schedule, null)
             }
+
             Divider(
                 Modifier
                     .padding(end = 8.dp)
@@ -46,26 +47,23 @@ fun SubjectCard(subject: SubjectEntity, modifier: Modifier = Modifier) {
                     .width(1.dp)
             )
 
-            Column(
+            CenteredRow(
                 Modifier
                     .fillMaxHeight()
                     .weight(1f)
                     .padding(horizontal = 12.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                CenteredRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = subject.name, style = MaterialTheme.typography.labelMedium)
-                    Surface(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .width(64.dp)
 
-                    ) {}
-                }
+                Text(text = subject.name, style = MaterialTheme.typography.labelMedium)
+                Surface(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .width(64.dp)
+
+                ) {}
+
             }
         }
     }
