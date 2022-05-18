@@ -6,7 +6,7 @@
     <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
 
     <!-- Buttons -->
-    <string name="ok_button" translatable="false">OK</string>
+    <string name="ok_button" translatable="false">Ok</string>
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
     <string name="enroll_button">Enroll</string>
