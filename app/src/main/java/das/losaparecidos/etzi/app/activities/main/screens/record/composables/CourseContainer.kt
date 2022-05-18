@@ -15,14 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 import das.losaparecidos.etzi.model.mockdata.subjects
 import subjectEnrollments
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseContainer(
-    selectedCourse: Int,
-) {
+fun CourseContainer(subjects: List<SubjectEnrollment>) {
 
     val (selectedSubject, setSelectedSubject) = remember { mutableStateOf("") }
 
@@ -31,40 +30,29 @@ fun CourseContainer(
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
     ) {
+        subjects.forEach { subjectEnrollment ->
+            Card(
+                onClick = {
+                    // Al clicar cambiar selección
+                    if (selectedSubject == subjectEnrollment.subject.name) setSelectedSubject("")
+                    else setSelectedSubject(subjectEnrollment.subject.name)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
 
-        subjectEnrollments.forEach { subjectEnrollment ->
+                // Poner título
+                Text(
+                    text = subjectEnrollment.subject.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(16.dp)
+                )
 
-            if (subjectEnrollment.subject.course == selectedCourse) {
-
-                Card(
-                    onClick = {
-
-                        // Al clicar cambiar selección
-                        if (selectedSubject == subjectEnrollment.subject.name) setSelectedSubject("")
-                        else setSelectedSubject(subjectEnrollment.subject.name)
-
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    // Si la asignatura es del curso
-
-
-                    // Poner título
-                    Text(
-                        text = subjectEnrollment.subject.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(16.dp)
-                    )
-
-                    // Si está seleccionada
-                    if (selectedSubject == subjectEnrollment.subject.name) {
-
-                        // Poner info de la asignatura
-                        SubjectContainer(subjectEnrollment = subjectEnrollment)
-                    }
+                // Si está seleccionada
+                if (selectedSubject == subjectEnrollment.subject.name) {
+                    // Poner info de la asignatura
+                    SubjectContainer(subjectEnrollment = subjectEnrollment)
                 }
             }
 

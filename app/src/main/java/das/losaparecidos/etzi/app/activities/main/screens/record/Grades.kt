@@ -1,6 +1,5 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,25 +13,38 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
-import subjectEnrollments
-import java.util.*
+import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun GradesScreen(
+    recordViewModel: RecordViewModel,
+    windowSizeClass: WindowSizeClass,
+    onMenuOpen: () -> Unit
+) {
 
     val (selectedSubject, setSelectedSubject) = remember { mutableStateOf("") }
+
+    val subjectEnrollments = recordViewModel.obtainProvisionalSubjectGrades()
+
+    val onExpand = { subjectEnrollment: SubjectEnrollment ->
+
+        // Al clicar cambiar selección
+        if (selectedSubject == subjectEnrollment.subject.name) {
+            setSelectedSubject("")
+        } else setSelectedSubject(subjectEnrollment.subject.name)
+
+    }
 
     Scaffold(
         topBar = {
@@ -55,33 +67,16 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
         ) {
 
-            var hayNotas = false
-
-            subjectEnrollments.forEach { subjectEnrollment ->
-
-                // Si existe la convocatoria actual, está evaluada y la nota es provisional
-                if (subjectEnrollment.subjectCalls.isNotEmpty()
-                    && subjectEnrollment.subjectCalls.last().subjectCallAttendances.isNotEmpty()
-                    && subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional
-                ) {
-
+            if (subjectEnrollments.isNotEmpty()) {
+                subjectEnrollments.forEach { subjectEnrollment ->
                     Card(
-                        onClick = {
-
-                            // Al clicar cambiar selección
-                            if (selectedSubject == subjectEnrollment.subject.name) {
-                                setSelectedSubject("")
-                            } else setSelectedSubject(subjectEnrollment.subject.name)
-
-                        }, modifier = Modifier
+                        onClick = { onExpand(subjectEnrollment) },
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
+                        CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
                             // Poner título
                             Text(
                                 text = subjectEnrollment.subject.name,
@@ -90,13 +85,12 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                                     .padding(16.dp)
                                     .weight(1f)
                             )
-                            hayNotas = true
 
                             // Curso
                             Surface(
                                 modifier = Modifier.padding(16.dp, 8.dp),
                                 color = MaterialTheme.colorScheme.tertiary,
-                                shape = RoundedCornerShape(16.dp)
+                                shape = MaterialTheme.shapes.small
                             ) {
                                 CenteredRow(
                                     modifier = Modifier.padding(
@@ -105,11 +99,7 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                                     )
                                 ) {
                                     Text(
-                                        text = "${subjectEnrollment.subject.course}º ${
-                                            stringResource(
-                                                id = R.string.course
-                                            )
-                                        }",
+                                        text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
                                         style = MaterialTheme.typography.labelMedium,
                                     )
                                 }
@@ -120,8 +110,7 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
 
                             // Datos de la asignatura
                             Row(
-                                Modifier
-                                    .fillMaxWidth(),
+                                Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
 
@@ -162,8 +151,7 @@ fun GradesScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                         }
                     }
                 }
-            }
-            if (!hayNotas) {
+            } else {
                 Spacer(modifier = Modifier.height(32.dp))
                 Icon(
                     Icons.Rounded.ContentPasteOff,

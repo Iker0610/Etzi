@@ -13,22 +13,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
 import das.losaparecidos.etzi.model.mockdata.subjects
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreditsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
 
     var selectedTab by remember { mutableStateOf(0) }
 
-    var courses = mutableSetOf(1)
-    subjects.forEach { subject ->
-        if (subject.course > 1) courses.add(subject.course)
-    }
-    courses = courses.toSortedSet()
-
+    val courses = recordViewModel.obtainNumOfCourses()
 
     Scaffold(
         topBar = {
@@ -56,7 +52,7 @@ fun CreditsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                     )
                 }
             }
-            YearCreditsScreen(selectedTab+1)
+            YearCreditsScreen(recordViewModel.obtainFilteredRecordByCourse(selectedTab+1), recordViewModel.obtainApprobedCreditsInDegree())
         }
     }
 }

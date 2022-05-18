@@ -7,29 +7,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
-import das.losaparecidos.etzi.app.ui.theme.EtziTheme
+import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun SubjectsScreen(
+    recordViewModel: RecordViewModel,
+    windowSizeClass: WindowSizeClass,
+    onMenuOpen: () -> Unit
+) {
 
 
-    val cursos = listOf(1, 2, 3, 4)
+    val cursos = 1..4
 
     var selectedTab by remember { mutableStateOf(0) }
+
 
     Scaffold(
         topBar = {
@@ -44,33 +46,21 @@ fun SubjectsScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
                 })
         }
     ) { paddingValues ->
-        // TODO get datos reales
-
         Column(modifier = Modifier.padding(paddingValues)) {
             TabRow(selectedTabIndex = selectedTab) {
-                cursos.forEachIndexed { index, course ->
+                cursos.forEach { course ->
                     Tab(
                         text = { Text("${course}º ${stringResource(id = R.string.course)}") },
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index }
+                        selected = selectedTab == course - 1,
+                        onClick = { selectedTab = course - 1 }
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CourseContainer(selectedTab + 1)
-
+            CourseContainer(recordViewModel.obtainFilteredRecordByCourse(selectedTab + 1))
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Preview
-@Composable
-fun SubjectScreenPreview() {
-    EtziTheme {
-        SubjectsScreen(WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
     }
 }
 
