@@ -9,24 +9,25 @@ import kotlinx.datetime.LocalDateTime
 data class SubjectEnrollment(
     val subject: Subject,
     val subgroup: Int,
-    @SerialName("subject_call_attendances")
-    val subjectCallAttendances: List<SubjectCallAttendance>
+    @SerialName("subject_calls")
+    val subjectCalls: List<SubjectCall>
 )
 
 // Convocatoria
 @Serializable
 data class SubjectCall(
-    @SerialName("academic_year")
+    @SerialName("call_type")
     val callType: String, // Extraordinaria - Ordinaria
+    @SerialName("exam_date")
     val examDate: LocalDateTime,
+    @SerialName("subject_call_attendances")
+    val subjectCallAttendances: List<SubjectCallAttendance>
 )
 
 
 // Participación del alumno en una convocatoria de examen de una asignatura
 @Serializable
 data class SubjectCallAttendance(
-    @SerialName("subject_call")
-    val subjectCall: SubjectCall, // Datos de la convocatoria
     val grade: String, // Nota
     val distinction: Boolean = false // Matrícula de Honor
 )
