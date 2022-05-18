@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Etzi</string>
 
 
     <!-- Channels -->
@@ -12,7 +11,6 @@
 
     <!-- Buttons -->
     <string name="cancel_button">Cancelar</string>
-    <string name="ok_button">Aceptar</string>
 
 
     <!-- Login Screen -->
@@ -33,7 +31,7 @@
     <string name="server_error_dialog_title">Ha ocurrido un error inesperado. Inténtelo más tarde.</string>
     <string name="saved_credentials_not_longer_valid_dialog_title">Las credenciales guardadas no son válidas</string>
     <string name="saved_credentials_not_longer_valid_dialog_text">Las credenciales del usuario anterior no son actualmente válidas. Esto puede deberse a que el usuario ya no existe o a un cambio de contraseña.</string>
-    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Para continuar vuelve a iniciar sesión con el nombre de usuario y la ocntraseña.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Para continuar vuelve a iniciar sesión con el nombre de usuario y la contraseña.</string>
     <string name="processing">Procesando</string>
     <string name="incorrect_login_error_message">Nombre de usuario o contraseña incorrectas.</string>
     <string name="invalid_account_login_dialog_title">Cuenta no válida</string>

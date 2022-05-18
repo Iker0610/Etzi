@@ -43,10 +43,22 @@
     <string name="login_label">Sartu</string>
     <string name="remind_me_label">Recuérdame</string>
     <string name="biometrics_button">Sartu biometria bidez</string>
-    <string name="ok_button">Baieztatu</string>
     <string name="select_date_label">Eguna hautatu</string>
     <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
     <string name="call">Deialdia</string>
     <string name="grade">Nota</string>
     <string name="noGrades">Ez daude behin-behineko notarik</string>
+    <string name="save_button">Gorde</string>
+    <string name="enroll_button">Konfiguratu</string>
+    <string name="server_error_dialog_title">Errore bat gertatu da. Saiatu berriro.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Gordetako kredentzialak baliogabeak dira</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">Aurreko erabiltzaileko kedentzialak baliogabeak dira. Agian pasahitza aldatu du edo kontua ezabatu da.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Jarraitzeko, hasi saioa berriro zure erabiltzaile-izena eta pasahitzarekin.</string>
+    <string name="processing">Prozesatzen</string>
+    <string name="incorrect_login_error_message">Erabiltzaile-izena edo pasahitza okerra.</string>
+    <string name="invalid_account_login_dialog_title">Kontu baliogabea</string>
+    <string name="invalid_account_login_dialog_text">Ez zara saioa hasi baliozko kontu batekin. Sar zaitez baliozko kontu eta pasahitz batekin autentifikazio biometrikoa erabili ahal izateko.</string>
+    <string name="no_biometrics_enrolled_dialog_title">Sarbide biometrikoa ez dago konfiguratuta</string>
+    <string name="no_biometrics_enrolled_dialog_text_1">Gailuak sarbide biometrikoa onartzen du, baina ez dago konfiguratuta.</string>
+    <string name="no_biometrics_enrolled_dialog_text_2">Konfiguratu nahi duzu?</string>
 </resources>
