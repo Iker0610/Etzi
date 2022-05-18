@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
@@ -98,7 +99,7 @@ private fun EtziAppScreen(
     //-----------   Utility variables   ------------//
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val windowSizeClass = calculateWindowSizeClass(context as Activity).widthSizeClass
+    val windowSizeClass = calculateWindowSizeClass(context as Activity)
 
 
     //-------------   Nav-Controller   -------------//
@@ -109,8 +110,8 @@ private fun EtziAppScreen(
 
     //-----------   Navigation States   ------------//
     val enableNavigationElements by derivedStateOf { MainActivityScreens.hasNavigationElements(currentRoute) }
-    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass == WindowWidthSizeClass.Compact }
-    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass != WindowWidthSizeClass.Compact }
+    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact }
+    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact }
 
 
     //-----------   Navigation-drawer   ------------//
@@ -205,7 +206,7 @@ private fun EtziAppScreen(
 private fun MainNavigationGraph(
     studentDataViewModel: StudentDataViewModel,
     navController: NavHostController,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSizeClass: WindowSizeClass,
     onNavigationMenuOpen: () -> Unit,
 ) {
     /*************************************************
@@ -247,7 +248,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen)
+            TimetableScreen(studentDataViewModel, windowSizeClass.widthSizeClass, onNavigationMenuOpen)
         }
 
         navigation(
@@ -255,11 +256,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen(windowSizeClass, onNavigationMenuOpen)
+                TutorialsScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
-                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
+                TutorialsRemindersScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
             }
         }
 
@@ -268,11 +269,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen(windowSizeClass, onNavigationMenuOpen)
+                GradesScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen(windowSizeClass, onNavigationMenuOpen)
+                SubjectsScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
@@ -281,7 +282,7 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen(windowSizeClass, onNavigationMenuOpen)
+            EgelaScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
         }
 
         composable(route = MainActivityScreens.Account.route) {
