@@ -15,7 +15,6 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
-import das.losaparecidos.etzi.model.mockdata.subjects
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +23,7 @@ fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeC
 
     var selectedTab by remember { mutableStateOf(0) }
 
-    val courses = recordViewModel.obtainNumOfCourses()
+    val courses = recordViewModel.obtainEnrolledCourseSet()
 
     Scaffold(
         topBar = {
