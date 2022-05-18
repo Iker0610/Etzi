@@ -1,5 +1,7 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -10,7 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,10 +28,9 @@ import java.time.LocalDate
 fun ChipGroup(
     modifier: Modifier = Modifier,
     professors: List<Professor> = listOf(),
-    selectedProfessor: Professor? = null,
-    onSelectedChanged: (String) -> Unit = {},
+    onSelectedChanged: (String, Boolean) -> Unit,
 ) {
-    var isSelected = false
+
     Column(modifier = Modifier.padding(8.dp)) {
         LazyHorizontalGrid(
             rows = GridCells.Fixed(2),
@@ -38,14 +40,15 @@ fun ChipGroup(
             modifier = modifier.height(120.dp)
         ){
             items(professors){ professor ->
+                var isSelected by rememberSaveable { mutableStateOf(false) }
                 FilterChip(
                     selected = isSelected,
                     selectedIcon = {Icon(Icons.Rounded.Check, "Selected item " + professor.fullName)},
                     onClick = {
                         isSelected = !isSelected
-                        onSelectedChanged(professor.email)
+                        onSelectedChanged(professor.email, isSelected)
                     },
-                    label = {Text(text = professor.fullName)},
+                    label = {Text(text = professor.fullName, maxLines = 1)},
                 )
             }
         }
@@ -77,7 +80,10 @@ fun TutorialChipPreview() {
                     Professor("Pepe", "Perez", "pepe.perez@ehu.eus"),
                     Professor("Unprofe", "Más", "unprofe.mas@ehu.eus"),
                     Professor("Otroprofe", "Más", "Otroprofe.mas@ehu.eus"),
-                   ))
+                   ),
+                onSelectedChanged = {profe, selected ->
+                    Log.i("profesor y seleccionado?:" ,"$profe $selected")
+                })
             }
         }
     }
