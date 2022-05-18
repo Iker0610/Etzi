@@ -17,33 +17,41 @@ fun SubjectContainer(
     subjectEnrollment: SubjectEnrollment
 ) {
 
-    Row(
+    Column(
         Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.SpaceAround
     ) {
-        Column(
-            Modifier.padding(bottom = 8.dp)
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 8.dp)
         ) {
             Text(
                 text = "${stringResource(id = R.string.type)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
-            Text(text = subjectEnrollment.subject.type)
+            Text(text = subjectEnrollment.subject.type,
+                style = MaterialTheme.typography.labelLarge,)
         }
-        Column(
-            Modifier.padding(bottom = 8.dp)
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 8.dp)
         ) {
             Text(
                 text = "${stringResource(id = R.string.date)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
-            Text(text = subjectEnrollment.subject.academicYear.toString())
+            Text(text = subjectEnrollment.subject.academicYear.toString(),
+                style = MaterialTheme.typography.labelLarge,)
         }
-        Column(
-            Modifier.padding(bottom = 8.dp)
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 8.dp)
         ) {
             Text(
                 text = "${stringResource(id = R.string.grade)}:",
@@ -58,11 +66,17 @@ fun SubjectContainer(
             ) {
 
                 Row() {
-                    Text(text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade)
+                    Text(
+                        text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
 
                     // Si tiene matrícula de honor
                     if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction) {
-                        Text(text = " ${stringResource(id = R.string.distinction)}")
+                        Text(
+                            text = " ${stringResource(id = R.string.distinction)}",
+                            style = MaterialTheme.typography.labelLarge,
+                        )
                     }
                 }
 

@@ -110,7 +110,9 @@ fun GradesScreen(
 
                             // Datos de la asignatura
                             Row(
-                                Modifier.fillMaxWidth(),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
 
