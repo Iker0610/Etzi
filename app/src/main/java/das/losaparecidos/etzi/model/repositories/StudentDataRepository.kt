@@ -10,5 +10,6 @@ class StudentDataRepository @Inject constructor(
     private val apiClient: APIClient,
 ) {
     suspend fun getTimeTable() = apiClient.getTimetable().groupBy { it.startDate.date.toString() }
+    suspend fun getTutorials() = apiClient.getTutorials()
     suspend fun getRecord() = apiClient.getRecord()
 }

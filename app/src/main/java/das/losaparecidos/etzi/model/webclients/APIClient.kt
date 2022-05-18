@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.entities.SerializableLecture
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
+import das.losaparecidos.etzi.model.entities.SubjectTutorial
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -116,6 +117,9 @@ class APIClient @Inject constructor() {
         val response: List<SerializableLecture> = httpClient.get("https://api.etzi.eus/student/timetable").body()
         return response.map(SerializableLecture::lecture)
     }
+
+    suspend fun getTutorials(): List<SubjectTutorial> =
+        httpClient.get("https://api.etzi.eus/student/tutorials").body()
 
     suspend fun getRecord(): List<SubjectEnrollment> = httpClient.get("https://api.etzi.eus/student/record").body()
 }
