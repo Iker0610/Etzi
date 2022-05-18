@@ -1,11 +1,18 @@
 package das.losaparecidos.etzi.model.entities
 
-import java.time.LocalDate
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.datetime.LocalDate
 
+// ASIGNATURA
+@Serializable
 data class Subject(
     val name: String,
-    val academicYear: LocalDate,
-    val degree: String,
-    val type: String,
+
+    @SerialName("academic_year")
+    val academicYear: LocalDate, // Fecha de inicio del curso
+    val degree: String, // Grado: Ing Informática, etc.
+    val type: String, // Troncal, optativa...
     val credits: Int,
+    val course: Int, // 1º, 2º....
 )

@@ -8,13 +8,16 @@ import das.losaparecidos.etzi.model.entities.Building
 import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
 import das.losaparecidos.etzi.model.entities.Student
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).
@@ -54,22 +57,22 @@ class Converters {
 
     @TypeConverter
     fun fromLongToDate(value: Long): LocalDate =
-        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDate()
+        Instant.fromEpochSeconds(value).toLocalDateTime(TimeZone.currentSystemDefault()).date
 
 
     @TypeConverter
     fun fromLongToDatetime(value: Long): LocalDateTime =
-        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDateTime()
+        Instant.fromEpochSeconds(value).toLocalDateTime(TimeZone.currentSystemDefault())
 
 
     @TypeConverter
     fun dateToTimestamp(date: LocalDate): Long =
-        date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+        date.atStartOfDayIn(TimeZone.currentSystemDefault()).epochSeconds
 
 
     @TypeConverter
     fun datetimeToTimestamp(date: LocalDateTime): Long =
-        date.atZone(ZoneId.systemDefault()).toEpochSecond()
+        date.toInstant(TimeZone.currentSystemDefault()).epochSeconds
 
 
     //---------   String List Converters   ---------//
