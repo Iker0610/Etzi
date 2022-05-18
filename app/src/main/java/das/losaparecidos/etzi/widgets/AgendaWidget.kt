@@ -78,7 +78,7 @@ internal fun updateAppWidget(
         //MINSizeF(118f,349f) to RemoteViews(
         //SizeF(117f,200f) to RemoteViews( //117x200 OFI1
         //SizeF(260f, 100f) to RemoteViews(
-        SizeF(259f, 99f) to RemoteViews(
+        SizeF(259f, 120f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_2x4
         ),
@@ -88,7 +88,7 @@ internal fun updateAppWidget(
         //MINSizeF(190f,349f) to RemoteViews(
         //SizeF(117f,256f) to RemoteViews(//OFI1
         //SizeF(118f, 340f) to RemoteViews(
-        SizeF(258f, 214f) to RemoteViews(
+        SizeF(259f, 220f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_3x4
         ),
@@ -97,7 +97,7 @@ internal fun updateAppWidget(
         //MAXSizeF(693f, 441f) to RemoteViews(
         //MINSizeF(253f,349f) to RemoteViews(
         //SizeF(180f,340f) to RemoteViews( //OFI1
-        SizeF(258f, 327f) to RemoteViews(
+        SizeF(259f, 327f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_4x4
         )
