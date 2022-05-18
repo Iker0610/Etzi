@@ -74,3 +74,35 @@ fun DynamicLargeTopAppBar(
         )
     }
 }
+
+
+@Composable
+fun DynamicLargeMediumTopAppBar(
+    windowSizeClass: WindowSizeClass,
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+    colors: TopAppBarColors = TopAppBarDefaults.mediumTopAppBarColors(),
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+) {
+    if (windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact) {
+        LargeTopAppBar(
+            title = title,
+            modifier = modifier,
+            navigationIcon = navigationIcon,
+            actions = actions,
+            colors = colors,
+            scrollBehavior = scrollBehavior,
+        )
+    } else {
+        MediumTopAppBar(
+            title = title,
+            modifier = modifier,
+            navigationIcon = navigationIcon,
+            actions = actions,
+            colors = colors,
+            scrollBehavior = scrollBehavior,
+        )
+    }
+}

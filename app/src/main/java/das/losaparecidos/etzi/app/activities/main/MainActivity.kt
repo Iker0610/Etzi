@@ -248,7 +248,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen)
         }
 
         navigation(
@@ -256,11 +256,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+                TutorialsScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
-                TutorialsRemindersScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
             }
         }
 
@@ -269,11 +269,11 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+                GradesScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+                SubjectsScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
@@ -282,7 +282,7 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen(windowSizeClass.widthSizeClass, onNavigationMenuOpen)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen)
         }
 
         composable(route = MainActivityScreens.Account.route) {

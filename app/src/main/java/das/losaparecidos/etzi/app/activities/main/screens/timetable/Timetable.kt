@@ -16,6 +16,7 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,12 +27,13 @@ import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
+import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
 import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.model.entities.Lecture
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass: WindowWidthSizeClass, onMenuOpen: () -> Unit) {
+fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
 
     val context = LocalContext.current
 
@@ -44,10 +46,11 @@ fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass:
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
+            DynamicLargeMediumTopAppBar(
+                windowSizeClass,
                 title = { Text(text = MainActivityScreens.Timetable.title(LocalContext.current)) },
                 navigationIcon = {
-                    if (windowSizeClass == WindowWidthSizeClass.Compact) {
+                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = onMenuOpen) {
                             Icon(Icons.Rounded.Menu, null)
                         }
