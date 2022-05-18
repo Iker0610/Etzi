@@ -31,6 +31,16 @@ class AgendaWidget : AppWidgetProvider() {
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        //print("Width: "+newOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH))
+    }
 }
 
 internal fun updateAppWidget(
@@ -39,7 +49,6 @@ internal fun updateAppWidget(
     appWidgetId: Int
 ) {
 
-    //println(AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId).get(AppWidgetManager.OPTION_APPWIDGET_SIZES))
     //val widgetText = context.getString(R.string.appwidget_text)
     // Construct the RemoteViews object
     //val views = RemoteViews(context.packageName, R.layout.agenda_widget_3x4)
@@ -56,26 +65,39 @@ internal fun updateAppWidget(
         //Formula: (73n-16)(118m-16)
         //Y 70n-30?
         //2x3
-        SizeF(110f, 180f) to RemoteViews(
+        //MAXSizeF(516f, 213f) to RemoteViews(
         //SizeF(130f, 338f) to RemoteViews(
+        //MINSizeF(118f,257f) to RemoteViews(
+        SizeF(0f,0f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_2x3
         ),
         //2x4
         //SizeF(130f, 456f) to RemoteViews(
-        SizeF(110f, 250f) to RemoteViews(
+        //MAXSizeF(693f, 213f) to RemoteViews(
+        //MINSizeF(118f,349f) to RemoteViews(
+        //SizeF(117f,200f) to RemoteViews( //117x200 OFI1
+        //SizeF(260f, 100f) to RemoteViews(
+        SizeF(259f, 99f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_2x4
         ),
         //3x4
         //SizeF(203f, 456f) to RemoteViews(
-        SizeF(180f, 546f) to RemoteViews(
+        //MAXSizeF(693f, 327f) to RemoteViews(
+        //MINSizeF(190f,349f) to RemoteViews(
+        //SizeF(117f,256f) to RemoteViews(//OFI1
+        //SizeF(118f, 340f) to RemoteViews(
+        SizeF(258f, 214f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_3x4
         ),
         //4x4
         //SizeF(276f, 456f) to RemoteViews(
-        SizeF(456f, 456f) to RemoteViews(
+        //MAXSizeF(693f, 441f) to RemoteViews(
+        //MINSizeF(253f,349f) to RemoteViews(
+        //SizeF(180f,340f) to RemoteViews( //OFI1
+        SizeF(258f, 327f) to RemoteViews(
             context.packageName,
             R.layout.agenda_widget_4x4
         )
