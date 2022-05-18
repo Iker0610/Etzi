@@ -49,4 +49,6 @@
     <string name="grade">Nota</string>
     <string name="noGrades">Ez daude behin-behineko notarik</string>
     <string name="distinction">Ohorezko matrikula</string>
+    <string name="type">Mota</string>
+    <string name="date">Data</string>
 </resources>

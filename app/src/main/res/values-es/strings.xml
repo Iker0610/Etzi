@@ -75,5 +75,7 @@
     <string name="grade">Nota</string>
     <string name="noGrades">No hay notas provisionales</string>
     <string name="distinction">Matrícula de honor</string>
+    <string name="type">Tipo</string>
+    <string name="date">Fecha</string>
 
 </resources>

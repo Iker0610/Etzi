@@ -72,4 +72,6 @@
     <string name="grade">Grade</string>
     <string name="noGrades">There are not provisional grades</string>
     <string name="distinction">Distinction</string>
+    <string name="type">Type</string>
+    <string name="date">Date</string>
 </resources>

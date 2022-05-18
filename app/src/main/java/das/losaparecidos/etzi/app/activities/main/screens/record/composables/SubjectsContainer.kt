@@ -26,7 +26,7 @@ fun SubjectContainer(
             Modifier.padding(bottom = 8.dp)
         ) {
             Text(
-                text = "Type:",
+                text = "${stringResource(id = R.string.type)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
@@ -36,7 +36,7 @@ fun SubjectContainer(
             Modifier.padding(bottom = 8.dp)
         ) {
             Text(
-                text = "Date:",
+                text = "${stringResource(id = R.string.date)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
@@ -46,7 +46,7 @@ fun SubjectContainer(
             Modifier.padding(bottom = 8.dp)
         ) {
             Text(
-                text = "Grade:",
+                text = "${stringResource(id = R.string.grade)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary
             )
