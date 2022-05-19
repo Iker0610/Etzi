@@ -78,4 +78,7 @@
     <string name="type">Type</string>
     <string name="date">Date</string>
     <string name="no_lectures_dialog_message">There are no lectures for today</string>
+    <string name="fail">No pass</string>
+    <string name="pass">Pass</string>
+    <string name="outstanding">Outstanding</string>
 </resources>

@@ -67,4 +67,7 @@
     <string name="distinction">Ohorezko matrikula</string>
     <string name="type">Mota</string>
     <string name="date">Data</string>
+    <string name="fail">Ez gai</string>
+    <string name="pass">Gaindituta</string>
+    <string name="outstanding">Bikain</string>
 </resources>

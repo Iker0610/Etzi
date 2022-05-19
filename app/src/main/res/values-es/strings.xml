@@ -78,5 +78,8 @@
     <string name="distinction">Matrícula de honor</string>
     <string name="type">Tipo</string>
     <string name="date">Fecha</string>
+    <string name="fail">No aprobado</string>
+    <string name="pass">Aprobado</string>
+    <string name="outstanding">Sobresaliente</string>
 
 </resources>

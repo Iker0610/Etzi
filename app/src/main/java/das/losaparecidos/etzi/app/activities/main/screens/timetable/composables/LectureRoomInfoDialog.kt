@@ -160,7 +160,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             .clip(shape = MaterialTheme.shapes.large)
                             .border(2.dp, MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.large),
                         cameraPositionState = CameraPositionState(
-                            position = CameraPosition.fromLatLngZoom(room, 18f)
+                            position = CameraPosition.fromLatLngZoom(room, 16f)
                         )
                     ) { BuildingMapContent(lectureRoom = lectureRoom) }
                 }
