@@ -123,6 +123,7 @@ class AuthenticationActivity : FragmentActivity() {
                         if (preLoginSuccessful) onSuccessfulLogin(authViewModel.lastLoggedUser!!)
                         else {
                             launch(Dispatchers.Main) {
+                                authViewModel.backgroundBlockingTaskOnCourse = false
                                 navController.popBackStack() // Empty the backstack so the user doesn't return to splash screen
                                 navController.navigate("auth_screen")
                             }

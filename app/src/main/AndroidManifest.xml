@@ -18,8 +18,7 @@
         <activity
             android:name=".app.activities.main.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.Etzi"
-            android:windowSoftInputMode="adjustResize"/>
+            android:theme="@style/Theme.Etzi" />
 
         <!--Authentication Activity-->
         <activity
@@ -31,6 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBAvJdJVpxQBqXOLGqInwuLvNPChdyHXNc" />
+
 
 
         <!--  ###  FIREBASE  ###  -->

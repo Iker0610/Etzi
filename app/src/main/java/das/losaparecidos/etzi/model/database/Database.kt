@@ -4,17 +4,18 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import das.losaparecidos.etzi.app.utils.epochSecond
+import das.losaparecidos.etzi.app.utils.epochSeconds
+import das.losaparecidos.etzi.app.utils.fromEpochSeconds
 import das.losaparecidos.etzi.model.entities.Building
 import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
 import das.losaparecidos.etzi.model.entities.Student
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).
@@ -53,23 +54,19 @@ class Converters {
     // They convert from ZonedDateTime to long format and backwards. Time zone value is kept.
 
     @TypeConverter
-    fun fromLongToDate(value: Long): LocalDate =
-        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDate()
+    fun fromLongToDate(value: Long): LocalDate = LocalDate.fromEpochSeconds(value)
 
 
     @TypeConverter
-    fun fromLongToDatetime(value: Long): LocalDateTime =
-        Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDateTime()
+    fun fromLongToDatetime(value: Long): LocalDateTime = LocalDateTime.fromEpochSeconds(value)
 
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDate): Long =
-        date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+    fun dateToTimestamp(date: LocalDate): Long = date.epochSeconds
 
 
     @TypeConverter
-    fun datetimeToTimestamp(date: LocalDateTime): Long =
-        date.atZone(ZoneId.systemDefault()).toEpochSecond()
+    fun datetimeToTimestamp(date: LocalDateTime): Long = date.epochSecond
 
 
     //---------   String List Converters   ---------//

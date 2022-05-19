@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
@@ -33,11 +34,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -51,7 +56,10 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
-import das.losaparecidos.etzi.app.activities.main.viewmodels.UserDataViewModel
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
+import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
+import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
+import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationRail
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
      **                  ViewModel                  **
      *************************************************/
 
-    private val userDataViewModel: UserDataViewModel by viewModels()
+    private val studentDataViewModel: StudentDataViewModel by viewModels()
 
 
     /*************************************************
@@ -76,14 +84,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
             EtziTheme {
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(userDataViewModel, navController)
+                EtziAppScreen(studentDataViewModel, navController)
             }
-
         }
     }
 }
@@ -91,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun EtziAppScreen(
-    userDataViewModel: UserDataViewModel,
+    studentDataViewModel: StudentDataViewModel,
     navController: NavHostController,
 ) {
     /*************************************************
@@ -102,7 +107,7 @@ private fun EtziAppScreen(
     //-----------   Utility variables   ------------//
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val windowSizeClass = calculateWindowSizeClass(context as Activity).widthSizeClass
+    val windowSizeClass = calculateWindowSizeClass(context as Activity)
 
 
     //-------------   Nav-Controller   -------------//
@@ -112,9 +117,13 @@ private fun EtziAppScreen(
 
 
     //-----------   Navigation States   ------------//
-    val enableNavigationElements by derivedStateOf { MainActivityScreens.hasNavigationElements(currentRoute) }
-    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass == WindowWidthSizeClass.Compact }
-    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass != WindowWidthSizeClass.Compact }
+    val enableNavigationElements by derivedStateOf {
+        MainActivityScreens.hasNavigationElements(
+            currentRoute
+        )
+    }
+    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact }
+    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact }
 
 
     //-----------   Navigation-drawer   ------------//
@@ -140,11 +149,10 @@ private fun EtziAppScreen(
     // Navigate to a route
     val onNavigate = { route: String ->
         navController.navigate(route) {
-            popUpTo(MainActivityScreens.Timetable.route) {
-                saveState = true
+            popUpTo(route) {
+                inclusive = true
             }
             launchSingleTop = true
-            restoreState = true
         }
     }
 
@@ -166,14 +174,15 @@ private fun EtziAppScreen(
       */
 
     EtziNavigationDrawer(
-        currentRoute = currentRoute,
-        onNavigate = onNavigate,
-        drawerState = navigationDrawerState,
-        gesturesEnabled = enableNavigationElements,
+        currentRoute,
+        onNavigate,
+        navigationDrawerState,
+        enableNavigationElements
     ) {
         Scaffold(
             bottomBar = {
-                AnimatedVisibility(enableBottomNavigation,
+                AnimatedVisibility(
+                    enableBottomNavigation,
                     enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
                     exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
                 ) { EtziNavigationBar(currentSection, onNavigate) }
@@ -190,7 +199,12 @@ private fun EtziAppScreen(
                     exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
                 ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
 
-                MainNavigationGraph(userDataViewModel, navController, windowSizeClass, onNavigationMenuOpen)
+                MainNavigationGraph(
+                    studentDataViewModel,
+                    navController,
+                    windowSizeClass,
+                    onNavigationMenuOpen
+                )
             }
         }
     }
@@ -209,12 +223,12 @@ private fun EtziAppScreen(
 }
 
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun MainNavigationGraph(
-    userDataViewModel: UserDataViewModel,
+    studentDataViewModel: StudentDataViewModel,
     navController: NavHostController,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSizeClass: WindowSizeClass,
     onNavigationMenuOpen: () -> Unit,
 ) {
     /*************************************************
@@ -256,7 +270,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(windowSizeClass, onNavigationMenuOpen)
+            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen)
         }
 
         navigation(
@@ -264,11 +278,25 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Tutorials.route
         ) {
             composable(route = MainActivityScreens.Tutorials.route) {
-                TutorialsScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+
+                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") })
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+
                 TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
+            }
+
+            dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+
+                TutorialsFilterDialog(tutorialsViewModel = tutorialsViewModel, windowSizeClass = windowSizeClass) {
+                }
             }
         }
 
@@ -277,15 +305,24 @@ private fun MainNavigationGraph(
             startDestination = MainActivityScreens.Grades.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
-                GradesScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
-                SubjectsScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
-                CreditsScreen(windowSizeClass, onNavigationMenuOpen)
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
         }
 

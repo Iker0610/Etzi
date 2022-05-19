@@ -234,7 +234,7 @@
             "notNull": true
           },
           {
-            "fieldPath": "enrolled_degree",
+            "fieldPath": "enrolledDegree",
             "columnName": "enrolled_degree",
             "affinity": "TEXT",
             "notNull": true
