@@ -4,9 +4,7 @@ package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -30,6 +28,7 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
+import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Professor
 
@@ -78,19 +77,19 @@ fun TutorialsScreen(
             ) {
                 //header por asignatura y divisores de material design 3
                 //surface para diferenciar las asignaturas
-                Column {
-                    tutorials.forEach { subjectWithTutorial ->
-                        SubjectCollapsableSection(subjectWithTutorial.subjectName) {
-                            subjectWithTutorial.professors.forEach { professor ->
-                                ProfessorCollapsable(professor = professor.professor) {
-                                    professor.tutorials.forEach { tutorial ->
-                                        TutorialCard(tutorial = tutorial, professor = professor.professor)
-                                    }
+
+                tutorials.forEach { subjectWithTutorial ->
+                    SubjectCollapsableSection(subjectWithTutorial.subjectName) {
+                        subjectWithTutorial.professors.forEach { professor ->
+                            ProfessorCollapsable(professor = professor.professor) {
+                                professor.tutorials.forEach { tutorial ->
+                                    TutorialCard(tutorial = tutorial, professor = professor.professor)
                                 }
                             }
                         }
                     }
                 }
+
             }
         }
     }
@@ -101,18 +100,28 @@ fun SubjectCollapsableSection(
     subjectName: String,
     modifier: Modifier = Modifier,
     expanded: Boolean = true,
-    content: @Composable () -> Unit = {}
+    content: @Composable ColumnScope.() -> Unit = {}
 ) {
-    Column(modifier=modifier) {
-        Surface(onClick = { /*TODO*/ }) {
-            Text(text = subjectName)
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail")
+    Column(modifier = modifier) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { /*TODO*/ }
+        ) {
+            CenteredRow(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Text(text = subjectName, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", modifier = Modifier.padding(start = 32.dp))
+                }
             }
         }
 
         AnimatedVisibility(expanded) {
-            content()
+            Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
+                content()
+            }
         }
     }
 }
@@ -122,18 +131,31 @@ fun ProfessorCollapsable(
     professor: Professor,
     modifier: Modifier = Modifier,
     expanded: Boolean = true,
-    content: @Composable () -> Unit = {}
+    content: @Composable ColumnScope.() -> Unit = {}
 ) {
-    Column(modifier=modifier) {
-        Surface(onClick = { /*TODO*/ }) {
-            Text(text = professor.fullName)
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail")
+    Column(modifier = modifier) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { /*TODO*/ }
+        ) {
+            CenteredRow(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+            ) {
+                Text(text = professor.fullName, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", modifier = Modifier.padding(start = 32.dp))
+                }
             }
         }
 
         AnimatedVisibility(expanded) {
-            content()
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                content()
+            }
         }
     }
 }
