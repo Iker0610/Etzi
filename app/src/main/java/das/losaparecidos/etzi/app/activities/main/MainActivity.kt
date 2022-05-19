@@ -297,7 +297,7 @@ private fun MainNavigationGraph(
 
                 TutorialsFilterDialog(tutorialsViewModel = tutorialsViewModel,
                     windowSizeClass = windowSizeClass,
-                    onBack = {navController.getBackStackEntry(MainActivityScreens.Tutorials.route)})
+                    onBack = navigateBack)
             }
         }
 

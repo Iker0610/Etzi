@@ -39,22 +39,18 @@ fun TutorialsFilterDialog(
     windowSizeClass: WindowSizeClass,
     onBack: () -> Unit
 ) {
-    val context = LocalContext.current
     var fromDate by remember { mutableStateOf(LocalDate.today) }
-    var toDate by remember { mutableStateOf(LocalDate.today.plus(7,DateTimeUnit.DAY)) }
-    val selectedSubject = rememberSaveable{ mutableStateOf(tutorialsViewModel.subjectTutorials.first())}
+    var toDate by remember { mutableStateOf(LocalDate.today.plus(7, DateTimeUnit.DAY)) }
+    val selectedSubject = rememberSaveable { mutableStateOf(tutorialsViewModel.subjectTutorials.first()) }
 
     Scaffold(
         topBar = {
             DynamicMediumTopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Rounded.Close, null)
-                    }
+                    IconButton(onClick = onBack) { Icon(Icons.Rounded.Close, null) }
                 },
                 actions = {
-                    // TODO poner text button 'save'
                     TextButton(onClick = {
                         /*TODO aplicar lo seleccionado en los filtros*/
                         tutorialsViewModel.onSelectedChange(selectedSubject.value, fromDate, toDate, emptyList())
@@ -67,7 +63,6 @@ fun TutorialsFilterDialog(
         },
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-
 
         Column(
             modifier = Modifier
@@ -113,8 +108,8 @@ fun TutorialsFilterDialog(
                 professors = tutorialsViewModel.professorsWithTutorials,
                 onSelectedChanged = { p1, p2 ->
 
-                        Log.i("nombre profesor", p1)
-                        Log.i("seleccionado", p2.toString())
+                    Log.i("nombre profesor", p1)
+                    Log.i("seleccionado", p2.toString())
 
                 },
             )

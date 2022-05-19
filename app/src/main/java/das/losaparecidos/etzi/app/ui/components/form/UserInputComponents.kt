@@ -1,5 +1,6 @@
 package das.losaparecidos.etzi.app.ui.components.form
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -187,8 +188,8 @@ fun DateRangeDoubleField(
 
     endDateLabel: @Composable () -> Unit = { Text(text = stringResource(id = R.string.date_to_label)) },
     endDatePlaceholder: @Composable (() -> Unit)? = { Text(text = dateFormatter.toString()) },
-    endDateLeadingIcon: @Composable (() -> Unit)? = null,
-    endDateTrailingIcon: @Composable (() -> Unit)? = { Icon(Icons.Default.Event, contentDescription = stringResource(id = R.string.date_to_label)) },
+    endDateLeadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Default.Event, contentDescription = stringResource(id = R.string.date_to_label)) },
+    endDateTrailingIcon: @Composable (() -> Unit)? = null,
 
     enabled: Boolean = true,
 ) {
@@ -205,7 +206,7 @@ fun DateRangeDoubleField(
             onDateRangeSelected = onDateRangeSelected,
             dateRange = dateRange,
             dateFormatter = dateFormatter,
-            labelDisplayMode= DateRangeFieldTextMode.FROM,
+            labelDisplayMode = DateRangeFieldTextMode.FROM,
 
             label = startDateLabel,
             placeholder = startDatePlaceholder,
@@ -222,7 +223,7 @@ fun DateRangeDoubleField(
             onDateRangeSelected = onDateRangeSelected,
             dateRange = dateRange,
             dateFormatter = dateFormatter,
-            labelDisplayMode= DateRangeFieldTextMode.FROM,
+            labelDisplayMode = DateRangeFieldTextMode.TO,
 
             label = endDateLabel,
             placeholder = endDatePlaceholder,
@@ -258,25 +259,29 @@ fun DateRangeField(
     val focusManager = LocalFocusManager.current
 
     // Formatted date as string
-    val dateRangeLabelText = when(labelDisplayMode) {
+    val dateRangeLabelText = when (labelDisplayMode) {
         DateRangeFieldTextMode.FROM_TO -> "${dateRange.first.format(dateFormatter)} - ${dateRange.second.format(dateFormatter)}"
         DateRangeFieldTextMode.FROM -> dateRange.first.format(dateFormatter)
         DateRangeFieldTextMode.TO -> dateRange.second.format(dateFormatter)
     }
 
+    val onDateRangeSelected: (LocalDate, LocalDate) -> Unit = { startDate, endDate ->
+        // Once the user finishes their selection clear the focus from this field
+        focusManager.clearFocus()
 
+        // Call event callback
+        onDateRangeSelected(startDate, endDate)
+    }
+
+    val onDismiss = { focusManager.clearFocus() }
+
+    Log.d("label", dateRangeLabelText)
     //-------------------   UI   -------------------//
-    OutlinedTextField(
+    TextField(
         modifier = modifier.onFocusChanged {
             // If the field is focused open the picker dialog
             if (it.isFocused) {
-                showDateRangePicker(context, initialStartDate = dateRange.first, initialEndDate = dateRange.second){startDate, endDate ->
-                    // Once the user finishes their selection clear the focus from this field
-                    focusManager.clearFocus()
-
-                    // Call event callback
-                    onDateRangeSelected(startDate, endDate)
-                }
+                showDateRangePicker(context, initialStartDate = dateRange.first, initialEndDate = dateRange.second, onDateRangeSelected, onDismiss)
             }
         },
 

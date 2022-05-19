@@ -19,17 +19,6 @@ import javax.inject.Singleton
  * Google does not support custom language (Locale) settings, and the solution is quite "hacky".
  */
 
-
-/**
- * Get a ComponentActivity from the context given if possible, otherwise returns null.
- */
-private fun Context.getActivity(): ComponentActivity? = when (this) {
-    is ComponentActivity -> this
-    is ContextWrapper -> baseContext.getActivity()
-    else -> null
-}
-
-
 /*************************************************
  **          App's Available Languages          **
  *************************************************/
