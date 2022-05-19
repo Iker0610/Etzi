@@ -3,6 +3,62 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1652704562451.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652706806889.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1652710442366.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652710695725.xml" value="0.1609531772575251" />
+        <entry key="../../../../layout/compose-model-1652723201846.xml" value="0.1609531772575251" />
+        <entry key="../../../../layout/compose-model-1652725172214.xml" value="0.47685185185185186" />
+        <entry key="../../../../layout/compose-model-1652726420318.xml" value="0.625" />
+        <entry key="../../../../layout/compose-model-1652727021211.xml" value="0.4888888888888889" />
+        <entry key="../../../../layout/compose-model-1652789390071.xml" value="0.28315018315018314" />
+        <entry key="../../../../layout/compose-model-1652789645163.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652791431460.xml" value="0.3968172484599589" />
+        <entry key="../../../../layout/compose-model-1652795497978.xml" value="0.9" />
+        <entry key="../../../../layout/compose-model-1652795497986.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652797191491.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652798420640.xml" value="0.32726502963590176" />
+        <entry key="../../../../layout/compose-model-1652799936769.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652803279998.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652808076526.xml" value="0.75" />
+        <entry key="../../../../layout/compose-model-1652808308413.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652808713514.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652808909770.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652809673217.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652811073371.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652811145790.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1652811243999.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1652811280352.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652811334869.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1652811336001.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1652813601723.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652818196939.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652818607424.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652818781518.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652821101273.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1652821321504.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652826280936.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652826670477.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652826803721.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652826978307.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1652828923629.xml" value="0.4130901287553648" />
+        <entry key="../../../../layout/compose-model-1652829955605.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1652873402269.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652874137922.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1652874282441.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652877427227.xml" value="0.3264358108108108" />
+        <entry key="../../../../layout/compose-model-1652877443224.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652878569129.xml" value="0.32559121621621623" />
+        <entry key="../../../../layout/compose-model-1652878819353.xml" value="0.4130901287553648" />
+        <entry key="../../../../layout/compose-model-1652881082167.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652881278447.xml" value="0.36203703703703705" />
+        <entry key="../../../../layout/compose-model-1652881470923.xml" value="0.36203703703703705" />
+        <entry key="../../../../layout/compose-model-1652881772768.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1652886897044.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1652891397593.xml" value="0.21875" />
+        <entry key="../../../../layout/compose-model-1652965981427.xml" value="0.3935064935064935" />
+        <entry key="../../../../layout/compose-model-1652965981557.xml" value="0.32857142857142857" />
+        <entry key="../../../../layout/compose-model-1652975577065.xml" value="0.15462962962962962" />
         <entry key="..\:/DEV/UNI/DAS/Etzi/Etzi/app/src/main/res/drawable/ic_ehu_logo.xml" value="0.1" />
         <entry key="..\:/DEV/UNI/DAS/formacion/android-compose-codelabs-main/Etzi/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2075" />
         <entry key="..\:/DEV/UNI/DAS/formacion/android-compose-codelabs-main/Etzi/app/src/main/res/drawable/ic_ehu_logo.xml" value="0.226" />
@@ -10,6 +66,7 @@
         <entry key="..\:/DEV/UNI/DAS/formacion/android-compose-codelabs-main/Etzi/app/src/main/res/drawable/ic_launcher_monochrome.xml" value="0.1" />
         <entry key="..\:/DEV/UNI/DAS/formacion/android-compose-codelabs-main/Etzi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.226" />
         <entry key="..\:/DEV/UNI/DAS/formacion/android-compose-codelabs-main/Etzi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/ic_ehu_logo.xml" value="0.258" />
       </map>
     </option>
   </component>

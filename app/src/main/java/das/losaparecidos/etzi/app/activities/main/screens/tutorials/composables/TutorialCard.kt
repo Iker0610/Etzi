@@ -7,7 +7,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Mail
+import androidx.compose.material.icons.rounded.NotificationsNone
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,15 +24,13 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import das.losaparecidos.etzi.model.entities.Tutorial
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
+fun TutorialCard(tutorial: Tutorial, professorFullName: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
 
@@ -94,14 +93,6 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-
-                    /*Text(
-                        "${stringResource(R.string.subgroup)}: ${lecture.subgroup}".toUpperCase(
-                            Locale.getDefault()
-                        ),
-                        style = MaterialTheme.typography.labelSmall
-                    )*/
-
                     Surface(
                         color = MaterialTheme.colorScheme.tertiary,
                         shape = RoundedCornerShape(16.dp),
@@ -115,7 +106,7 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
                         CenteredRow(
                             modifier = Modifier.padding(
                                 vertical = 4.dp,
-                                horizontal = 8.dp
+                                horizontal = 4.dp
                             )
                         ) {
 
@@ -157,7 +148,7 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            text = tutorial.endDate.toString(),
+                            text = professorFullName,
                             style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.W400)
                         )
                     }
@@ -166,17 +157,12 @@ fun TutorialCard(tutorial: Tutorial, modifier: Modifier = Modifier) {
                     CenteredColumn(
                         verticalArrangement = Arrangement.SpaceAround
                     ) {
-
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.Notifications, null)
-
+                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
+                            Icon(Icons.Rounded.NotificationsNone, null)
                         }
-                        /*
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.Map, null)
-
+                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
+                            Icon(Icons.Rounded.Mail, null)
                         }
-                        */
                     }
                 }
             }

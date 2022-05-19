@@ -111,7 +111,12 @@ fun TutorialsFilterDialog(
             //TODO OBTENER PROFES DE LA BBDD Y MODIFICAR EL onSelectedChanged
             FilterChipGroup(
                 professors = tutorialsViewModel.professorsWithTutorials,
-                onSelectedChanged = { p1, p2 -> {} },
+                onSelectedChanged = { p1, p2 ->
+
+                        Log.i("nombre profesor", p1)
+                        Log.i("seleccionado", p2.toString())
+
+                },
             )
         }
     }

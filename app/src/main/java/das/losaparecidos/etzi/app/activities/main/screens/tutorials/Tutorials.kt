@@ -2,6 +2,7 @@ package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
@@ -57,7 +59,7 @@ fun TutorialsScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
+                title = { Text(text = MainActivityScreens.Tutorials.title(context)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = onMenuOpen) {
@@ -67,23 +69,23 @@ fun TutorialsScreen(
                 },
                 actions = {
                     IconButton(onClick = onFilter) {
-                        Icon(Icons.Rounded.FilterAlt, contentDescription = null)
+                        Icon(Icons.Rounded.FilterAlt, contentDescription = "Open filter dialog")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        //TODO SI NO HAY TUTORIAS CON LOS PARAMETROS SELECCIONADOS, PONER UN MENSAJE SIMILAR A 'No hay tutorias disponibles'
-        CenteredColumn(
-            modifier = Modifier.padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            //contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
-        ) {
-            LazyColumn {
-                items(tutorialsViewModel.tutorials) { subjectutorial ->
-                    subjectutorial.professors.map { professorWithTutorials ->
-                        professorWithTutorials.tutorials.map { tutorial ->
-                            TutorialCard(tutorial = tutorial, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+        if (tutorialsViewModel.tutorials.isEmpty()) {
+            //TODO PONER UN MENSAJE SIMILAR A 'No hay tutorias disponibles'
+        } else {
+            CenteredColumn(
+                modifier = Modifier.padding(paddingValues),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                LazyColumn {
+                    items(tutorialsViewModel.tutorials) { professorWithTutorials ->
+                        professorWithTutorials.tutorials.groupBy { tutorial ->
+                            TutorialCard(tutorial = tutorial, professorFullName = professorWithTutorials.fullName)
                         }
                     }
                 }
@@ -99,7 +101,7 @@ fun TutorialsScreen(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun TutorialsScreenPreview() {
     EtziTheme {
-        TutorialsScreen(hiltViewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
+        TutorialsScreen(viewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
     }
 }
 
