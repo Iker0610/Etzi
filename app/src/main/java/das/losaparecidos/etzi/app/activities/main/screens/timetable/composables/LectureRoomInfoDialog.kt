@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.Polygon
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.model.entities.LectureRoom
@@ -42,7 +45,7 @@ fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 @Composable
 private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 
-    val room = LatLng(43.2634, -2.9505)
+    val room = polygons.filter { it["name"] == lectureRoom.building.name }[0]["location"] as LatLng
 
     Scaffold(
         topBar = {
@@ -58,7 +61,12 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
         BoxWithConstraints {
 
             if (400.dp > maxHeight) {
-                Row(Modifier.fillMaxHeight().padding(paddingValues).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    Modifier
+                        .fillMaxHeight()
+                        .padding(paddingValues)
+                        .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
+                ) {
 
                     CenteredColumn(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
 
@@ -99,11 +107,17 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                         cameraPositionState = CameraPositionState(
                             position = CameraPosition.fromLatLngZoom(room, 17f)
                         )
-                    ) { Marker(position = room) }
+                    ) { LoadMapOnDialog(lectureRoom = lectureRoom) }
+
 
                 }
             } else {
-                Column(Modifier.fillMaxWidth().padding(paddingValues).padding(16.dp)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues)
+                        .padding(16.dp)
+                ) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                         // Aula
                         CenteredColumn() {
@@ -143,14 +157,33 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             .clip(shape = MaterialTheme.shapes.large)
                             .border(2.dp, MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.large),
                         cameraPositionState = CameraPositionState(
-                            position = CameraPosition.fromLatLngZoom(room, 17f)
+                            position = CameraPosition.fromLatLngZoom(room, 18f)
                         )
-                    ) { Marker(position = room) }
+                    ) { LoadMapOnDialog(lectureRoom = lectureRoom) }
                 }
             }
         }
-
-
     }
+}
 
+@Composable
+private fun LoadMapOnDialog(lectureRoom: LectureRoom){
+
+    polygons.forEach { build ->
+
+        if (build["name"] == lectureRoom.building.name) {
+
+            Polygon(
+                points = build["polygon"] as List<LatLng>,
+                fillColor = Color(219, 68, 55),
+            )
+            Marker(build["location"] as LatLng, title = lectureRoom.building.name)
+        }
+        else {
+            Polygon(
+                points = build["polygon"] as List<LatLng>,
+                fillColor = Color(8,83,151),
+            )
+        }
+    }
 }
