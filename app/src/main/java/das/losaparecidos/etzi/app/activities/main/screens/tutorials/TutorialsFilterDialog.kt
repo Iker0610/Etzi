@@ -83,7 +83,7 @@ fun TutorialsFilterDialog(
 
 
             SubjectDropdownMenu(
-                subjectList = tutorialsViewModel.subjectTutorials,
+                subjectList = tutorialsViewModel.subjectList,
                 selectedSubject = tutorialsFilterViewModel.currentSelectedSubject,
                 modifier = Modifier.fillMaxWidth(),
                 onSubjectSelected = tutorialsFilterViewModel::currentSelectedSubject::set

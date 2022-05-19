@@ -140,17 +140,17 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
                         horizontalAlignment = Alignment.Start
                     ) {
                         // Asignatura
-                        /*Text(
-                            text = "${stringResource(R.string.subject)}:",
+                        Text(
+                            text = "${stringResource(R.string.email_label)}:",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            "Test",
+                            professor.email,
                             style = MaterialTheme.typography.bodyMedium
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))*/
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         // Profesor(a)
                         Text(

@@ -13,7 +13,7 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubjectDropdownMenu(
-    subjectList: List<String>,
+    subjectList: Set<String>,
     modifier: Modifier = Modifier,
     selectedSubject: String = subjectList.first(),
     onSubjectSelected: (String) -> Unit
@@ -60,6 +60,6 @@ fun SubjectDropdownMenu(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun SubjectsMenuPreview() {
     EtziTheme {
-        SubjectDropdownMenu(subjectList = listOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
+        SubjectDropdownMenu(subjectList = setOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
     }
 }

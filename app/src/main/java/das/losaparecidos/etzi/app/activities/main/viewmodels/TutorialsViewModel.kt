@@ -1,12 +1,14 @@
 package das.losaparecidos.etzi.app.activities.main.viewmodels
 
 import android.util.Log
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import das.losaparecidos.etzi.app.utils.today
-import das.losaparecidos.etzi.model.entities.Professor
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import das.losaparecidos.etzi.model.entities.SubjectTutorial
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
@@ -69,48 +71,24 @@ class TutorialsViewModel @Inject constructor(
             }
     }
 
-    val professorsWithTutorials: MutableList<Professor> = mutableListOf()
-    val subjectTutorials: MutableList<String> = mutableStateListOf("Todas")
+    var subjectList: Set<String> by mutableStateOf(emptySet())
 
-    var tutorials: MutableList<ProfessorWithTutorials> = mutableStateListOf()
-        private set
+//    val professorsWithTutorials: MutableList<Professor> = mutableListOf()
+//    val subjectTutorials: MutableList<String> = mutableStateListOf("Todas")
+//
+//    var tutorials: MutableList<ProfessorWithTutorials> = mutableStateListOf()
+//        private set
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             allTutorials = studentDataRepository.getTutorials()
-            allTutorials.forEach { subjectTutorial ->
-                subjectTutorial.professors.map { professorWithTutorials ->
-                    professorsWithTutorials.add(professorWithTutorials.professor)
-                }
-                subjectTutorials.add(subjectTutorial.subjectName)
-            }
-            //onSelectedChange(subjectTutorials.first(),LocalDate.today,LocalDate.today.plus(7, DateTimeUnit.DAY),professorsWithTutorials)
+            subjectList = allTutorials.map { it.subjectName }.toSortedSet()
         }
     }
 
     /*************************************************
      **                    Events                   **
      *************************************************/
-    fun onSelectedChange(subjectName: String?, newFromDate: LocalDate, newToDate: LocalDate, chosenProfessors: List<String>) {
-        //if (currentSelectedDay != newDate) timeTable = fullTimeTable[newDate.toString()] ?: emptyList()
-        //buscar tutorias nombre de asignatura
-        allTutorials.groupBy { subjectTutorial ->
-            // si no es la asignatura elegida o es todas
-            if (subjectName == "Todas" || subjectName == subjectTutorial.subjectName) {
-                subjectTutorial.professors.groupBy { professorWithTutorials ->
-                    //Si el profesor está entre los elegidos
-                    if (chosenProfessors.contains(professorWithTutorials.professor.fullName)) {
-                        professorWithTutorials.tutorials.groupBy { tutorial ->
-                            //Si la fecha está entre la de inicio y la de fin
-                            if (tutorial.startDate.date in newFromDate..newToDate) {
-                                tutorials.add(professorWithTutorials)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     fun onFilterChange(subjectName: String?, newFromDate: LocalDate, newToDate: LocalDate, newSelectedProfessors: Map<ProfessorWithTutorials, Boolean>) {
         selectedSubject = subjectName
