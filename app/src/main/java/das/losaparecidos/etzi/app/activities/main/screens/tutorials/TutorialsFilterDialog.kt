@@ -27,22 +27,22 @@ import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import das.losaparecidos.etzi.app.utils.today
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.plus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TutorialsFilterDialog(
     tutorialsViewModel: TutorialsViewModel,
     windowSizeClass: WindowSizeClass,
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    // TODO: SI NO HAY ASIGNATURAS Y/O PROFES, O EN EL FILTRO NO APARECE NINGUNO, PONER UN MENSAJE EN LA UI SIMILAR A 'NO HAY TUTOORIAS'
-
-    val fechaDesde = rememberSaveable { mutableStateOf(LocalDate.now().format(DateTimeFormatter.ISO_DATE)) }
-    val fechaHasta = rememberSaveable { mutableStateOf(LocalDate.now().plusDays(7).format(DateTimeFormatter.ISO_DATE)) }
-
+    val fechaDesde = rememberSaveable { mutableStateOf(LocalDate.today) }
+    val fechaHasta = rememberSaveable { mutableStateOf(LocalDate.today.plus(7,DateTimeUnit.DAY)) }
+    val selectedSubject = rememberSaveable{ mutableStateOf(tutorialsViewModel.subjectTutorials.first())}
     Scaffold(
         topBar = {
             DynamicMediumTopAppBar(
@@ -54,7 +54,10 @@ fun TutorialsFilterDialog(
                 },
                 actions = {
                     // TODO poner text button 'save'
-                    TextButton(onClick = { /*TODO aplicar lo seleccionado en los filtros*/ }) {
+                    TextButton(onClick = {
+                        /*TODO aplicar lo seleccionado en los filtros*/
+                        tutorialsViewModel.onSelectedChange(selectedSubject.value, fechaDesde.value, fechaHasta.value, emptyList())
+                    }) {
                         Text(text = stringResource(id = R.string.save_button))
                     }
                 },
@@ -79,14 +82,14 @@ fun TutorialsFilterDialog(
             SubjectDropdownMenu(
                 asignaturas = tutorialsViewModel.subjectTutorials,
                 modifier = Modifier.fillMaxWidth(),
-                onSubjectSelected = { /*TODO COGER VALOR DEL COMBOBOX*/ }
+                onSubjectSelected = { subject -> selectedSubject.value = subject }
             )
 
 
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
-            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.subject))
+            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date))
 
             // TODO OBTENER CORRECTAMENTE LAS FECHAS
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -94,7 +97,10 @@ fun TutorialsFilterDialog(
                     textFieldValue = fechaDesde,
                     textLabel = stringResource(id = R.string.date_from_label),
                     context = context,
-                    onDateRangeSelected = { f1, f2 -> Log.i("fechas", "$f1 $f2") },
+                    onDateRangeSelected = { f1, f2 ->
+                        Log.i("fechas", "$f1 $f2")
+                        fechaDesde.value = f1
+                        fechaHasta.value = f2 },
                     modifier = Modifier.weight(1f)
                 )
 
@@ -103,7 +109,11 @@ fun TutorialsFilterDialog(
                     textLabel = stringResource(id = R.string.date_to_label),
                     context = context,
                     modifier = Modifier.weight(1f),
-                    onDateRangeSelected = { f1, f2 -> Log.i("fechas", "$f1 $f2") }
+                    onDateRangeSelected = { f1, f2 ->
+                        Log.i("fechas", "$f1 $f2")
+                        fechaDesde.value = f1
+                        fechaHasta.value = f2
+                    }
                 )
             }
 
