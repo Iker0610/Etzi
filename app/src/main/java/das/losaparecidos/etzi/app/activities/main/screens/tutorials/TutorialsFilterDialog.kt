@@ -39,7 +39,7 @@ fun TutorialsFilterDialog(
         tutorialsViewModel.selectedProfessors
     ),
     windowSizeClass: WindowSizeClass,
-    onBack: () -> Unit
+    onClose: () -> Unit
 ) {
 
 
@@ -51,6 +51,8 @@ fun TutorialsFilterDialog(
             tutorialsFilterViewModel.endDate,
             tutorialsFilterViewModel.selectedProfessors,
         )
+
+        onClose()
     }
 
     // UI
@@ -61,7 +63,7 @@ fun TutorialsFilterDialog(
             DynamicMediumTopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) { Icon(Icons.Rounded.Close, null) }
+                    IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, null) }
                 },
                 actions = {
                     TextButton(onClick = onSave) { Text(text = stringResource(id = R.string.save_button)) }

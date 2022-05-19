@@ -47,7 +47,7 @@ class TutorialsViewModel @Inject constructor(
     var filteredTutorials: Flow<List<SubjectTutorial>> = snapshotFlow {
         allTutorials
             // Filtramos las tutorias por asignatura
-            .filter { subjectTutorial -> selectedSubject == null || subjectTutorial.subjectName != selectedSubject }
+            .filter { subjectTutorial -> selectedSubject == null || subjectTutorial.subjectName == selectedSubject }
 
             // Editamos las tutorias por asignatura que hayan pasado el filtro para filtrar las listas internas
             .map { subjectTutorial ->
@@ -73,16 +73,13 @@ class TutorialsViewModel @Inject constructor(
 
     var subjectList: Set<String> by mutableStateOf(emptySet())
 
-//    val professorsWithTutorials: MutableList<Professor> = mutableListOf()
-//    val subjectTutorials: MutableList<String> = mutableStateListOf("Todas")
-//
-//    var tutorials: MutableList<ProfessorWithTutorials> = mutableStateListOf()
-//        private set
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             allTutorials = studentDataRepository.getTutorials()
+
+            // Load data transformed data
             subjectList = allTutorials.map { it.subjectName }.toSortedSet()
+            selectedProfessors = allTutorials.flatMap { subject -> subject.professors }.associateWith { true }
         }
     }
 
