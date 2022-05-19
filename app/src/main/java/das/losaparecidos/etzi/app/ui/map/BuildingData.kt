@@ -1,29 +1,37 @@
+package das.losaparecidos.etzi.app.ui.map
+
 import com.google.android.gms.maps.model.LatLng
 
-val polygons = listOf(
-    mapOf(
-        "name" to "EIB/BIE II - I",
-        "polygon" to listOf<LatLng>(
+data class BuildingMapData(
+    val name: String,
+    val polygon: List<LatLng>,
+    val location: LatLng
+)
+
+val buildingsMapData: List<BuildingMapData> = listOf(
+    BuildingMapData(
+        name = "EIB/BIE II - I",
+        polygon = listOf(
             LatLng(43.26341662070311, -2.9508996779909538),
             LatLng(43.26383980793422, -2.951745092516549),
             LatLng(43.264065230348216, -2.951538719608418),
             LatLng(43.26363853721639, -2.950705857514889)
         ),
-        "location" to LatLng(43.26367371245942, -2.951044350974971)
+        location = LatLng(43.26367371245942, -2.951044350974971)
     ),
-    mapOf(
-        "name" to "EIB/BIE II - M",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE II - M",
+        polygon = listOf(
             LatLng(43.26363853721639, -2.950705857514889),
             LatLng(43.263394327852794, -2.9509196008714094),
             LatLng(43.2631098629623, -2.9504073538315843),
             LatLng(43.2632359937853, -2.9499282738662798)
         ),
-        "location" to LatLng(43.263363043939414, -2.9504693502948243)
+        location = LatLng(43.263363043939414, -2.9504693502948243)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - B",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - B",
+        polygon = listOf(
             LatLng(43.26220559703683, -2.949990186418613),
             LatLng(43.26199013609353, -2.9502557115583685),
             LatLng(43.26192660259292, -2.95017226080016),
@@ -33,21 +41,21 @@ val polygons = listOf(
             LatLng(43.2615002904047, -2.9491092953622737),
             LatLng(43.26158159001658, -2.949015199154041)
         ),
-        "location" to LatLng(43.26183983788005, -2.949776926896019)
+        location = LatLng(43.26183983788005, -2.949776926896019)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - F",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - F",
+        polygon = listOf(
             LatLng(43.26220559703683, -2.949990186418613),
             LatLng(43.262561822517405, -2.9495925352158423),
             LatLng(43.2624874926447, -2.9494808956467526),
             LatLng(43.262146038626, -2.9498891774994243)
         ),
-        "location" to LatLng(43.262351436761364, -2.9497364783562454)
+        location = LatLng(43.262351436761364, -2.9497364783562454)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - D",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - D",
+        polygon = listOf(
             LatLng(43.262561822517405, -2.9495925352158423),
             LatLng(43.2624874926447, -2.9494808956467526),
             LatLng(43.26258040497896, -2.949371648351219),
@@ -59,11 +67,11 @@ val polygons = listOf(
             LatLng(43.26272325740464, -2.9494306578377376),
             LatLng(43.26262337688211, -2.9495183746420226)
         ),
-        "location" to LatLng(43.26267854773822, -2.949410761144354)
+        location = LatLng(43.26267854773822, -2.949410761144354)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - E",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - E",
+        polygon = listOf(
             LatLng(43.262616130669876, -2.9493391977136185),
             LatLng(43.26256364701809, -2.949229194441435),
             LatLng(43.26248630260672, -2.9491059149122627),
@@ -76,11 +84,11 @@ val polygons = listOf(
             LatLng(43.26256088471938, -2.9493240248484898),
             LatLng(43.2625829831056, -2.949371440052018)
         ),
-        "location" to LatLng(43.26246925893089, -2.949312833100692)
+        location = LatLng(43.26246925893089, -2.949312833100692)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - A",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - A",
+        polygon = listOf(
             LatLng(43.26235678971947, -2.949277862972863),
             LatLng(43.26269359695217, -2.948844063504399),
             LatLng(43.26271566356791, -2.9487962179747886),
@@ -91,21 +99,21 @@ val polygons = listOf(
             LatLng(43.26260068479821, -2.948775484911958),
             LatLng(43.262285943822974, -2.94916781825476)
         ),
-        "location" to LatLng(43.26265374317752, -2.9487678422207377)
+        location = LatLng(43.26265374317752, -2.9487678422207377)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - C",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - C",
+        polygon = listOf(
             LatLng(43.262285943822974, -2.94916781825476),
             LatLng(43.261905000536856, -2.9485920770471847),
             LatLng(43.26200488223798, -2.9484692735211855),
             LatLng(43.26238466348917, -2.9490466095784797)
         ),
-        "location" to LatLng(43.262111140859524, -2.9488189351130827)
+        location = LatLng(43.262111140859524, -2.9488189351130827)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - G",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - G",
+        polygon = listOf(
             LatLng(43.26200488223798, -2.9484692735211855),
             LatLng(43.262498481265105, -2.9482651325961178),
             LatLng(43.26255067209277, -2.9484804143918453),
@@ -115,11 +123,11 @@ val polygons = listOf(
             LatLng(43.262262011137786, -2.948594210880312),
             LatLng(43.2621243723581, -2.9486500855992506)
         ),
-        "location" to LatLng(43.26228942501002, -2.9484804446803135)
+        location = LatLng(43.26228942501002, -2.9484804446803135)
     ),
-    mapOf(
-        "name" to "EIB/BIE I - MAGNA",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE I - MAGNA",
+        polygon = listOf(
             LatLng(43.26282425063247, -2.9492044953423173),
             LatLng(43.26281147524713, -2.9491454858557984),
             LatLng(43.26282076643675, -2.949140701302837),
@@ -137,16 +145,16 @@ val polygons = listOf(
             LatLng(43.2627655971024, -2.949170338390526),
             LatLng(43.26278805928596, -2.9492253236746806)
         ),
-        "location" to LatLng(43.26268319859182, -2.9491020748705172)
+        location = LatLng(43.26268319859182, -2.9491020748705172)
     ),
-    mapOf(
-        "name" to "EIB/BIE III - N",
-        "polygon" to listOf<LatLng>(
+    BuildingMapData(
+        name = "EIB/BIE III - N",
+        polygon = listOf(
             LatLng(43.32675993142461, -3.0221917005990417),
             LatLng(43.32632602324551, -3.0229875311930114),
             LatLng(43.326674078181675, -3.0238025000256177),
             LatLng(43.327304052542665, -3.022753088140183)
         ),
-        "location" to LatLng(43.32671631393843, -3.0229061995399737)
+        location = LatLng(43.32671631393843, -3.0229061995399737)
     )
 )

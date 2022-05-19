@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -8,27 +7,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.JointType
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.Polygon
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
+import das.losaparecidos.etzi.app.ui.map.buildingsMapData
 import das.losaparecidos.etzi.model.entities.LectureRoom
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
-
-
     Dialog(
         properties = DialogProperties(
             usePlatformDefaultWidth = false,
@@ -45,7 +43,7 @@ fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 @Composable
 private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 
-    val room = polygons.filter { it["name"] == lectureRoom.building.name }[0]["location"] as LatLng
+    val room = buildingsMapData.filter { building -> building.name == lectureRoom.building.name }[0].location
 
     Scaffold(
         topBar = {
@@ -96,18 +94,19 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                         }
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    MaterialDivider(modifier = Modifier.padding(horizontal = 16.dp).fillMaxHeight().width(1.dp))
+                    //Spacer(modifier = Modifier.width(16.dp))
 
                     GoogleMap(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f)
                             .clip(shape = MaterialTheme.shapes.large)
-                            .border(2.dp, MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.large),
+                            .border(2.dp, MaterialTheme.colorScheme.outline, MaterialTheme.shapes.large),
                         cameraPositionState = CameraPositionState(
                             position = CameraPosition.fromLatLngZoom(room, 17f)
                         )
-                    ) { LoadMapOnDialog(lectureRoom = lectureRoom) }
+                    ) { BuildingMapContent(lectureRoom = lectureRoom) }
 
 
                 }
@@ -147,8 +146,12 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             Text(text = lectureRoom.building.name, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
+
+
                     // Espacio
-                    Spacer(modifier = Modifier.height(16.dp))
+                    MaterialDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+
                     //Mapa
                     GoogleMap(
                         modifier = Modifier
@@ -159,7 +162,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                         cameraPositionState = CameraPositionState(
                             position = CameraPosition.fromLatLngZoom(room, 18f)
                         )
-                    ) { LoadMapOnDialog(lectureRoom = lectureRoom) }
+                    ) { BuildingMapContent(lectureRoom = lectureRoom) }
                 }
             }
         }
@@ -167,22 +170,26 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun LoadMapOnDialog(lectureRoom: LectureRoom){
+private fun BuildingMapContent(lectureRoom: LectureRoom) {
 
-    polygons.forEach { build ->
+    buildingsMapData.forEach { build ->
 
-        if (build["name"] == lectureRoom.building.name) {
-
+        if (build.name == lectureRoom.building.name) {
             Polygon(
-                points = build["polygon"] as List<LatLng>,
-                fillColor = Color(219, 68, 55),
+                points = build.polygon,
+                fillColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f),
+                strokeWidth= 10f,
+                strokeColor = MaterialTheme.colorScheme.tertiary,
+                zIndex = 1f
             )
-            Marker(build["location"] as LatLng, title = lectureRoom.building.name)
-        }
-        else {
+            Marker(build.location, title = lectureRoom.building.name)
+        } else {
             Polygon(
-                points = build["polygon"] as List<LatLng>,
-                fillColor = Color(8,83,151),
+                points = build.polygon,
+                fillColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f),
+                strokeWidth= 4f,
+                strokeColor = MaterialTheme.colorScheme.outline,
+                strokeJointType = JointType.BEVEL
             )
         }
     }
