@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import java.util.*
 import javax.inject.Inject
 
 
@@ -71,7 +72,7 @@ class TutorialsViewModel @Inject constructor(
             }
     }
 
-    var subjectList: Set<String> by mutableStateOf(emptySet())
+    var subjectList: SortedSet<String> by mutableStateOf(sortedSetOf())
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

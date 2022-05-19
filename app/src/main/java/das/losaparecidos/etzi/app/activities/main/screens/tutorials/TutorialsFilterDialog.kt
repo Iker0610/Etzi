@@ -11,6 +11,8 @@ import androidx.compose.material.icons.rounded.School
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,6 +44,7 @@ fun TutorialsFilterDialog(
     onClose: () -> Unit
 ) {
 
+    val selectableSubjectList by derivedStateOf { listOf("-", *tutorialsViewModel.subjectList.toTypedArray()) }
 
     // EVENTS
     val onSave = {
@@ -85,7 +88,7 @@ fun TutorialsFilterDialog(
 
 
             SubjectDropdownMenu(
-                subjectList = tutorialsViewModel.subjectList,
+                subjectList = selectableSubjectList,
                 selectedSubject = tutorialsFilterViewModel.currentSelectedSubject,
                 modifier = Modifier.fillMaxWidth(),
                 onSubjectSelected = tutorialsFilterViewModel::currentSelectedSubject::set

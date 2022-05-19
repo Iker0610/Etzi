@@ -13,7 +13,7 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubjectDropdownMenu(
-    subjectList: Set<String>,
+    subjectList: Iterable<String>,
     modifier: Modifier = Modifier,
     selectedSubject: String = subjectList.first(),
     onSubjectSelected: (String) -> Unit
