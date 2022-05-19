@@ -3,7 +3,6 @@ package das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -13,23 +12,20 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectsMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSubjectSelected: (String) -> Unit) {
+fun SubjectDropdownMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSubjectSelected: (String) -> Unit) {
     val default = 0
     var expanded by remember { mutableStateOf(false) }
-    var selectedType by remember { mutableStateOf(asignaturas[default]) }
+    var selectedSubject by remember { mutableStateOf(asignaturas[default]) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = {
-            expanded = !expanded
-        },
-        modifier = modifier
-            .fillMaxWidth()
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier.fillMaxWidth()
     ) {
         TextField(
             readOnly = true,
-            value = selectedType,
-            onValueChange = { onSubjectSelected(selectedType) },
+            value = selectedSubject,
+            onValueChange = { onSubjectSelected(selectedSubject) },
             label = { Text(stringResource(id = R.string.subject)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -41,26 +37,28 @@ fun SubjectsMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSub
         )
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            }
+            onDismissRequest = { expanded = false }
         ) {
             asignaturas.forEach { selectionOption ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedType = selectionOption
+                        selectedSubject = selectionOption
                         expanded = false
-                    }, text = { Text(text = selectionOption) }
+                    },
+                    text = { Text(text = selectionOption) },
+
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
     }
 }
+
 @Composable
 @Preview(showBackground = true)
-@Preview(showBackground = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun SubjectsMenuPreview() {
     EtziTheme {
-        SubjectsMenu(asignaturas = listOf("Asignatura 1","Asignatura 2","Asignatura 3",), onSubjectSelected = {})
+        SubjectDropdownMenu(asignaturas = listOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
     }
 }
