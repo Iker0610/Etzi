@@ -73,7 +73,7 @@ fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass:
                 },
                 actions = {
                     IconButton(onClick = {
-                        showDatePicker(context, studentDataViewModel::onSelectedDateChange, studentDataViewModel.currentSelectedDay)
+                        showDatePicker(context, studentDataViewModel.currentSelectedDay, studentDataViewModel::onSelectedDateChange)
                     }) {
                         Icon(Icons.Rounded.Today, null)
                     }

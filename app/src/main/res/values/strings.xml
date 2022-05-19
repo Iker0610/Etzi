@@ -78,4 +78,5 @@
     <string name="type">Type</string>
     <string name="date">Date</string>
     <string name="no_lectures_dialog_message">There are no lectures for today</string>
+    <string name="date_range">Date Range</string>
 </resources>

@@ -3,31 +3,35 @@ package das.losaparecidos.etzi.app.ui.components.form
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.filled.VpnKey
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.showDateRangePicker
 import das.losaparecidos.etzi.app.utils.canBePassword
+import das.losaparecidos.etzi.app.utils.format
+import das.losaparecidos.etzi.app.utils.today
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.plus
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 /**
@@ -160,5 +164,135 @@ fun PasswordField(
         },
 
         keyboardActions = keyboardActions,
+    )
+}
+
+
+//------------------------------------------------
+
+enum class DateRangeFieldTextMode { FROM_TO, TO, FROM }
+
+@Composable
+fun DateRangeDoubleField(
+    modifier: Modifier = Modifier,
+
+    onDateRangeSelected: (LocalDate, LocalDate) -> Unit,
+    dateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
+    dateFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT),
+
+    startDateLabel: @Composable () -> Unit = { Text(text = stringResource(id = R.string.date_from_label)) },
+    startDatePlaceholder: @Composable (() -> Unit)? = { Text(text = dateFormatter.toString()) },
+    startDateLeadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Default.Today, contentDescription = stringResource(id = R.string.date_from_label)) },
+    startDateTrailingIcon: @Composable (() -> Unit)? = null,
+
+    endDateLabel: @Composable () -> Unit = { Text(text = stringResource(id = R.string.date_to_label)) },
+    endDatePlaceholder: @Composable (() -> Unit)? = { Text(text = dateFormatter.toString()) },
+    endDateLeadingIcon: @Composable (() -> Unit)? = null,
+    endDateTrailingIcon: @Composable (() -> Unit)? = { Icon(Icons.Default.Event, contentDescription = stringResource(id = R.string.date_to_label)) },
+
+    enabled: Boolean = true,
+) {
+    // Formatted date as string
+    CenteredRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        // Start
+        DateRangeField(
+            modifier = Modifier.weight(1f),
+
+            onDateRangeSelected = onDateRangeSelected,
+            dateRange = dateRange,
+            dateFormatter = dateFormatter,
+            labelDisplayMode= DateRangeFieldTextMode.FROM,
+
+            label = startDateLabel,
+            placeholder = startDatePlaceholder,
+            leadingIcon = startDateLeadingIcon,
+            trailingIcon = startDateTrailingIcon,
+
+            enabled = enabled,
+        )
+
+        // End
+        DateRangeField(
+            modifier = Modifier.weight(1f),
+
+            onDateRangeSelected = onDateRangeSelected,
+            dateRange = dateRange,
+            dateFormatter = dateFormatter,
+            labelDisplayMode= DateRangeFieldTextMode.FROM,
+
+            label = endDateLabel,
+            placeholder = endDatePlaceholder,
+            leadingIcon = endDateLeadingIcon,
+            trailingIcon = endDateTrailingIcon,
+
+            enabled = enabled,
+        )
+    }
+}
+
+@Composable
+fun DateRangeField(
+    modifier: Modifier = Modifier,
+
+    onDateRangeSelected: (LocalDate, LocalDate) -> Unit,
+    dateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
+    dateFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT),
+    labelDisplayMode: DateRangeFieldTextMode = DateRangeFieldTextMode.FROM_TO,
+
+    label: @Composable () -> Unit = { Text(text = stringResource(id = R.string.date_range)) },
+    placeholder: @Composable (() -> Unit)? = { Text(text = dateFormatter.toString()) },
+    leadingIcon: @Composable (() -> Unit)? = { Icon(Icons.Default.DateRange, null) },
+    trailingIcon: @Composable (() -> Unit)? = null,
+
+    enabled: Boolean = true,
+) {
+    //---------------   Variables   ----------------//
+
+    val context = LocalContext.current
+
+    // Focus manager to open the dialog and remove focus once user finishes it's selection
+    val focusManager = LocalFocusManager.current
+
+    // Formatted date as string
+    val dateRangeLabelText = when(labelDisplayMode) {
+        DateRangeFieldTextMode.FROM_TO -> "${dateRange.first.format(dateFormatter)} - ${dateRange.second.format(dateFormatter)}"
+        DateRangeFieldTextMode.FROM -> dateRange.first.format(dateFormatter)
+        DateRangeFieldTextMode.TO -> dateRange.second.format(dateFormatter)
+    }
+
+
+    //-------------------   UI   -------------------//
+    OutlinedTextField(
+        modifier = modifier.onFocusChanged {
+            // If the field is focused open the picker dialog
+            if (it.isFocused) {
+                showDateRangePicker(context, initialStartDate = dateRange.first, initialEndDate = dateRange.second){startDate, endDate ->
+                    // Once the user finishes their selection clear the focus from this field
+                    focusManager.clearFocus()
+
+                    // Call event callback
+                    onDateRangeSelected(startDate, endDate)
+                }
+            }
+        },
+
+        label = label,
+        leadingIcon = leadingIcon,
+        placeholder = placeholder,
+
+        value = dateRangeLabelText,
+        onValueChange = {},
+
+        trailingIcon = trailingIcon,
+
+        readOnly = true,
+        singleLine = true,
+        maxLines = 1,
+
+        enabled = enabled
     )
 }

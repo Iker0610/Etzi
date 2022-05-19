@@ -11,8 +11,7 @@ import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.School
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +26,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
+import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
 import das.losaparecidos.etzi.app.utils.today
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -40,9 +40,10 @@ fun TutorialsFilterDialog(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val fechaDesde = rememberSaveable { mutableStateOf(LocalDate.today) }
-    val fechaHasta = rememberSaveable { mutableStateOf(LocalDate.today.plus(7,DateTimeUnit.DAY)) }
+    var fromDate by remember { mutableStateOf(LocalDate.today) }
+    var toDate by remember { mutableStateOf(LocalDate.today.plus(7,DateTimeUnit.DAY)) }
     val selectedSubject = rememberSaveable{ mutableStateOf(tutorialsViewModel.subjectTutorials.first())}
+
     Scaffold(
         topBar = {
             DynamicMediumTopAppBar(
@@ -56,7 +57,7 @@ fun TutorialsFilterDialog(
                     // TODO poner text button 'save'
                     TextButton(onClick = {
                         /*TODO aplicar lo seleccionado en los filtros*/
-                        tutorialsViewModel.onSelectedChange(selectedSubject.value, fechaDesde.value, fechaHasta.value, emptyList())
+                        tutorialsViewModel.onSelectedChange(selectedSubject.value, fromDate, toDate, emptyList())
                     }) {
                         Text(text = stringResource(id = R.string.save_button))
                     }
@@ -89,34 +90,18 @@ fun TutorialsFilterDialog(
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
-            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date))
+            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date_range))
 
             // TODO OBTENER CORRECTAMENTE LAS FECHAS
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TransparentDatePicker(
-                    textFieldValue = fechaDesde,
-                    textLabel = stringResource(id = R.string.date_from_label),
-                    context = context,
-                    onDateRangeSelected = { f1, f2 ->
-                        Log.i("fechas", "$f1 $f2")
-                        fechaDesde.value = f1
-                        fechaHasta.value = f2 },
-                    modifier = Modifier.weight(1f)
-                )
 
-                TransparentDatePicker(
-                    textFieldValue = fechaHasta,
-                    textLabel = stringResource(id = R.string.date_to_label),
-                    context = context,
-                    modifier = Modifier.weight(1f),
-                    onDateRangeSelected = { f1, f2 ->
-                        Log.i("fechas", "$f1 $f2")
-                        fechaDesde.value = f1
-                        fechaHasta.value = f2
-                    }
-                )
-            }
-
+            DateRangeDoubleField(
+                dateRange = Pair(fromDate, toDate),
+                onDateRangeSelected = { f1, f2 ->
+                    Log.i("fechas", "$f1 $f2")
+                    fromDate = f1
+                    toDate = f2
+                },
+            )
 
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 

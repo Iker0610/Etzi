@@ -14,8 +14,8 @@ import kotlinx.datetime.plus
 
 fun showDatePicker(
     context: Context,
-    onDateSelected: (LocalDate) -> Unit,
     initialDate: LocalDate = LocalDate.today,
+    onDateSelected: (LocalDate) -> Unit,
 ) {
     val activity = context as AppCompatActivity
 
@@ -35,9 +35,9 @@ fun showDatePicker(
 
 fun showDateRangePicker(
     context: Context,
-    onDateSelected: (LocalDate, LocalDate) -> Unit,
     initialStartDate: LocalDate = LocalDate.today,
     initialEndDate: LocalDate = LocalDate.today + DatePeriod(0, 0, 5),
+    onDateSelected: (LocalDate, LocalDate) -> Unit,
 ) {
     val activity = context as AppCompatActivity
 

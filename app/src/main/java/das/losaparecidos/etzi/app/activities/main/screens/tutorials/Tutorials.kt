@@ -1,29 +1,18 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -36,12 +25,8 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
-import das.losaparecidos.etzi.app.ui.components.form.ValidatorTextField
-import das.losaparecidos.etzi.app.ui.components.showDateRangePicker
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import kotlinx.datetime.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.LocalDate as JLocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,12 +42,16 @@ fun TutorialsScreen(
     val fechaDesde = rememberSaveable {
         mutableStateOf(
             java.time.LocalDate.now().format(
-                DateTimeFormatter.ISO_DATE))
+                DateTimeFormatter.ISO_DATE
+            )
+        )
     }
     val fechaHasta = rememberSaveable {
         mutableStateOf(
             java.time.LocalDate.now().plusDays(7).format(
-                DateTimeFormatter.ISO_DATE))
+                DateTimeFormatter.ISO_DATE
+            )
+        )
     }
 
     Scaffold(
@@ -103,35 +92,6 @@ fun TutorialsScreen(
     }
 }
 
-@Composable
-fun TransparentDatePicker(
-    modifier: Modifier = Modifier,
-    textFieldValue: MutableState<String>,
-    textLabel: String,
-    context: Context,
-    onDateRangeSelected: (LocalDate, LocalDate) -> Unit,
-) {
-    ValidatorTextField(
-        value = textFieldValue.value,
-        label = { Text(textLabel) },
-        trailingIcon = {
-            IconButton(
-                onClick = {
-                    showDateRangePicker(context, onDateRangeSelected)
-                }
-            ) {
-                Icon(
-                    Icons.Default.DateRange,
-                    contentDescription = "Toggle Date Icon"
-                )
-            }
-        },
-        keyboardActions = KeyboardActions.Default,
-        modifier = modifier,
-        onValueChange = {}
-    )
-}
-
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
@@ -140,21 +100,6 @@ fun TransparentDatePicker(
 fun TutorialsScreenPreview() {
     EtziTheme {
         TutorialsScreen(hiltViewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Preview(showBackground = true)
-@Composable
-fun TransparentDatePickerPreview() {
-    val context = LocalContext.current
-    EtziTheme {
-        TransparentDatePicker(
-            textFieldValue = mutableStateOf(JLocalDate.now().toString()),
-            textLabel = "Prueba",
-            context = context,
-            onDateRangeSelected = { f1, f2 -> Log.i("fechas", "$f1 $f2") }
-        )
     }
 }
 
