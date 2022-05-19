@@ -2,7 +2,6 @@ package das.losaparecidos.etzi.app.activities.main.screens.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentPasteOff
@@ -21,8 +20,10 @@ import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
+import das.losaparecidos.etzi.app.ui.components.CenteredBox
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,114 +61,114 @@ fun GradesScreen(
         }
     ) { paddingValues ->
 
-        CenteredColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        ) {
+        when {
+            recordViewModel.loadingData -> {
+                CenteredBox(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(32.dp)
+                ) {
+                    CircularProgressIndicator(strokeWidth = 5.dp, modifier = Modifier.size(48.dp))
+                }
+            }
 
-            if (subjectEnrollments.isNotEmpty()) {
-                subjectEnrollments.forEach { subjectEnrollment ->
-                    Card(
-                        onClick = { onExpand(subjectEnrollment) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
+            subjectEnrollments.isNotEmpty() -> {
+                CenteredColumn(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    subjectEnrollments.forEach { subjectEnrollment ->
+                        Card(
+                            onClick = { onExpand(subjectEnrollment) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
 
-                        CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
-                            // Poner título
-                            Text(
-                                text = subjectEnrollment.subject.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .weight(1f)
-                            )
+                            CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
+                                // Poner título
+                                Text(
+                                    text = subjectEnrollment.subject.name,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .weight(1f)
+                                )
 
-                            // Curso
-                            Surface(
-                                modifier = Modifier.padding(16.dp, 8.dp),
-                                color = MaterialTheme.colorScheme.tertiary,
-                                shape = MaterialTheme.shapes.small
-                            ) {
-                                CenteredRow(
-                                    modifier = Modifier.padding(
-                                        vertical = 4.dp,
-                                        horizontal = 8.dp
-                                    )
+                                // Curso
+                                Surface(
+                                    modifier = Modifier.padding(16.dp, 8.dp),
+                                    color = MaterialTheme.colorScheme.tertiary,
+                                    shape = MaterialTheme.shapes.small
                                 ) {
-                                    Text(
-                                        text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
-                                        style = MaterialTheme.typography.labelMedium,
-                                    )
+                                    CenteredRow(
+                                        modifier = Modifier.padding(
+                                            vertical = 4.dp,
+                                            horizontal = 8.dp
+                                        )
+                                    ) {
+                                        Text(
+                                            text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
+                                            style = MaterialTheme.typography.labelMedium,
+                                        )
+                                    }
                                 }
                             }
-                        }
-                        // Si está seleccionada
-                        if (selectedSubject == subjectEnrollment.subject.name) {
+                            // Si está seleccionada
+                            if (selectedSubject == subjectEnrollment.subject.name) {
 
-                            // Datos de la asignatura
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceAround
-                            ) {
-
-                                // Convocatoria
-                                Column(
+                                // Datos de la asignatura
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceAround
                                 ) {
-                                    Text(
-                                        text = "${stringResource(id = R.string.call)}:",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = MaterialTheme.colorScheme.tertiary
-                                    )
-                                    Text(
-                                        text = subjectEnrollment.subjectCalls.last().callType,
-                                        style = MaterialTheme.typography.labelLarge
-                                    )
-                                }
 
-                                //Nota
-                                Column(
-                                ) {
-                                    Text(
-                                        text = "${stringResource(id = R.string.grade)}:",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = MaterialTheme.colorScheme.tertiary
-                                    )
-                                    Text(
-                                        text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade,
-                                        style = MaterialTheme.typography.labelLarge,
-                                    )
-                                    if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction) {
+                                    // Convocatoria
+                                    Column(
+                                    ) {
                                         Text(
-                                            text = "(${stringResource(id = R.string.distinction)})",
+                                            text = "${stringResource(id = R.string.call)}:",
+                                            style = MaterialTheme.typography.labelLarge,
+                                            color = MaterialTheme.colorScheme.tertiary
+                                        )
+                                        Text(
+                                            text = subjectEnrollment.subjectCalls.last().callType,
                                             style = MaterialTheme.typography.labelLarge
                                         )
+                                    }
+
+                                    //Nota
+                                    Column(
+                                    ) {
+                                        Text(
+                                            text = "${stringResource(id = R.string.grade)}:",
+                                            style = MaterialTheme.typography.labelLarge,
+                                            color = MaterialTheme.colorScheme.tertiary
+                                        )
+                                        Text(
+                                            text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade,
+                                            style = MaterialTheme.typography.labelLarge,
+                                        )
+                                        if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction) {
+                                            Text(
+                                                text = "(${stringResource(id = R.string.distinction)})",
+                                                style = MaterialTheme.typography.labelLarge
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            } else {
-                Spacer(modifier = Modifier.height(32.dp))
-                Icon(
-                    Icons.Rounded.ContentPasteOff,
-                    null,
-                    modifier = Modifier.size(128.dp),
-                    tint = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    stringResource(id = R.string.noGrades),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray
-                )
             }
+
+            else -> EmptyCollectionScreen(Icons.Rounded.ContentPasteOff, stringResource(id = R.string.noGrades), Modifier.padding(paddingValues))
         }
     }
 }

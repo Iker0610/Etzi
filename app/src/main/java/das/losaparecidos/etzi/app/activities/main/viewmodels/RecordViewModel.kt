@@ -1,6 +1,9 @@
 package das.losaparecidos.etzi.app.activities.main.viewmodels
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,16 +23,21 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
      **                    States                   **
      *************************************************/
 
-    private var fullRecord: List<SubjectEnrollment> = emptyList()
-    var recordGroupedByCourse: Map<Int, List<SubjectEnrollment>> = emptyMap()
+    var loadingData by mutableStateOf(true)
+        private set
 
+    private var fullRecord: List<SubjectEnrollment> = emptyList()
+    private var recordGroupedByCourse: Map<Int, List<SubjectEnrollment>> = emptyMap()
 
     init {
+        Log.d("VIEWMODEL", "Se ha creado un RecordViewModel")
+
         viewModelScope.launch(Dispatchers.IO) {
             fullRecord = studentDataRepository.getRecord()
             recordGroupedByCourse = fullRecord.groupBy { it.subject.course }
+
+            loadingData = false
         }
-        Log.d("VIEWMODEL", "Se ha creado un RecordViewModel")
     }
 
 
