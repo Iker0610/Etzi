@@ -120,11 +120,11 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 
 
                     Text(
-                        if (lecture.subgroup != -1) {
-                            "${stringResource(R.string.subgroup)} ${lecture.subgroup}".uppercase(Locale.getDefault())
+                        (if (lecture.subgroup != -1) {
+                            "${stringResource(R.string.subgroup)} ${lecture.subgroup}"
                         } else {
                             stringResource(R.string.masterclass)
-                        },
+                        }).uppercase(),
                         style = MaterialTheme.typography.labelSmall
                     )
 
