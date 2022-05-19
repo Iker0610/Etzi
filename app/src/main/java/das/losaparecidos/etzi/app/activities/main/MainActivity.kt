@@ -56,7 +56,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialsFilterDialog
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel

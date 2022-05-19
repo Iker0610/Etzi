@@ -20,18 +20,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.google.accompanist.flowlayout.SizeMode
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Professor
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChipGroup(
+fun FilterChipGroup(
     professors: List<Professor> = mutableListOf(),
     onSelectedChanged: (String, Boolean) -> Unit,
 ) {
     FlowRow(
-        mainAxisAlignment = MainAxisAlignment.SpaceEvenly,
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = MainAxisAlignment.Start,
         mainAxisSpacing = 8.dp
     ) {
         professors.forEach { professor ->
@@ -62,7 +64,7 @@ fun TutorialChipPreview() {
                     .padding(it)
                     .padding(30.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                ChipGroup(professors = mutableListOf(),
+                FilterChipGroup(professors = mutableListOf(),
                     onSelectedChanged = { profe, selected ->
                         Log.i("profesor y seleccionado?:", "$profe $selected")
                     })

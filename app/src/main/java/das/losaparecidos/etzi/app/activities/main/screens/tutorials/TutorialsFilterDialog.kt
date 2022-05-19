@@ -1,4 +1,4 @@
-package das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables
+package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -22,7 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TransparentDatePicker
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.FilterChipGroup
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.SubjectDropdownMenu
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
@@ -75,7 +76,7 @@ fun TutorialsFilterDialog(
             FilterSectionTitle(icon = Icons.Rounded.MenuBook, text = stringResource(id = R.string.subject))
 
             // TODO OBTENER ASIGNATURAS DE LA BBDD Y QUE SE MANIPULEN BIEN LOS DATOS
-            SubjectsMenu(
+            SubjectDropdownMenu(
                 asignaturas = tutorialsViewModel.subjectTutorials,
                 modifier = Modifier.fillMaxWidth(),
                 onSubjectSelected = { /*TODO COGER VALOR DEL COMBOBOX*/ }
@@ -113,7 +114,7 @@ fun TutorialsFilterDialog(
             FilterSectionTitle(icon = Icons.Rounded.School, text = stringResource(id = R.string.professors_label))
 
             //TODO OBTENER PROFES DE LA BBDD Y MODIFICAR EL onSelectedChanged
-            ChipGroup(
+            FilterChipGroup(
                 professors = tutorialsViewModel.professorsWithTutorials,
                 onSelectedChanged = { p1, p2 -> {} },
             )
