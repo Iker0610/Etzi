@@ -20,6 +20,7 @@
     <corners android:radius="16dp" />
     <stroke
         android:width="2dp"
-        android:color="?android:attr/colorButtonNormal" />
-    <solid android:color="?android:attr/colorButtonNormal"></solid>
+        android:color="?android:attr/colorAccent" />
+    <!--solid android:color="?android:attr/colorButtonNormal"></solid-->
+    <solid android:color="?android:attr/colorAccent"></solid>
 </shape>
