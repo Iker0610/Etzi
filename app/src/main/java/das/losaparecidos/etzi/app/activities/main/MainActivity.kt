@@ -295,8 +295,9 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
-                TutorialsFilterDialog(tutorialsViewModel = tutorialsViewModel, windowSizeClass = windowSizeClass) {
-                }
+                TutorialsFilterDialog(tutorialsViewModel = tutorialsViewModel,
+                    windowSizeClass = windowSizeClass,
+                    onBack = {navController.getBackStackEntry(MainActivityScreens.Tutorials.route)})
             }
         }
 
