@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import das.losaparecidos.etzi.app.utils.today
+import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
@@ -16,8 +17,8 @@ class TutorialsFilterViewModel(
     currentSelectedSubject: String? = null,
     startDate: LocalDate? = null,
     endDate: LocalDate? = null,
-    selectedProfessors: Map<String, Boolean>? = null,
-    professorList: List<String> = emptyList()
+    selectedProfessors: Map<ProfessorWithTutorials, Boolean>,
+    //professorList: List<Pro> = emptyList()
 ) : ViewModel() {
 
     init {
@@ -28,17 +29,13 @@ class TutorialsFilterViewModel(
      **                    States                   **
      *************************************************/
 
-    var currentSelectedSubject: String by mutableStateOf(currentSelectedSubject ?: "All")
+    var currentSelectedSubject: String by mutableStateOf(currentSelectedSubject ?: "-")
     var startDate: LocalDate by mutableStateOf(startDate ?: LocalDate.today)
         private set
     var endDate: LocalDate by mutableStateOf(endDate ?: LocalDate.today.plus(7, DateTimeUnit.DAY))
         private set
 
-    val selectedProfessors: MutableMap<String, Boolean> = mutableStateMapOf<String, Boolean>().apply {
-        if (selectedProfessors != null) {
-            putAll(selectedProfessors)
-        } else putAll(professorList.map { it to true })
-    }
+    val selectedProfessors: MutableMap<ProfessorWithTutorials, Boolean> = mutableStateMapOf<ProfessorWithTutorials, Boolean>().apply { putAll(selectedProfessors) }
 
     val dateRange: Pair<LocalDate, LocalDate> get() = Pair(startDate, endDate)
 
@@ -52,7 +49,7 @@ class TutorialsFilterViewModel(
         endDate = newEndDate
     }
 
-    fun onProfessorToggle(professor: String) {
+    fun onProfessorToggle(professor: ProfessorWithTutorials) {
         if (professor in selectedProfessors) {
             selectedProfessors[professor] = !selectedProfessors[professor]!!
         }

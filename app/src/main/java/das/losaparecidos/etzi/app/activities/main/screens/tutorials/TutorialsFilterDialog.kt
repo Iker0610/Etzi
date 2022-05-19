@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.FilterChipGroup
@@ -27,12 +26,18 @@ import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
+import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TutorialsFilterDialog(
     tutorialsViewModel: TutorialsViewModel,
-    tutorialsFilterViewModel: TutorialsFilterViewModel = TutorialsFilterViewModel(professorList = tutorialsViewModel.professorsWithTutorials.map { it.fullName }),
+    tutorialsFilterViewModel: TutorialsFilterViewModel = TutorialsFilterViewModel(
+        tutorialsViewModel.selectedSubject,
+        tutorialsViewModel.startDate,
+        tutorialsViewModel.endDate,
+        tutorialsViewModel.selectedProfessors
+    ),
     windowSizeClass: WindowSizeClass,
     onBack: () -> Unit
 ) {
@@ -40,11 +45,11 @@ fun TutorialsFilterDialog(
 
     // EVENTS
     val onSave = {
-        tutorialsViewModel.onSelectedChange(
-            tutorialsFilterViewModel.currentSelectedSubject,
+        tutorialsViewModel.onFilterChange(
+            tutorialsFilterViewModel.currentSelectedSubject.let { if (it != "-") it else null },
             tutorialsFilterViewModel.startDate,
             tutorialsFilterViewModel.endDate,
-            emptyList(),
+            tutorialsFilterViewModel.selectedProfessors,
         )
     }
 
@@ -105,7 +110,8 @@ fun TutorialsFilterDialog(
 
             FilterChipGroup(
                 items = tutorialsFilterViewModel.selectedProfessors,
-                onItemToggle = tutorialsFilterViewModel::onProfessorToggle
+                onItemToggle = tutorialsFilterViewModel::onProfessorToggle,
+                itemToStringMapper = ProfessorWithTutorials::fullName
             )
         }
     }

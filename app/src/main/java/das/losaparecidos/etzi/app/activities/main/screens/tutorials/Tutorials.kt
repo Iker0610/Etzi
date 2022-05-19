@@ -40,22 +40,6 @@ fun TutorialsScreen(
 ) {
     val context = LocalContext.current
     // TODO: SI NO HAY ASIGNATURAS Y/O PROFES, O EN EL FILTRO NO APARECE NINGUNO, PONER UN MENSAJE EN LA UI SIMILAR A 'NO HAY TUTORIAS'
-
-    val fechaDesde = rememberSaveable {
-        mutableStateOf(
-            java.time.LocalDate.now().format(
-                DateTimeFormatter.ISO_DATE
-            )
-        )
-    }
-    val fechaHasta = rememberSaveable {
-        mutableStateOf(
-            java.time.LocalDate.now().plusDays(7).format(
-                DateTimeFormatter.ISO_DATE
-            )
-        )
-    }
-
     Scaffold(
         topBar = {
             SmallTopAppBar(
@@ -85,7 +69,7 @@ fun TutorialsScreen(
                 LazyColumn {
                     items(tutorialsViewModel.tutorials) { professorWithTutorials ->
                         professorWithTutorials.tutorials.groupBy { tutorial ->
-                            TutorialCard(tutorial = tutorial, professorFullName = professorWithTutorials.fullName)
+                            TutorialCard(tutorial = tutorial, professor = professorWithTutorials.professor)
                         }
                     }
                 }

@@ -79,4 +79,6 @@
     <string name="date">Date</string>
     <string name="no_lectures_dialog_message">There are no lectures for today</string>
     <string name="date_range">Date Range</string>
+    <string name="email_salutation">Dear sir/madam</string>
+    <string name="email_subject">"Tutorial dated "</string>
 </resources>

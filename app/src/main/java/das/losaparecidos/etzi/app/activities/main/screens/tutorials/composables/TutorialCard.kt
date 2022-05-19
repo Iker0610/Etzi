@@ -1,5 +1,8 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,20 +23,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
+import das.losaparecidos.etzi.app.utils.now
+import das.losaparecidos.etzi.model.entities.Building
+import das.losaparecidos.etzi.model.entities.LectureRoom
+import das.losaparecidos.etzi.model.entities.Professor
 import das.losaparecidos.etzi.model.entities.Tutorial
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TutorialCard(tutorial: Tutorial, professorFullName: String, modifier: Modifier = Modifier) {
+fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
 
+    val emailSubject = stringResource(id = R.string.email_subject)
+    val emailSalutation = stringResource(id = R.string.email_salutation)
     // Time fomat in Tametable
     val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
     val dateFormat = DateTimeFormatter.ofPattern("dd-MM-y")
@@ -148,7 +159,7 @@ fun TutorialCard(tutorial: Tutorial, professorFullName: String, modifier: Modifi
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            text = professorFullName,
+                            text = professor.fullName,
                             style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.W400)
                         )
                     }
@@ -160,7 +171,18 @@ fun TutorialCard(tutorial: Tutorial, professorFullName: String, modifier: Modifi
                         FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
                             Icon(Icons.Rounded.NotificationsNone, null)
                         }
-                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
+                        FilledTonalIconToggleButton(checked = false, onCheckedChange = {
+                            // TODO poner mail del profesor
+                            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                val email = professor.email
+                                type = "message/rfc822"
+                                val uriText = String.format("mailto:%s?subject=%s&body=%s",
+                                    "$email,", emailSubject + tutorial.startDate.date.toString(), emailSalutation)
+                                data = Uri.parse(uriText)
+                            }
+                            startActivity(context,intent,null)
+
+                        }) {
                             Icon(Icons.Rounded.Mail, null)
                         }
                     }
@@ -183,7 +205,11 @@ fun TutorialCardPreview() {
                     .padding(it)
                     .padding(30.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-
+                TutorialCard(tutorial = Tutorial(
+                    LectureRoom(2,3, Building("2","IM","Euskal herriko univertsitatea", "diresió")),
+                    LocalDateTime.now,
+                    LocalDateTime.now
+                ), Professor("Iker", "Sobrón","iker.sobron@ehu.eus"))
             }
 
         }

@@ -78,5 +78,9 @@
     <string name="distinction">Matrícula de honor</string>
     <string name="type">Tipo</string>
     <string name="date">Fecha</string>
+    <string name="email_salutation">Hola</string>
+    <string name="no_lectures_dialog_message">No tienes clase</string>
+    <string name="email_subject">"Tutoría del día "</string>
+    <string name="date_range">Rango de fechas</string>
 
 </resources>
