@@ -1,5 +1,6 @@
 package das.losaparecidos.etzi.app.activities.main.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,10 @@ import javax.inject.Inject
 class TutorialsViewModel @Inject constructor(
     private val studentDataRepository: StudentDataRepository
 ) : ViewModel() {
+
+    init {
+        Log.d("VIEWMODEL", "Se ha creado un ${this::class}")
+    }
 
     /*************************************************
      **                    States                   **

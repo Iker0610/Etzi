@@ -16,6 +16,10 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(private val studentDataRepository: StudentDataRepository) :
     ViewModel() {
 
+    init {
+        Log.d("VIEWMODEL", "Se ha creado un ${this::class}")
+    }
+
     /*************************************************
      **                    States                   **
      *************************************************/
@@ -29,7 +33,6 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
             fullRecord = studentDataRepository.getRecord()
             recordGroupedByCourse = fullRecord.groupBy { it.subject.course }
         }
-        Log.d("VIEWMODEL", "Se ha creado un RecordViewModel")
     }
 
 

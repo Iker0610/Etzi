@@ -1,5 +1,6 @@
 package das.losaparecidos.etzi.app.activities.main.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,6 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudentDataViewModel @Inject constructor(private val studentDataRepository: StudentDataRepository) : ViewModel() {
+
+    init {
+        Log.d("VIEWMODEL", "Se ha creado un ${this::class}")
+    }
+
 
     /*************************************************
      **                    States                   **
