@@ -52,8 +52,8 @@ android:description=""
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:initialLayout="@layout/agenda_widget_2x4"
-    android:previewLayout="@layout/agenda_widget_2x4"
+    android:initialLayout="@layout/agenda_widget_2x3"
+    android:previewLayout="@layout/agenda_widget_2x3"
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="3"
     android:targetCellHeight="2"
