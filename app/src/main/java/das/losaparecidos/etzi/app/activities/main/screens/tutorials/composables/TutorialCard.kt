@@ -52,7 +52,7 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
         // Class and time
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {

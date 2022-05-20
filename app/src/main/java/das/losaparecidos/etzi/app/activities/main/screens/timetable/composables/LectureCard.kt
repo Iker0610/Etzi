@@ -47,21 +47,19 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
     ElevatedCard(modifier = modifier) {
 
         Row(
-            Modifier
-                .padding(vertical = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .padding(vertical = 16.dp, horizontal = 16.dp)
                 .height(IntrinsicSize.Min)
+                .fillMaxWidth()
         ) {
 
             // Time
             CenteredColumn(
                 Modifier
                     .fillMaxHeight()
-                    .padding(horizontal = 12.dp)
-                    .width(64.dp)
-
+                    .padding(start = 8.dp)
             ) {
-
-
                 Icon(Icons.Rounded.Schedule, null, modifier = Modifier.padding(bottom = 8.dp))
                 Text(
                     style = MaterialTheme.typography.labelMedium,
@@ -72,25 +70,21 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 
                 Text(lecture.startDate.format(timeFormat))
                 Text(lecture.endDate.format(timeFormat))
-
-
             }
 
             // Linea
             MaterialDivider(
                 Modifier
-                    .padding(end = 8.dp)
                     .fillMaxHeight()
                     .width(1.dp)
             )
 
             // Textos
             Column(
-                Modifier
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
-                    .padding(horizontal = 12.dp),
-                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
                 // Información de la clase
@@ -168,7 +162,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 @Preview
 fun LectureCardPreview() {
     EtziTheme {
-        Scaffold() {
+        Scaffold {
             Column(
                 Modifier
                     .verticalScroll(rememberScrollState())
