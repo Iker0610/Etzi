@@ -3,10 +3,9 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +23,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -55,7 +55,7 @@ fun TutorialsScreen(
     // STATES
     val tutorials by tutorialsViewModel.filteredTutorials.collectAsState(initial = emptyList())
     var currentExpandedSubject: String? by rememberSaveable { mutableStateOf(null) }
-    var (currentExpandedProfessor, setCurrentExpandedProfessor) = rememberSaveable { mutableStateOf<String?>(null) }
+    val currentExpandedProfessor = rememberSaveable { mutableStateOf<String?>(null) }
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
@@ -111,13 +111,11 @@ fun TutorialsScreen(
                             subjectWithTutorial = subjectWithTutorial,
                             collapsible = !singleSubjectSelection,
                             expanded = subjectWithTutorial.subjectName == currentExpandedSubject,
-                            secondaryExpanded = currentExpandedProfessor != null,
                             onExpand = {
+                                currentExpandedProfessor.value = null
                                 currentExpandedSubject = if (currentExpandedSubject != subjectWithTutorial.subjectName) subjectWithTutorial.subjectName else null
-                                currentExpandedProfessor = null
                             },
-                            currentExpandedProfessor = currentExpandedProfessor,
-                            onChangeCurrentExpandedProfessor = setCurrentExpandedProfessor
+                            expandedProfessorState = currentExpandedProfessor
                         )
 
 
@@ -139,18 +137,18 @@ fun LazyListScope.subjectCollapsableSection(
     subjectWithTutorial: SubjectTutorial,
     collapsible: Boolean = true,
     expanded: Boolean = true,
-    secondaryExpanded: Boolean = false,
     onExpand: () -> Unit,
-    currentExpandedProfessor: String?,
-    onChangeCurrentExpandedProfessor: (String?) -> Unit
+    expandedProfessorState: MutableState<String?>,
 ) {
-    val expand = expanded || (!collapsible)
+    val expand by derivedStateOf { expanded || (!collapsible) }
     val singleProfessorSelection by derivedStateOf { subjectWithTutorial.professors.size == 1 }
+    var currentExpandedProfessor by expandedProfessorState
+    val secondaryExpanded by derivedStateOf { singleProfessorSelection || currentExpandedProfessor != null }
 
     stickyHeader(key = subjectWithTutorial.subjectName) {
         val backgroundColor by animateColorAsState(
             targetValue = when {
-                expand && (secondaryExpanded || singleProfessorSelection) -> MaterialTheme.colorScheme.secondary
+                expand && (secondaryExpanded) -> MaterialTheme.colorScheme.secondary
                 expand -> MaterialTheme.colorScheme.primaryContainer
                 else -> MaterialTheme.colorScheme.surface
             },
@@ -159,11 +157,19 @@ fun LazyListScope.subjectCollapsableSection(
 
         val contentColor by animateColorAsState(
             targetValue = when {
-                expand && (secondaryExpanded || singleProfessorSelection) -> MaterialTheme.colorScheme.onSecondary
+                expand && (secondaryExpanded) -> MaterialTheme.colorScheme.onSecondary
                 expand -> MaterialTheme.colorScheme.onPrimaryContainer
                 else -> MaterialTheme.colorScheme.onSurface
             },
             animationSpec = tween(durationMillis = 500)
+        )
+
+        val angle: Float by animateFloatAsState(
+            targetValue = if (expand) 180F else 0F,
+            animationSpec = tween(
+                durationMillis = 500, // duration
+                easing = FastOutSlowInEasing
+            )
         )
 
         Surface(
@@ -184,7 +190,12 @@ fun LazyListScope.subjectCollapsableSection(
                         modifier = Modifier.padding(start = 32.dp),
                         enabled = collapsible
                     ) {
-                        Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", Modifier.size(32.dp))
+                        Icon(
+                            Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail",
+                            Modifier
+                                .size(32.dp)
+                                .rotate(angle)
+                        )
                     }
                 }
             }
@@ -192,7 +203,6 @@ fun LazyListScope.subjectCollapsableSection(
     }
 
     if (expand) {
-
         subjectWithTutorial.professors.forEach { professor ->
             professorCollapsable(
                 parentSubject = subjectWithTutorial.subjectName,
@@ -200,9 +210,7 @@ fun LazyListScope.subjectCollapsableSection(
                 collapsible = !singleProfessorSelection,
                 expanded = currentExpandedProfessor == professor.email,
                 onExpand = {
-                    onChangeCurrentExpandedProfessor(
-                        if (currentExpandedProfessor != professor.email) professor.email else null
-                    )
+                    currentExpandedProfessor = if (currentExpandedProfessor != professor.email) professor.email else null
                 }
             )
         }
@@ -217,7 +225,7 @@ fun LazyListScope.professorCollapsable(
     expanded: Boolean = true,
     onExpand: () -> Unit = {}
 ) {
-    val expand = expanded || !collapsible
+    val expand by derivedStateOf { expanded || !collapsible }
 
     item(key = "$parentSubject&&${professor.email}") {
 
@@ -225,6 +233,15 @@ fun LazyListScope.professorCollapsable(
             targetValue = if (expand) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
             animationSpec = tween(durationMillis = 500)
         )
+
+        val angle: Float by animateFloatAsState(
+            targetValue = if (expand) 180F else 0F,
+            animationSpec = tween(
+                durationMillis = 500, // duration
+                easing = FastOutSlowInEasing
+            )
+        )
+
         Surface(
             modifier = Modifier.fillMaxWidth(),
             onClick = onExpand,
@@ -242,7 +259,7 @@ fun LazyListScope.professorCollapsable(
                     enabled = collapsible
                 ) {
                     val color = if (collapsible) LocalContentColor.current else Color.Transparent
-                    Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", tint = color)
+                    Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", tint = color, modifier = Modifier.rotate(angle))
                 }
 
             }
