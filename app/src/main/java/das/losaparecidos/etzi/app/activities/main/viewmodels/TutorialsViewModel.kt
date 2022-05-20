@@ -33,6 +33,9 @@ class TutorialsViewModel @Inject constructor(
      **                    States                   **
      *************************************************/
 
+    var loadingData by mutableStateOf(true)
+        private set
+
     private var allTutorials: List<SubjectTutorial> by mutableStateOf(emptyList())
 
     // Filtros
@@ -51,28 +54,29 @@ class TutorialsViewModel @Inject constructor(
             .filter { subjectTutorial -> selectedSubject == null || subjectTutorial.subjectName == selectedSubject }
 
             // Editamos las tutorias por asignatura que hayan pasado el filtro para filtrar las listas internas
-            .map { subjectTutorial ->
-
-                // Hacemos una copia para no editar el original
-                subjectTutorial.copy(professors = subjectTutorial.professors
+            .mapNotNull { subjectTutorial ->
+                //Filtramos las tutorías con los profesores seleccionados en el filtro
+                val filteredProfessors = subjectTutorial.professors
                     //Filtramos las tutorías con los profesores selccionados en el filtro
                     .filter { selectedProfessors.getOrDefault(it, false) }
-                    .map { professor ->
+                    .mapNotNull { professor ->
                         // Copiamos las tutorias del profesor para no editar el original
-                        professor.copy(tutorials = professor.tutorials
+                        val filteredTutorials = professor.tutorials
                             //Editamos las tutorías con las fechas que nos han pasado por el filtro
                             .filter { tutorial ->
                                 var isValid: Boolean = (startDate <= tutorial.startDate.date)
                                 endDate?.let { isValid = isValid && tutorial.startDate.date <= it }
                                 return@filter isValid
                             }
-                        )
+
+                        if (filteredTutorials.isNotEmpty()) professor.copy(tutorials = filteredTutorials) else null
                     }
-                )
+
+                if (filteredProfessors.isNotEmpty()) subjectTutorial.copy(professors = filteredProfessors) else null
             }
     }
 
-    var subjectList: SortedSet<String> by mutableStateOf(sortedSetOf())
+    var subjectList: Set<String> by mutableStateOf(setOf())
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -81,6 +85,8 @@ class TutorialsViewModel @Inject constructor(
             // Load data transformed data
             subjectList = allTutorials.map { it.subjectName }.toSortedSet()
             selectedProfessors = allTutorials.flatMap { subject -> subject.professors }.associateWith { true }
+
+            loadingData = false
         }
     }
 

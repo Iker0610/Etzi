@@ -85,4 +85,5 @@
     <string name="fail">No pass</string>
     <string name="pass">Pass</string>
     <string name="outstanding">Outstanding</string>
+    <string name="no_tutorials_dialog_message">There are no tutorials available</string>
 </resources>
