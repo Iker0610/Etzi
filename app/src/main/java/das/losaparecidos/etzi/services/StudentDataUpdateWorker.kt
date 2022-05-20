@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 private const val MAX_NUMBER_OF_RETRY = 5
 
 @HiltWorker
-class TimeTableWorker @AssistedInject constructor(
+class StudentDataUpdateWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
     private val loginRepository: LoginRepository,

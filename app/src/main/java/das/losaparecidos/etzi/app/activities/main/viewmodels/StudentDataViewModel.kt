@@ -46,9 +46,12 @@ class StudentDataViewModel @Inject constructor(private val studentDataRepository
         viewModelScope.launch(Dispatchers.IO) {
             // TODO CONVERTIR A FLOW
             fullTimeTable = studentDataRepository.getGroupedTimetable().first()
-            timeTable = fullTimeTable[currentSelectedDay.toString()] ?: emptyList()
 
-            loadingData = false
+            launch(Dispatchers.Main) {
+                timeTable = fullTimeTable[currentSelectedDay.toString()] ?: emptyList()
+
+                loadingData = false
+            }
         }
     }
 
