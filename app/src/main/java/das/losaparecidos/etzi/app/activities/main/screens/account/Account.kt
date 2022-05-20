@@ -16,11 +16,8 @@ import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,6 +40,7 @@ import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.AppLanguage
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
+import das.losaparecidos.etzi.model.entities.Student
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
@@ -55,7 +53,7 @@ fun AccountScreen(
     val context = LocalContext.current
     val rememberNavController = rememberNavController()
     val profilePicture: Bitmap? by mutableStateOf(null)
-    val student = accountViewModel.studentData
+    val student by accountViewModel.studentData.collectAsState(initial = Student("","","","",""))
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {

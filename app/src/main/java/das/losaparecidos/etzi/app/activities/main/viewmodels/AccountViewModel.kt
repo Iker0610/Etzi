@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import das.losaparecidos.etzi.model.entities.Student
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +21,7 @@ class AccountViewModel @Inject constructor(private val studentDataRepository: St
     /*************************************************
      **                    States                   **
      *************************************************/
-    var studentData: Student = Student("","","","","")
+    var studentData: Flow<Student> = emptyFlow()
     init {
         viewModelScope.launch(Dispatchers.IO) {
             studentData = studentDataRepository.getStudentData()
