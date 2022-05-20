@@ -1,32 +1,27 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Mail
-import androidx.compose.material.icons.rounded.NotificationsNone
-import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material.icons.outlined.Mail
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import das.losaparecidos.etzi.R
-import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.now
@@ -37,6 +32,7 @@ import das.losaparecidos.etzi.model.entities.Tutorial
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,11 +44,11 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
     // fila
     val context = LocalContext.current
 
-    val emailSubject = stringResource(id = R.string.email_subject)
+    val emailSubject = stringResource(id = R.string.email_subject, tutorial.startDate.date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)))
     val emailSalutation = stringResource(id = R.string.email_salutation)
+
     // Time fomat in Tametable
     val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
-    val dateFormat = DateTimeFormatter.ofPattern("dd-MM-y")
 
     // Dialog
     var showDialog by remember { mutableStateOf(false) }
@@ -63,96 +59,118 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
     }
 
     ElevatedCard(modifier = modifier) {
-//MaterialTheme.space.small
-        Row(
+
+        // Class and time
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = modifier
                 .fillMaxSize()
-                .padding(vertical = 14.dp)
+                .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
-            // Class and time
-            Column(modifier = modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth()) {
-                CenteredRow(
+            CenteredRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                    shape = MaterialTheme.shapes.small,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(2.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .width(64.dp)
+                        .clickable {
+                            showDialog = true
+                        }
                 ) {
-                    Surface(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .width(64.dp)
-                            .clickable {
-                                showDialog = true
-                            }
-
+                    CenteredRow(
+                        modifier = Modifier.padding(
+                            vertical = 6.dp,
+                            horizontal = 4.dp
+                        )
                     ) {
-                        CenteredRow(
-                            modifier = Modifier.padding(
-                                vertical = 4.dp,
-                                horizontal = 4.dp
-                            )
-                        ) {
-
-                            Text(
-                                textAlign = TextAlign.End,
-                                text = tutorial.lectureRoom.fullCode
-                            )
-                        }
+                        Text(
+                            textAlign = TextAlign.End,
+                            text = tutorial.lectureRoom.fullCode
+                        )
                     }
-                    Icon(Icons.Rounded.Schedule, null)
-                    Text(text = tutorial.startDate.format("MMM dd").uppercase(Locale.getDefault()), modifier = Modifier.padding(4.dp))
-                    Text(tutorial.startDate.toJavaLocalDateTime().format(timeFormat) + "-" + tutorial.endDate.toJavaLocalDateTime().format(timeFormat))
                 }
-                Row{
-                    Row(modifier = modifier.padding(8.dp),horizontalArrangement = Arrangement.SpaceBetween){
-                        CenteredColumn{
-                            Text(
-                                "${stringResource(R.string.professor)}:",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.tertiary
-                            )
-                            Text(
-                                text = professor.fullName,
-                                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.W400)
-                            )
-                            Text(
-                                text = "${stringResource(R.string.email_label)}:",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.tertiary
-                            )
-                            Text(
-                                professor.email,
-                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.W400)
-                            )
-                        }
-                    }
-                    Column(verticalArrangement = Arrangement.SpaceAround, modifier = modifier.fillMaxWidth()) {
-                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.NotificationsNone, null)
-                        }
-                        FilledTonalIconToggleButton(checked = false, onCheckedChange = {
-                            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                val email = professor.email
-                                type = "message/rfc822"
-                                val uriText = String.format(
-                                    "mailto:%s?subject=%s&body=%s",
-                                    "$email,", emailSubject + tutorial.startDate.date.toString(), emailSalutation
-                                )
-                                data = Uri.parse(uriText)
-                            }
-                            startActivity(context, intent, null)
 
-                        }) {
-                            Icon(Icons.Rounded.Mail, null)
+                CenteredRow(horizontalArrangement = Arrangement.End) {
+                    Icon(
+                        Icons.Rounded.Event, null,
+                        Modifier
+                            .padding(end = 4.dp)
+                            .size(18.dp)
+                    )
+                    Text(
+                        text = tutorial.startDate.format("MMM dd").uppercase(Locale.getDefault()),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Spacer(Modifier.width(12.dp))
+
+                    Icon(
+                        Icons.Rounded.Schedule, null,
+                        Modifier
+                            .padding(end = 4.dp)
+                            .size(18.dp)
+                    )
+                    Text(
+                        "${tutorial.startDate.format("HH:mm")} - ${tutorial.endDate.toJavaLocalDateTime().format(timeFormat)}",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+            }
+
+            MaterialDivider(Modifier.padding(top = 4.dp))
+
+            CenteredRow(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "${stringResource(R.string.professor)}:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                    Text(
+                        text = professor.fullName,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        text = "${stringResource(R.string.email_label)}:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                    Text(
+                        professor.email,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                Column(verticalArrangement = Arrangement.SpaceAround) {
+                    FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.NotificationsNone, null)
+                    }
+
+                    IconButton(onClick = {
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:")
+                            putExtra(Intent.EXTRA_EMAIL, professor.email)
+                            putExtra(Intent.EXTRA_SUBJECT, emailSubject)
+                            putExtra(Intent.EXTRA_TEXT, emailSalutation)
                         }
+                        startActivity(context, intent, null)
+
+                    }) {
+                        Icon(Icons.Rounded.Mail, null, tint = MaterialTheme.colorScheme.secondary)
                     }
                 }
             }
-        }//Column
-    } //Row
+        }
+    }//Column
 }//ElevatedCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -160,7 +178,7 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
 @Preview
 fun TutorialCardPreview() {
     EtziTheme {
-        Scaffold() {
+        Scaffold {
             Column(
                 Modifier
                     .verticalScroll(rememberScrollState())

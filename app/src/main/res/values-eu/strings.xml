@@ -68,7 +68,7 @@
     <string name="type">Mota</string>
     <string name="date">Data</string>
     <string name="email_salutation">Kaixo,</string>
-    <string name="email_subject">"Tutoretza "</string>
+    <string name="email_subject">Tutoretza %1$s-ean</string>
     <string name="date_range">Data-tartea</string>
     <string name="no_lectures_dialog_message">Gaur ez duzu klaserik</string>
 </resources>
