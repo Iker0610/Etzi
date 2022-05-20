@@ -1,6 +1,5 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,8 +11,8 @@ import androidx.compose.material.icons.rounded.School
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,46 +23,58 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.FilterChipGroup
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.SubjectDropdownMenu
+import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsFilterViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
-import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
+import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
+import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TutorialsFilterDialog(
     tutorialsViewModel: TutorialsViewModel,
+    tutorialsFilterViewModel: TutorialsFilterViewModel = TutorialsFilterViewModel(
+        tutorialsViewModel.selectedSubject,
+        tutorialsViewModel.startDate,
+        tutorialsViewModel.endDate,
+        tutorialsViewModel.selectedProfessors
+    ),
     windowSizeClass: WindowSizeClass,
-    onBack: () -> Unit,
+    onClose: () -> Unit
 ) {
-    val context = LocalContext.current
-    // TODO: SI NO HAY ASIGNATURAS Y/O PROFES, O EN EL FILTRO NO APARECE NINGUNO, PONER UN MENSAJE EN LA UI SIMILAR A 'NO HAY TUTOORIAS'
 
-    val fechaDesde = rememberSaveable { mutableStateOf(LocalDate.now().format(DateTimeFormatter.ISO_DATE)) }
-    val fechaHasta = rememberSaveable { mutableStateOf(LocalDate.now().plusDays(7).format(DateTimeFormatter.ISO_DATE)) }
+    val selectableSubjectList by derivedStateOf { listOf("-", *tutorialsViewModel.subjectList.toTypedArray()) }
+
+    // EVENTS
+    val onSave = {
+        tutorialsViewModel.onFilterChange(
+            tutorialsFilterViewModel.currentSelectedSubject.let { if (it != "-") it else null },
+            tutorialsFilterViewModel.startDate,
+            tutorialsFilterViewModel.endDate,
+            tutorialsFilterViewModel.selectedProfessors,
+        )
+
+        onClose()
+    }
+
+    // UI
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             DynamicMediumTopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Rounded.Close, null)
-                    }
+                    IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, null) }
                 },
                 actions = {
-                    // TODO poner text button 'save'
-                    TextButton(onClick = { /*TODO aplicar lo seleccionado en los filtros*/ }) {
-                        Text(text = stringResource(id = R.string.save_button))
-                    }
+                    TextButton(onClick = onSave) { Text(text = stringResource(id = R.string.save_button)) }
                 },
                 windowSizeClass = windowSizeClass
             )
-        },
-        modifier = Modifier.fillMaxSize()
+        }
     ) { paddingValues ->
-
 
         Column(
             modifier = Modifier
@@ -75,48 +86,37 @@ fun TutorialsFilterDialog(
         ) {
             FilterSectionTitle(icon = Icons.Rounded.MenuBook, text = stringResource(id = R.string.subject))
 
-            // TODO OBTENER ASIGNATURAS DE LA BBDD Y QUE SE MANIPULEN BIEN LOS DATOS
+
             SubjectDropdownMenu(
-                asignaturas = tutorialsViewModel.subjectTutorials,
+                subjectList = selectableSubjectList,
+                selectedSubject = tutorialsFilterViewModel.currentSelectedSubject,
                 modifier = Modifier.fillMaxWidth(),
-                onSubjectSelected = { /*TODO COGER VALOR DEL COMBOBOX*/ }
+                onSubjectSelected = tutorialsFilterViewModel::currentSelectedSubject::set
+
             )
 
 
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
-            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.subject))
+            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date_range))
 
-            // TODO OBTENER CORRECTAMENTE LAS FECHAS
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TransparentDatePicker(
-                    textFieldValue = fechaDesde,
-                    textLabel = stringResource(id = R.string.date_from_label),
-                    context = context,
-                    onDateRangeSelected = { f1, f2 -> Log.i("fechas", "$f1 $f2") },
-                    modifier = Modifier.weight(1f)
-                )
 
-                TransparentDatePicker(
-                    textFieldValue = fechaHasta,
-                    textLabel = stringResource(id = R.string.date_to_label),
-                    context = context,
-                    modifier = Modifier.weight(1f),
-                    onDateRangeSelected = { f1, f2 -> Log.i("fechas", "$f1 $f2") }
-                )
-            }
-
+            DateRangeDoubleField(
+                dateRange = tutorialsFilterViewModel.dateRange,
+                onDateRangeSelected = tutorialsFilterViewModel::onDateRangeChange,
+            )
 
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
             FilterSectionTitle(icon = Icons.Rounded.School, text = stringResource(id = R.string.professors_label))
 
-            //TODO OBTENER PROFES DE LA BBDD Y MODIFICAR EL onSelectedChanged
+
             FilterChipGroup(
-                professors = tutorialsViewModel.professorsWithTutorials,
-                onSelectedChanged = { p1, p2 -> {} },
+                items = tutorialsFilterViewModel.selectedProfessors,
+                onItemToggle = tutorialsFilterViewModel::onProfessorToggle,
+                itemToStringMapper = ProfessorWithTutorials::fullName
             )
         }
     }

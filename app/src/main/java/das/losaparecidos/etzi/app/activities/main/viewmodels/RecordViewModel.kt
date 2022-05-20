@@ -22,6 +22,10 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(private val studentDataRepository: StudentDataRepository) :
     ViewModel() {
 
+    init {
+        Log.d("VIEWMODEL", "Se ha creado un ${this::class}")
+    }
+
     /*************************************************
      **                    States                   **
      *************************************************/
