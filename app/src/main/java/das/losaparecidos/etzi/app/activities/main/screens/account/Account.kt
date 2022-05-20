@@ -50,6 +50,7 @@ import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 fun AccountScreen(
     accountViewModel: AccountViewModel,
     windowSizeClass: WindowSizeClass,
+    onBack: () -> Unit
 ) {
     val context = LocalContext.current
     val rememberNavController = rememberNavController()
@@ -61,11 +62,8 @@ fun AccountScreen(
             SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
-                    IconButton(onClick = { rememberNavController.navigateUp() }) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { rememberNavController.navigateUp() }) {
+                        IconButton(onClick = {onBack()}) {
                             Icon(Icons.Filled.ArrowBack, null)
                         }
                     }
@@ -206,6 +204,6 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
     EtziTheme() {
-        AccountScreen(viewModel(),WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)))
+        AccountScreen(viewModel(),WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)),{})
     }
 }
