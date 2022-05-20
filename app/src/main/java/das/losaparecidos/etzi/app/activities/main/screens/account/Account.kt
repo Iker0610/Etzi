@@ -13,6 +13,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,27 +29,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.composables.StudentDataSection
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.ListItem
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.AppLanguage
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
-import das.losaparecidos.etzi.model.entities.Student
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun AccountScreen() {
+fun AccountScreen(
+    accountViewModel: AccountViewModel,
+    windowSizeClass: WindowSizeClass,
+) {
     val context = LocalContext.current
     val rememberNavController = rememberNavController()
     val profilePicture: Bitmap? by mutableStateOf(null)
-    val student = Student("123456","prueba001@ikasle.ehu.eus","Prueba","Pruebas","Grado de ingeniería pruebas de pruebas y sistemas de pruebas de pruebación")
+    val student = accountViewModel.studentData
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -55,6 +63,11 @@ fun AccountScreen() {
                 navigationIcon = {
                     IconButton(onClick = { rememberNavController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, null)
+                    }
+                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        IconButton(onClick = { rememberNavController.navigateUp() }) {
+                            Icon(Icons.Filled.ArrowBack, null)
+                        }
                     }
 
                 })
@@ -187,11 +200,12 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     )
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
     EtziTheme() {
-        AccountScreen()
+        AccountScreen(viewModel(),WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)))
     }
 }
