@@ -35,7 +35,7 @@ android {
             minifyEnabled true
             shrinkResources true
 
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             /*
@@ -99,23 +99,23 @@ dependencies {
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha11"
-    implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha11"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha12'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha12'
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.navigation:navigation-compose:2.4.2"
 
     // Google font
-    implementation "androidx.compose.ui:ui-text-google-fonts:1.2.0-beta01"
+    implementation 'androidx.compose.ui:ui-text-google-fonts:1.2.0-beta02'
 
     // System UI compose control
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta'
 
     // Compose Nav Animations
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
+    implementation('com.google.accompanist:accompanist-navigation-animation:0.24.9-beta')
 
     //Pa' webview
-    implementation "com.google.accompanist:accompanist-webview:0.24.8-beta"
+    implementation 'com.google.accompanist:accompanist-webview:0.24.9-beta'
 
     // Dialogs and Pickers:
     // implementation 'com.afollestad.material-dialogs:core:3.3.0'
@@ -139,7 +139,7 @@ dependencies {
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
 
     // Kotlin Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3'
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
 
@@ -159,7 +159,7 @@ dependencies {
 
 
     // Firebase
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.4'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.5'
 
 
     // Google Play Services
@@ -168,14 +168,14 @@ dependencies {
 
 
     // Google Maps
-    implementation "com.google.maps.android:maps-compose:1.0.0"
+    implementation 'com.google.maps.android:maps-compose:2.1.1'
     implementation "com.google.android.gms:play-services-maps:18.0.2"
 
     // Permission Request
     // implementation "com.google.accompanist:accompanist-permissions:0.24.7-alpha"
 
     //
-    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.24.9-beta'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {

@@ -13,10 +13,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.JointType
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.Polygon
+import com.google.maps.android.compose.*
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
@@ -94,7 +91,12 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                         }
                     }
 
-                    MaterialDivider(modifier = Modifier.padding(horizontal = 16.dp).fillMaxHeight().width(1.dp))
+                    MaterialDivider(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxHeight()
+                            .width(1.dp)
+                    )
                     //Spacer(modifier = Modifier.width(16.dp))
 
                     GoogleMap(
@@ -103,10 +105,10 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             .weight(1f)
                             .clip(shape = MaterialTheme.shapes.large)
                             .border(2.dp, MaterialTheme.colorScheme.outline, MaterialTheme.shapes.large),
-                        cameraPositionState = CameraPositionState(
-                            position = CameraPosition.fromLatLngZoom(room, 17f)
-                        )
-                    ) { BuildingMapContent(lectureRoom = lectureRoom) }
+                        cameraPositionState = rememberCameraPositionState { position = CameraPosition.fromLatLngZoom(room, 17f) }
+                    ) {
+                        BuildingMapContent(lectureRoom = lectureRoom)
+                    }
 
 
                 }
@@ -178,16 +180,16 @@ private fun BuildingMapContent(lectureRoom: LectureRoom) {
             Polygon(
                 points = build.polygon,
                 fillColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f),
-                strokeWidth= 10f,
+                strokeWidth = 10f,
                 strokeColor = MaterialTheme.colorScheme.tertiary,
                 zIndex = 1f
             )
-            Marker(build.location, title = lectureRoom.building.name)
+            Marker(rememberMarkerState(lectureRoom.building.id, build.location), title = lectureRoom.building.name)
         } else {
             Polygon(
                 points = build.polygon,
                 fillColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f),
-                strokeWidth= 4f,
+                strokeWidth = 4f,
                 strokeColor = MaterialTheme.colorScheme.outline,
                 strokeJointType = JointType.BEVEL
             )

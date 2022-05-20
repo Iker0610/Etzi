@@ -1,11 +1,13 @@
 package das.losaparecidos.etzi.model.entities
 
+import androidx.compose.runtime.Immutable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 @Entity(tableName = "student")
 data class Student(
