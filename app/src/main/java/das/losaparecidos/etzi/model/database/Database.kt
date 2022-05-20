@@ -8,7 +8,7 @@ import das.losaparecidos.etzi.app.utils.epochSecond
 import das.losaparecidos.etzi.app.utils.epochSeconds
 import das.losaparecidos.etzi.app.utils.fromEpochSeconds
 import das.losaparecidos.etzi.model.database.daos.RemainderDao
-import das.losaparecidos.etzi.model.database.daos.TimetableDao
+import das.losaparecidos.etzi.model.database.daos.StudentCacheDataDao
 import das.losaparecidos.etzi.model.entities.Building
 import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.entities.Professor
@@ -25,7 +25,7 @@ import kotlinx.serialization.json.Json
  * Version: 2
  *
  * Entities: [LectureEntity], [Building], [Professor], [Student]
- * Defined DAOs: [TimetableDao], [RemainderDao]
+ * Defined DAOs: [StudentCacheDataDao], [RemainderDao]
  *
  */
 
@@ -35,7 +35,7 @@ import kotlinx.serialization.json.Json
 )
 @TypeConverters(Converters::class)
 abstract class EtziDatabase : RoomDatabase() {
-    abstract fun timetableDao(): TimetableDao
+    abstract fun timetableDao(): StudentCacheDataDao
     abstract fun reminderDao(): RemainderDao
 }
 

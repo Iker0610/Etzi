@@ -2,10 +2,7 @@ package das.losaparecidos.etzi.model.webclients
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import das.losaparecidos.etzi.model.entities.Lecture
-import das.losaparecidos.etzi.model.entities.SerializableLecture
-import das.losaparecidos.etzi.model.entities.SubjectEnrollment
-import das.losaparecidos.etzi.model.entities.SubjectTutorial
+import das.losaparecidos.etzi.model.entities.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -112,6 +109,8 @@ class APIClient @Inject constructor() {
 
 
     //--------------   Student Data   --------------//
+
+    suspend fun getStudentData(): Student = httpClient.get("https://api.etzi.eus/student").body()
 
     suspend fun getTimetable(): List<Lecture> {
         val response: List<SerializableLecture> = httpClient.get("https://api.etzi.eus/student/timetable").body()

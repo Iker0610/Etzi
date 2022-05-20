@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  * DAO defining the room database access API related to Visit Card Data.
  */
 @Dao
-interface TimetableDao {
+interface StudentCacheDataDao {
 
     // INSERTS
 
@@ -43,7 +43,7 @@ interface TimetableDao {
     }
 
     @Transaction
-    suspend fun clearAndAddTimetable(timetable: Iterable<Lecture>) {
+    suspend fun overwriteTimetable(timetable: Iterable<Lecture>) {
         deleteTimetable()
         addTimetable(timetable)
     }

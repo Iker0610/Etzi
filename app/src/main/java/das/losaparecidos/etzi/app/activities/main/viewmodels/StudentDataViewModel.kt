@@ -43,7 +43,7 @@ class StudentDataViewModel @Inject constructor(private val studentDataRepository
         Log.d("VIEWMODEL", "Se ha creado un StudentDataViewModel")
 
         viewModelScope.launch(Dispatchers.IO) {
-            fullTimeTable = studentDataRepository.getTimeTable()
+            fullTimeTable = studentDataRepository.getGroupedTimeTable()
             timeTable = fullTimeTable[currentSelectedDay.toString()] ?: emptyList()
 
             loadingData = false
