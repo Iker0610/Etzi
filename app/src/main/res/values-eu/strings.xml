@@ -71,4 +71,7 @@
     <string name="email_subject">Tutoretza %1$s-ean</string>
     <string name="date_range">Data-tartea</string>
     <string name="no_lectures_dialog_message">Gaur ez duzu klaserik</string>
+    <string name="fail">Ez gai</string>
+    <string name="pass">Gaindituta</string>
+    <string name="outstanding">Bikain</string>
 </resources>

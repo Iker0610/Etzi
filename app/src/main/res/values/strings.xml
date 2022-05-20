@@ -81,5 +81,8 @@
     <string name="date_range">Date Range</string>
     <string name="email_salutation">Dear sir/madam</string>
     <string name="email_subject">Tutorial dated for %1$s</string>
-    <string name="email_label">Email</string>
+    <string name="email_label" translatable="false">Email</string>
+    <string name="fail">No pass</string>
+    <string name="pass">Pass</string>
+    <string name="outstanding">Outstanding</string>
 </resources>

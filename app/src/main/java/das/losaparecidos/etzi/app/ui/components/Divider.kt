@@ -11,7 +11,6 @@ fun MaterialDivider(modifier: Modifier = Modifier, startIndent: Dp = 0.dp) {
     androidx.compose.material3.Divider(
         modifier,
         startIndent = startIndent,
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-        thickness = 0.6.dp
+        color = MaterialTheme.colorScheme.surfaceVariant
     )
 }

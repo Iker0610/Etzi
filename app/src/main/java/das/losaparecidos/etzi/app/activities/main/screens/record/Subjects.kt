@@ -1,9 +1,6 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
@@ -18,6 +15,7 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
+import das.losaparecidos.etzi.app.ui.components.CenteredBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +29,8 @@ fun SubjectsScreen(
     val cursos = 1..4
 
     var selectedTab by remember { mutableStateOf(0) }
+    val record by recordViewModel.recordGroupedByCourse.collectAsState(initial = emptyMap())
+    val selectedCourseRecord by derivedStateOf { record[selectedTab + 1] ?: emptyList() }
 
 
     Scaffold(
@@ -46,20 +46,36 @@ fun SubjectsScreen(
                 })
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            TabRow(selectedTabIndex = selectedTab) {
-                cursos.forEach { course ->
-                    Tab(
-                        text = { Text("${course}º ${stringResource(id = R.string.course)}") },
-                        selected = selectedTab == course - 1,
-                        onClick = { selectedTab = course - 1 }
-                    )
+
+        when {
+            recordViewModel.loadingData -> {
+                CenteredBox(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(32.dp)
+                ) {
+                    CircularProgressIndicator(strokeWidth = 5.dp, modifier = Modifier.size(48.dp))
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            else -> {
+                Column(modifier = Modifier.padding(paddingValues)) {
+                    TabRow(selectedTabIndex = selectedTab) {
+                        cursos.forEach { course ->
+                            Tab(
+                                text = { Text("${course}º ${stringResource(id = R.string.course)}") },
+                                selected = selectedTab == course - 1,
+                                onClick = { selectedTab = course - 1 }
+                            )
+                        }
+                    }
 
-            CourseContainer(recordViewModel.obtainFilteredRecordByCourse(selectedTab + 1))
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    CourseContainer(selectedCourseRecord)
+                }
+            }
         }
     }
 }

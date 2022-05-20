@@ -2,7 +2,6 @@ package das.losaparecidos.etzi.app.activities.main.screens.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentPasteOff
@@ -10,19 +9,22 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
+import das.losaparecidos.etzi.app.ui.components.CenteredBox
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,18 +35,7 @@ fun GradesScreen(
     onMenuOpen: () -> Unit
 ) {
 
-    val (selectedSubject, setSelectedSubject) = remember { mutableStateOf("") }
-
-    val subjectEnrollments = recordViewModel.obtainProvisionalSubjectGrades()
-
-    val onExpand = { subjectEnrollment: SubjectEnrollment ->
-
-        // Al clicar cambiar selección
-        if (selectedSubject == subjectEnrollment.subject.name) {
-            setSelectedSubject("")
-        } else setSelectedSubject(subjectEnrollment.subject.name)
-
-    }
+    val subjectEnrollments by recordViewModel.provisionalSubjectGrades.collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
@@ -60,61 +51,86 @@ fun GradesScreen(
         }
     ) { paddingValues ->
 
-        CenteredColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        ) {
+        when {
+            recordViewModel.loadingData -> {
+                CenteredBox(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(32.dp)
+                ) {
+                    CircularProgressIndicator(strokeWidth = 5.dp, modifier = Modifier.size(48.dp))
+                }
+            }
 
-            if (subjectEnrollments.isNotEmpty()) {
-                subjectEnrollments.forEach { subjectEnrollment ->
-                    Card(
-                        onClick = { onExpand(subjectEnrollment) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
+            subjectEnrollments.isNotEmpty() -> {
+                CenteredColumn(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    subjectEnrollments.forEach { subjectEnrollment ->
 
-                        CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
-                            // Poner título
-                            Text(
-                                text = subjectEnrollment.subject.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .weight(1f)
-                            )
+                        val grade = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade
 
-                            // Curso
-                            Surface(
-                                modifier = Modifier.padding(16.dp, 8.dp),
-                                color = MaterialTheme.colorScheme.tertiary,
-                                shape = MaterialTheme.shapes.small
-                            ) {
-                                CenteredRow(
-                                    modifier = Modifier.padding(
-                                        vertical = 4.dp,
-                                        horizontal = 8.dp
-                                    )
+                        ElevatedCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+
+                            CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
+                                // Poner título
+                                Text(
+                                    text = subjectEnrollment.subject.name,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .weight(1f)
+                                )
+
+                                // Nota (número)
+                                Surface(
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                    color = if (grade.toFloat() >= 5f) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.errorContainer,
+                                    shape = MaterialTheme.shapes.small
                                 ) {
-                                    Text(
-                                        text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
-                                        style = MaterialTheme.typography.labelMedium,
-                                    )
+                                    CenteredRow(
+                                        modifier = Modifier.padding(
+                                            vertical = 8.dp,
+                                            horizontal = 16.dp
+                                        )
+                                    ) {
+                                        Text(
+                                            text = grade,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                        )
+                                    }
                                 }
                             }
-                        }
-                        // Si está seleccionada
-                        if (selectedSubject == subjectEnrollment.subject.name) {
 
                             // Datos de la asignatura
                             Row(
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 8.dp),
+                                    .padding(bottom = 16.dp),
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
+
+                                // Curso
+                                CenteredColumn(
+                                ) {
+                                    Text(
+                                        text = "${stringResource(id = R.string.course).capitalize(Locale.current)}:",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.tertiary
+                                    )
+                                    Text(
+                                        text = "${subjectEnrollment.subject.course}º",
+                                        style = MaterialTheme.typography.labelLarge,
+                                    )
+                                }
 
                                 // Convocatoria
                                 Column(
@@ -130,7 +146,7 @@ fun GradesScreen(
                                     )
                                 }
 
-                                //Nota
+                                // Nota
                                 Column(
                                 ) {
                                     Text(
@@ -138,14 +154,26 @@ fun GradesScreen(
                                         style = MaterialTheme.typography.labelLarge,
                                         color = MaterialTheme.colorScheme.tertiary
                                     )
-                                    Text(
-                                        text = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade,
-                                        style = MaterialTheme.typography.labelLarge,
-                                    )
+
                                     if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].distinction) {
                                         Text(
-                                            text = "(${stringResource(id = R.string.distinction)})",
-                                            style = MaterialTheme.typography.labelLarge
+                                            text = stringResource(id = R.string.distinction),
+                                            style = MaterialTheme.typography.labelLarge,
+                                        )
+                                    } else if (grade.toFloat() < 5f) {
+                                        Text(
+                                            text = stringResource(id = R.string.fail),
+                                            style = MaterialTheme.typography.labelLarge,
+                                        )
+                                    } else if (grade.toFloat() >= 9f) {
+                                        Text(
+                                            text = stringResource(id = R.string.outstanding),
+                                            style = MaterialTheme.typography.labelLarge,
+                                        )
+                                    } else {
+                                        Text(
+                                            text = stringResource(id = R.string.pass),
+                                            style = MaterialTheme.typography.labelLarge,
                                         )
                                     }
                                 }
@@ -153,21 +181,9 @@ fun GradesScreen(
                         }
                     }
                 }
-            } else {
-                Spacer(modifier = Modifier.height(32.dp))
-                Icon(
-                    Icons.Rounded.ContentPasteOff,
-                    null,
-                    modifier = Modifier.size(128.dp),
-                    tint = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    stringResource(id = R.string.noGrades),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray
-                )
             }
+
+            else -> EmptyCollectionScreen(Icons.Rounded.ContentPasteOff, stringResource(id = R.string.noGrades), Modifier.padding(paddingValues))
         }
     }
 }
