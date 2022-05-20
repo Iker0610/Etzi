@@ -1,7 +1,6 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable.composables
 
 import LectureRoomInfoDialog
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,12 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.LectureRoomInfoButton
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.Lecture
@@ -77,7 +77,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
             }
 
             // Linea
-            Divider(
+            MaterialDivider(
                 Modifier
                     .padding(end = 8.dp)
                     .fillMaxHeight()
@@ -109,30 +109,7 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.labelSmall
                     )
 
-                    Surface(
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier
-                            .width(64.dp)
-                            .clickable {
-                                showDialog = true
-                            }
-
-                    ) {
-                        CenteredRow(
-                            modifier = Modifier.padding(
-                                vertical = 4.dp,
-                                horizontal = 8.dp
-                            )
-                        ) {
-
-                            Text(
-                                textAlign = TextAlign.End,
-                                text = lecture.lectureRoom.fullCode
-                            )
-                        }
-                    }
-
+                    LectureRoomInfoButton(lecture.lectureRoom)
                 }
 
                 // Espacio
@@ -171,7 +148,8 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
 
                     // Botones
                     CenteredColumn(
-                        verticalArrangement = Arrangement.SpaceAround
+                        verticalArrangement = Arrangement.SpaceAround,
+                        modifier = Modifier.padding(start = 16.dp)
                     ) {
 
                         FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {

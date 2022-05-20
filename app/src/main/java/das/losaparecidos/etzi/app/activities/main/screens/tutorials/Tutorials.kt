@@ -3,12 +3,15 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EventBusy
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -22,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,9 +39,10 @@ import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import das.losaparecidos.etzi.model.entities.Professor
+import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
+import das.losaparecidos.etzi.model.entities.SubjectTutorial
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TutorialsScreen(
     tutorialsViewModel: TutorialsViewModel,
@@ -50,14 +55,16 @@ fun TutorialsScreen(
     // STATES
     val tutorials by tutorialsViewModel.filteredTutorials.collectAsState(initial = emptyList())
     var currentExpandedSubject: String? by rememberSaveable { mutableStateOf(null) }
-    var currentExpandedProfessor: String? by rememberSaveable { mutableStateOf(null) }
+    var (currentExpandedProfessor, setCurrentExpandedProfessor) = rememberSaveable { mutableStateOf<String?>(null) }
 
+    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
+    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
 
-    // TODO: SI NO HAY ASIGNATURAS Y/O PROFES, O EN EL FILTRO NO APARECE NINGUNO, PONER UN MENSAJE EN LA UI SIMILAR A 'NO HAY TUTORIAS'
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            DynamicLargeMediumTopAppBar(
-                windowSizeClass = windowSizeClass,
+            LargeTopAppBar(
+                //windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Tutorials.title(context)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -70,7 +77,8 @@ fun TutorialsScreen(
                     IconButton(onClick = onFilter) {
                         Icon(Icons.Rounded.FilterAlt, contentDescription = "Open filter dialog")
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -93,46 +101,30 @@ fun TutorialsScreen(
 
             else -> {
                 val singleSubjectSelection by derivedStateOf { tutorials.size == 1 }
-                SideEffect { if (singleSubjectSelection) currentExpandedProfessor = tutorials.first().subjectName }
-                CenteredColumn(
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(paddingValues),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    //header por asignatura y divisores de material design 3
-                    //surface para diferenciar las asignaturas
+                SideEffect { if (singleSubjectSelection) currentExpandedSubject = tutorials.first().subjectName }
+
+                LazyColumn(modifier = Modifier.padding(paddingValues)) {
 
                     tutorials.forEachIndexed { index, subjectWithTutorial ->
-                        SubjectCollapsableSection(
-                            subjectWithTutorial.subjectName,
+
+                        subjectCollapsableSection(
+                            subjectWithTutorial = subjectWithTutorial,
                             collapsible = !singleSubjectSelection,
                             expanded = subjectWithTutorial.subjectName == currentExpandedSubject,
                             secondaryExpanded = currentExpandedProfessor != null,
                             onExpand = {
                                 currentExpandedSubject = if (currentExpandedSubject != subjectWithTutorial.subjectName) subjectWithTutorial.subjectName else null
                                 currentExpandedProfessor = null
-                            }
-                        ) {
-                            val singleProfessorSelection by derivedStateOf { subjectWithTutorial.professors.size == 1 }
-                            LaunchedEffect(singleProfessorSelection) { if (singleProfessorSelection) currentExpandedProfessor = subjectWithTutorial.professors.first().email }
+                            },
+                            currentExpandedProfessor = currentExpandedProfessor,
+                            onChangeCurrentExpandedProfessor = setCurrentExpandedProfessor
+                        )
 
-                            subjectWithTutorial.professors.forEach { professor ->
-                                ProfessorCollapsable(
-                                    professor = professor.professor,
-                                    collapsible = !singleProfessorSelection,
-                                    expanded = currentExpandedProfessor == professor.email,
-                                    onExpand = { currentExpandedProfessor = if (currentExpandedProfessor != professor.email) professor.email else null }
-                                ) {
-                                    professor.tutorials.forEach { tutorial ->
-                                        TutorialCard(tutorial = tutorial, professor = professor.professor)
-                                    }
-                                }
-                            }
-                        }
 
-                        if (index + 1 != tutorials.size) {
-                            MaterialDivider()
+                        stickyHeader(key = "${subjectWithTutorial.subjectName}&&content_divider") {
+                            if (index + 1 != tutorials.size) {
+                                MaterialDivider(Modifier.padding(vertical = 16.dp))
+                            }
                         }
                     }
                 }
@@ -142,39 +134,41 @@ fun TutorialsScreen(
 }
 
 
-@Composable
-fun SubjectCollapsableSection(
-    subjectName: String,
-    modifier: Modifier = Modifier,
+@OptIn(ExperimentalFoundationApi::class)
+fun LazyListScope.subjectCollapsableSection(
+    subjectWithTutorial: SubjectTutorial,
     collapsible: Boolean = true,
     expanded: Boolean = true,
     secondaryExpanded: Boolean = false,
     onExpand: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit = {}
+    currentExpandedProfessor: String?,
+    onChangeCurrentExpandedProfessor: (String?) -> Unit
 ) {
-    val expanded = expanded || (!collapsible)
-    val backgroundColor by animateColorAsState(
-        targetValue = when {
-            expanded && secondaryExpanded -> MaterialTheme.colorScheme.secondary
-            expanded -> MaterialTheme.colorScheme.primaryContainer
-            else -> MaterialTheme.colorScheme.surface
-        },
-        animationSpec = tween(durationMillis = 500)
-    )
+    val expand = expanded || (!collapsible)
+    val singleProfessorSelection by derivedStateOf { subjectWithTutorial.professors.size == 1 }
 
-    val contentColor by animateColorAsState(
-        targetValue = when {
-            expanded && secondaryExpanded -> MaterialTheme.colorScheme.onSecondary
-            expanded -> MaterialTheme.colorScheme.onPrimaryContainer
-            else -> MaterialTheme.colorScheme.onSurface
-        },
-        animationSpec = tween(durationMillis = 500)
-    )
+    stickyHeader(key = subjectWithTutorial.subjectName) {
+        val backgroundColor by animateColorAsState(
+            targetValue = when {
+                expand && (secondaryExpanded || singleProfessorSelection) -> MaterialTheme.colorScheme.secondary
+                expand -> MaterialTheme.colorScheme.primaryContainer
+                else -> MaterialTheme.colorScheme.surface
+            },
+            animationSpec = tween(durationMillis = 500)
+        )
 
-    Column(modifier = modifier) {
+        val contentColor by animateColorAsState(
+            targetValue = when {
+                expand && (secondaryExpanded || singleProfessorSelection) -> MaterialTheme.colorScheme.onSecondary
+                expand -> MaterialTheme.colorScheme.onPrimaryContainer
+                else -> MaterialTheme.colorScheme.onSurface
+            },
+            animationSpec = tween(durationMillis = 500)
+        )
+
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onExpand,
+            onClick = { if (collapsible) onExpand() },
             color = backgroundColor,
             contentColor = contentColor
         ) {
@@ -182,7 +176,8 @@ fun SubjectCollapsableSection(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
             ) {
-                Text(text = subjectName, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                Text(text = subjectWithTutorial.subjectName, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+
                 if (collapsible) {
                     IconButton(
                         onClick = onExpand,
@@ -194,33 +189,42 @@ fun SubjectCollapsableSection(
                 }
             }
         }
+    }
 
-        AnimatedVisibility(expanded) {
-            Column {
-                content()
-            }
+    if (expand) {
+
+        subjectWithTutorial.professors.forEach { professor ->
+            professorCollapsable(
+                parentSubject = subjectWithTutorial.subjectName,
+                professor = professor,
+                collapsible = !singleProfessorSelection,
+                expanded = currentExpandedProfessor == professor.email,
+                onExpand = {
+                    onChangeCurrentExpandedProfessor(
+                        if (currentExpandedProfessor != professor.email) professor.email else null
+                    )
+                }
+            )
         }
     }
 }
 
 
-@Composable
-fun ProfessorCollapsable(
-    professor: Professor,
-    modifier: Modifier = Modifier,
+fun LazyListScope.professorCollapsable(
+    parentSubject: String,
+    professor: ProfessorWithTutorials,
     collapsible: Boolean = true,
     expanded: Boolean = true,
-    onExpand: () -> Unit = {},
-    content: @Composable ColumnScope.() -> Unit = {}
+    onExpand: () -> Unit = {}
 ) {
-    val expanded = expanded || !collapsible
+    val expand = expanded || !collapsible
 
-    val backgroundColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
-        animationSpec = tween(durationMillis = 500)
-    )
+    item(key = "$parentSubject&&${professor.email}") {
 
-    Column(modifier = modifier) {
+        val backgroundColor by animateColorAsState(
+            targetValue = if (expand) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+            animationSpec = tween(durationMillis = 500)
+        )
         Surface(
             modifier = Modifier.fillMaxWidth(),
             onClick = onExpand,
@@ -243,16 +247,39 @@ fun ProfessorCollapsable(
 
             }
         }
+    }
 
-        AnimatedVisibility(expanded) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
-            ) {
-                content()
-            }
+    item(key = "$parentSubject&&${professor.email}&&tutorialsSpacer") {
+        AnimatedVisibility(
+            visible = expand,
+            enter = fadeIn(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing)) + expandVertically(),
+            exit = fadeOut(animationSpec = TweenSpec(200, 0, FastOutLinearInEasing)) + shrinkVertically()
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+            )
         }
     }
+
+    items(
+        items = professor.tutorials,
+        key = { "$parentSubject&&${professor.email}&&${it.startDate}" }
+    ) { tutorial ->
+        AnimatedVisibility(
+            visible = expand,
+            enter = fadeIn(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing)) + expandVertically(),
+            exit = fadeOut(animationSpec = TweenSpec(100, 0, FastOutLinearInEasing)) + shrinkVertically(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing))
+        ) {
+            TutorialCard(
+                tutorial = tutorial, professor = professor.professor,
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp)
+            )
+        }
+    }
+
 }
 
 

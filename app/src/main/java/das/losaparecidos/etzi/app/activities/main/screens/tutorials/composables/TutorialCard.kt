@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Mail
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Event
+import androidx.compose.material.icons.rounded.Mail
+import androidx.compose.material.icons.rounded.NotificationsNone
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.LectureRoomInfoButton
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.format
@@ -39,24 +42,10 @@ import java.util.*
 @Composable
 fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = Modifier) {
 
-    //1 fila por cada tarjeta, aula fecha hora (fecha como en timetable)
-    //2 fila columna{fila email{fila botones}
-    // fila
     val context = LocalContext.current
 
     val emailSubject = stringResource(id = R.string.email_subject, tutorial.startDate.date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)))
     val emailSalutation = stringResource(id = R.string.email_salutation)
-
-    // Time fomat in Tametable
-    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
-
-    // Dialog
-    var showDialog by remember { mutableStateOf(false) }
-
-    if (showDialog) {
-        //LectureRoomInfoDialog(lectureRoom = lecture.lectureRoom){showDialog = false}
-        Log.i("info: ", "poner aqui el showDialog a false")
-    }
 
     ElevatedCard(modifier = modifier) {
 
@@ -71,27 +60,7 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Surface(
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier
-                        .width(64.dp)
-                        .clickable {
-                            showDialog = true
-                        }
-                ) {
-                    CenteredRow(
-                        modifier = Modifier.padding(
-                            vertical = 6.dp,
-                            horizontal = 4.dp
-                        )
-                    ) {
-                        Text(
-                            textAlign = TextAlign.End,
-                            text = tutorial.lectureRoom.fullCode
-                        )
-                    }
-                }
+                LectureRoomInfoButton(tutorial.lectureRoom)
 
                 CenteredRow(horizontalArrangement = Arrangement.End) {
                     Icon(
@@ -114,13 +83,13 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
                             .size(18.dp)
                     )
                     Text(
-                        "${tutorial.startDate.format("HH:mm")} - ${tutorial.endDate.toJavaLocalDateTime().format(timeFormat)}",
+                        "${tutorial.startDate.format("HH:mm")} - ${tutorial.endDate.format("HH:mm")}",
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
             }
 
-            MaterialDivider(Modifier.padding(top = 4.dp))
+            MaterialDivider()
 
             CenteredRow(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -155,16 +124,21 @@ fun TutorialCard(tutorial: Tutorial, professor: Professor, modifier: Modifier = 
                         Icon(Icons.Rounded.NotificationsNone, null)
                     }
 
-                    IconButton(onClick = {
-                        val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:")
-                            putExtra(Intent.EXTRA_EMAIL, professor.email)
-                            putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-                            putExtra(Intent.EXTRA_TEXT, emailSalutation)
-                        }
-                        startActivity(context, intent, null)
+                    IconButton(
+                        onClick = {
+                            val selectorIntent = Intent(Intent.ACTION_SENDTO).apply { data = Uri.parse("mailto:") }
 
-                    }) {
+                            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                                data = Uri.parse("mailto:")
+                                putExtra(Intent.EXTRA_EMAIL, arrayOf(professor.email))
+                                putExtra(Intent.EXTRA_SUBJECT, emailSubject)
+                                putExtra(Intent.EXTRA_TEXT, emailSalutation)
+                                selector = selectorIntent;
+                            }
+
+                            startActivity(context,emailIntent, null)
+                        }
+                    ) {
                         Icon(Icons.Rounded.Mail, null, tint = MaterialTheme.colorScheme.secondary)
                     }
                 }

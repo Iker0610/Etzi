@@ -33,9 +33,7 @@ fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass:
     val context = LocalContext.current
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember(decayAnimationSpec) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
-    }
+    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
 
 
     Scaffold(
