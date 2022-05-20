@@ -45,7 +45,13 @@ object AppModule {
 
     //------------------   DAOs   ------------------//
 
-    // TODO
+    @Singleton
+    @Provides
+    fun provideTimetableDao(db: EtziDatabase) = db.timetableDao()
+
+    @Singleton
+    @Provides
+    fun provideRemainderDao(db: EtziDatabase) = db.reminderDao()
 
 
     /*************************************************
