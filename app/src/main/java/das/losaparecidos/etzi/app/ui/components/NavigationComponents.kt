@@ -46,7 +46,7 @@ fun EtziNavigationBar(currentRoute: String?, onNavigate: (String) -> Unit) {
 
     // Remember a SystemUiController
     val systemUiController = rememberSystemUiController()
-    val useDarkIcons = isSystemInDarkTheme()
+    val useDarkIcons = !isSystemInDarkTheme()
     val bottomNavBarColor = MaterialTheme.colorScheme
         .surfaceTint
         .copy(alpha = (((4.5f * ln(3.0.dp.value + 1)) + 2f) / 100f))
@@ -81,11 +81,7 @@ fun EtziNavigationRail(
         }
     ) {
 
-        CenteredColumn(
-            Modifier
-                .fillMaxHeight(1f)
-                .padding(bottom = 64.dp)
-        ) {
+        CenteredColumn(Modifier.fillMaxHeight(1f)) {
 
             MainActivityScreens.mainSections.forEach { screen ->
                 NavigationRailItem(
@@ -96,6 +92,8 @@ fun EtziNavigationRail(
                     onClick = { onNavigate(screen.route) },
                 )
             }
+
+            Spacer(modifier = Modifier.height(64.dp))
         }
     }
 }

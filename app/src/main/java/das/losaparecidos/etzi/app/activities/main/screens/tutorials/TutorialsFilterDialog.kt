@@ -1,31 +1,34 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.School
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.FilterChipGroup
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.SubjectDropdownMenu
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsFilterViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
-import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
@@ -60,10 +63,19 @@ fun TutorialsFilterDialog(
 
     // UI
 
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme()
+    val backgroundColor = MaterialTheme.colorScheme.surface
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(backgroundColor, darkIcons = useDarkIcons)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        containerColor = backgroundColor,
         topBar = {
-            DynamicMediumTopAppBar(
+            SmallTopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
                     IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, null) }
@@ -71,7 +83,7 @@ fun TutorialsFilterDialog(
                 actions = {
                     TextButton(onClick = onSave) { Text(text = stringResource(id = R.string.save_button)) }
                 },
-                windowSizeClass = windowSizeClass
+                // windowSizeClass = windowSizeClass
             )
         }
     ) { paddingValues ->
@@ -84,7 +96,7 @@ fun TutorialsFilterDialog(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FilterSectionTitle(icon = Icons.Rounded.MenuBook, text = stringResource(id = R.string.subject))
+            FilterSectionTitle(icon = Icons.Rounded.Book, text = stringResource(id = R.string.subject))
 
 
             SubjectDropdownMenu(
