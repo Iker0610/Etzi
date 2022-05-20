@@ -25,7 +25,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.dialog
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
      *************************************************/
 
     private val studentDataViewModel: StudentDataViewModel by viewModels()
-
+    private val accountViewModel: AccountViewModel by viewModels()
 
     /*************************************************
      **          Activity Lifecycle Methods         **
@@ -67,11 +69,10 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             EtziTheme {
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(studentDataViewModel, navController)
+                EtziAppScreen(studentDataViewModel, navController, accountViewModel)
             }
         }
     }
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 private fun EtziAppScreen(
     studentDataViewModel: StudentDataViewModel,
     navController: NavHostController,
+    accountViewModel: AccountViewModel
 ) {
     /*************************************************
      **             Variables and States            **
@@ -187,7 +189,8 @@ private fun EtziAppScreen(
                     studentDataViewModel,
                     navController,
                     windowSizeClass,
-                    onNavigationMenuOpen
+                    onNavigationMenuOpen,
+                    accountViewModel
                 )
             }
         }
@@ -214,6 +217,7 @@ private fun MainNavigationGraph(
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
     onNavigationMenuOpen: () -> Unit,
+    accountViewModel: AccountViewModel,
 ) {
     /*************************************************
      **             Variables and States            **
@@ -318,8 +322,7 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Account.route) {
-            val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
-            val accountViewModel: AccountViewModel = hiltViewModel(recordBackStackEntry)
+            //val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
             AccountScreen(accountViewModel, windowSizeClass, navigateBack)
         }
     }

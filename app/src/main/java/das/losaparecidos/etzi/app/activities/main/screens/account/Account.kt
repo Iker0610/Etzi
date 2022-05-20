@@ -145,7 +145,9 @@ fun AccountScreen(
                 // TODO poner el idioma actualmente seleccionado
                 icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
                 secondaryText = { Text(text = "Idioma"/*prefLanguage.language*/) },
-                modifier = Modifier.clickable { showSelectLangDialog = true }
+                modifier = Modifier.clickable {
+                    showSelectLangDialog = true
+                }
             ) {
                 Text(text = "Idioma pruebita"/*stringResource(R.string.app_lang_setting_title)*/)
             }
@@ -154,6 +156,7 @@ fun AccountScreen(
                 // TODO poner el idioma actualmente seleccionado
                 icon = { Icon(Icons.Rounded.Logout, null, Modifier.padding(top = 7.dp)) },
                 modifier = Modifier.clickable { showSelectLangDialog = true }
+                // TODO setRememberLogin a false y cerrar y volver abrir la app
             ) {
                 Text(text = stringResource(id = R.string.logout_label)/*stringResource(R.string.app_lang_setting_title)*/)
             }

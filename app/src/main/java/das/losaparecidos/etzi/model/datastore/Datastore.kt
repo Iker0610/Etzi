@@ -127,12 +127,12 @@ class Datastore @Inject constructor(
 
 
     //----------   Language Preference   -----------//
-    fun userLanguage(user: String): Flow<String> =
-        context.dataStore.data.map { it[PreferencesKeys.USER_LANG(user)] ?: Locale.getDefault().language }
+    fun getUserLanguage(userLdap: String): Flow<String> =
+        context.dataStore.data.map { it[PreferencesKeys.USER_LANG(userLdap)] ?: Locale.getDefault().language }
 
-    suspend fun setUserLanguage(user: String, langCode: String) {
+    suspend fun setUserLanguage(userLdap: String, langCode: String) {
         context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.USER_LANG(user)] = langCode
+            preferences[PreferencesKeys.USER_LANG(userLdap)] = langCode
         }
     }
 }

@@ -1,7 +1,9 @@
 package das.losaparecidos.etzi.model.repositories
 
 import das.losaparecidos.etzi.model.database.daos.StudentCacheDataDao
+import das.losaparecidos.etzi.model.datastore.Datastore
 import das.losaparecidos.etzi.model.webclients.APIClient
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,7 +12,8 @@ import javax.inject.Singleton
 @Singleton
 class StudentDataRepository @Inject constructor(
     private val apiClient: APIClient,
-    private val studentCacheDataDao: StudentCacheDataDao
+    private val studentCacheDataDao: StudentCacheDataDao,
+    private val datastore: Datastore,
 ) {
     fun getStudentData() = studentCacheDataDao.getStudentData()
     private suspend fun fetchStudentData() = apiClient.getStudentData()
@@ -27,5 +30,11 @@ class StudentDataRepository @Inject constructor(
     suspend fun updateStudentData() {
         studentCacheDataDao.deleteStudents()
         return studentCacheDataDao.addOrUpdateStudent(fetchStudentData())
+    }
+    suspend fun setUserLanguage(userLdap: String, langCode: String){
+        datastore.setUserLanguage(userLdap, langCode)
+    }
+    fun getUserLanguage(userLdap: String): Flow<String> {
+        return datastore.getUserLanguage(userLdap)
     }
 }
