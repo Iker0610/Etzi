@@ -77,8 +77,9 @@ interface StudentCacheDataDao {
     }
 
     // DELETE
-    @Delete
-    suspend fun deleteStudent(student: Student)
+    @Transaction
+    @Query("DELETE FROM student")
+    suspend fun deleteStudents()
 
     @Transaction
     @Query("DELETE FROM lecture")
@@ -97,4 +98,7 @@ interface StudentCacheDataDao {
     @Transaction
     @Query("SELECT * FROM lecture WHERE DATE(start_date, 'unixepoch') = DATE('now') ORDER BY start_date")
     fun getTodayTimetable(): Flow<List<Lecture>>
+
+    @Query("SELECT * FROM student LIMIT 1")
+    fun getStudentData(): Flow<Student>
 }

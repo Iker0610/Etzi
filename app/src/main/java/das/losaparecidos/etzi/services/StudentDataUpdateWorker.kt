@@ -29,12 +29,12 @@ class TimeTableWorker @AssistedInject constructor(
             return@withContext try {
 
                 // Launch updates asynchronously
-                val updateTimeTableProcess = async { studentDataRepository.overwriteTimeTable() }
+                val updateTimetableProcess = async { studentDataRepository.overwriteTimetable() }
                 val updateStudentDataProcess = async { studentDataRepository.updateStudentData() }
 
                 // Wait for both to end
                 updateStudentDataProcess.await()
-                updateTimeTableProcess.await()
+                updateTimetableProcess.await()
 
                 // Return success
                 Result.success()

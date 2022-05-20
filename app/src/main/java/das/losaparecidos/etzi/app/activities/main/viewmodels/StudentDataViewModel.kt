@@ -11,6 +11,7 @@ import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import javax.inject.Inject
@@ -43,7 +44,8 @@ class StudentDataViewModel @Inject constructor(private val studentDataRepository
         Log.d("VIEWMODEL", "Se ha creado un StudentDataViewModel")
 
         viewModelScope.launch(Dispatchers.IO) {
-            fullTimeTable = studentDataRepository.getGroupedTimeTable()
+            // TODO CONVERTIR A FLOW
+            fullTimeTable = studentDataRepository.getGroupedTimetable().first()
             timeTable = fullTimeTable[currentSelectedDay.toString()] ?: emptyList()
 
             loadingData = false
