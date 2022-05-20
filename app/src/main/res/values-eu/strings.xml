@@ -74,4 +74,8 @@
     <string name="fail">Ez gai</string>
     <string name="pass">Gaindituta</string>
     <string name="outstanding">Bikain</string>
+    <string name="student_full_name_label">Izen-Abizenak</string>
+    <string name="degree_label">Gradua</string>
+    <string name="select_lang_dialog_title">Hizkuntza bat hautatu</string>
+    <string name="logout_label">Saioa Itxi</string>
 </resources>

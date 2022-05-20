@@ -85,5 +85,9 @@
     <string name="fail">No aprobado</string>
     <string name="pass">Aprobado</string>
     <string name="outstanding">Sobresaliente</string>
+    <string name="student_full_name_label">Nombre completo</string>
+    <string name="degree_label">Grado</string>
+    <string name="select_lang_dialog_title">Selecciona un idioma</string>
+    <string name="logout_label">Cerrar Sesión</string>
 
 </resources>

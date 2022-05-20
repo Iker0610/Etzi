@@ -86,4 +86,8 @@
     <string name="pass">Pass</string>
     <string name="outstanding">Outstanding</string>
     <string name="no_tutorials_dialog_message">There are no tutorials available</string>
+    <string name="student_full_name_label">Full name</string>
+    <string name="degree_label">Degree</string>
+    <string name="select_lang_dialog_title">Select Language</string>
+    <string name="logout_label">Logout</string>
 </resources>
