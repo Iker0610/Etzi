@@ -320,7 +320,7 @@ private fun MainNavigationGraph(
         composable(route = MainActivityScreens.Account.route) {
             val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
             val accountViewModel: AccountViewModel = hiltViewModel(recordBackStackEntry)
-            AccountScreen(accountViewModel, windowSizeClass)
+            AccountScreen(accountViewModel, windowSizeClass, navigateBack)
         }
     }
 }
