@@ -40,6 +40,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScr
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
@@ -253,7 +254,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen)
+            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen,onNavigateToAccount)
         }
 
         navigation(
@@ -317,7 +318,9 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Account.route) {
-            AccountScreen()
+            val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
+            val accountViewModel: AccountViewModel = hiltViewModel(recordBackStackEntry)
+            AccountScreen(accountViewModel, windowSizeClass)
         }
     }
 }

@@ -90,4 +90,8 @@
     <string name="ativateNotification">Activate notification</string>
     <string name="chooseCalendarOrNotification">Do you want to save the date in the calendar or activate a notification for an hour before?</string>
     <string name="reminder">Reminder</string>
+    <string name="student_full_name_label">Full name</string>
+    <string name="degree_label">Degree</string>
+    <string name="select_lang_dialog_title">Select Language</string>
+    <string name="logout_label">Logout</string>
 </resources>

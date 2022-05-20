@@ -1,9 +1,21 @@
 package das.losaparecidos.etzi.app.utils
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.res.Configuration
-import androidx.activity.ComponentActivity
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.ListItem
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,7 +43,8 @@ import javax.inject.Singleton
  */
 enum class AppLanguage(val language: String, val code: String) {
     EN("English", "en"),
-    ES("Español", "es");
+    ES("Español", "es"),
+    EU("Basque", "eu");
 
 
     companion object {
@@ -43,6 +56,7 @@ enum class AppLanguage(val language: String, val code: String) {
          */
         fun getFromCode(code: String) = when (code) {
             ES.code -> ES
+            EU.code -> EU
             else -> EN
         }
     }
@@ -88,6 +102,94 @@ class LanguageManager @Inject constructor() {
 
             // If asked recreate the interface (this does not finish the activity)
             if (recreate) context.getActivity()?.recreate()
+        }
+    }
+}
+/*************************************************
+ **         App's Language Picker Dialog        **
+ *************************************************/
+
+/**
+ * Custom dialog with a scrollable list in middle that allows the user to pick one of the available languages.
+ *
+ * It follows Material Design's Confirmation Dialog design pattern, as stated in:
+ * https://material.io/components/dialogs#confirmation-dialog
+ *
+ * @param title Dialog title.
+ * @param selectedLanguage Current selected language.
+ * @param onLanguageSelected Callback for onLanguageSelected event.
+ * @param onDismiss Callback for dismiss event.
+ */
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LanguagePickerDialog(
+    selectedLanguage: AppLanguage,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    title: String,
+    onDismiss: () -> Unit,
+) {
+    /*------------------------------------------------
+    |                     States                     |
+    ------------------------------------------------*/
+
+    var selected by remember { mutableStateOf(selectedLanguage.code) }
+
+
+    /*------------------------------------------------
+    |                 User Interface                 |
+    ------------------------------------------------*/
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RectangleShape,
+            color = MaterialTheme.colorScheme.surface,
+            //contentColor = contentColorFor(backgroundColor),
+        ) {
+            Column {
+
+                //--------------   Dialog Title   --------------//
+                Column(
+                    Modifier
+                    .padding(horizontal = 24.dp)
+                    .height(64.dp), verticalArrangement = Arrangement.Center) {
+                    Text(text = title, style = MaterialTheme.typography.labelSmall)
+                }
+
+                Divider()
+
+                //---------   Dialog Content (List)   ----------//
+                Column(Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp)
+                ) {
+                    AppLanguage.values().forEach { lang ->
+                        ListItem(
+                            modifier = Modifier.clickable { selected = lang.code },
+                            trailing = { Checkbox(checked = selected == lang.code, onCheckedChange = { selected = lang.code }) },
+                            text = { Text(text = lang.language, style = MaterialTheme.typography.bodyMedium) }
+                        )
+                    }
+                }
+
+                //-------------   Dialog Buttons   -------------//
+                Divider()
+
+                CenteredRow(Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), horizontalArrangement = Arrangement.End) {
+                    CenteredRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+
+                        // Cancel TextButton
+                        TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.cancel_button)) }
+
+                        // Apply TextButton
+                        TextButton(onClick = { onLanguageSelected(AppLanguage.getFromCode(selected)) }) {
+                            Text(text = stringResource(R.string.ok_button))
+                        }
+                    }
+                }
+            }
         }
     }
 }
