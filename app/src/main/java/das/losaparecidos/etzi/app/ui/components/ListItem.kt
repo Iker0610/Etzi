@@ -1,15 +1,9 @@
 package das.losaparecidos.etzi.app.ui.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.AlignmentLine
@@ -24,35 +18,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
 
-/**
- * <a href="https://material.io/components/lists" class="external" target="_blank">Material Design list</a> item.
- *
- * Lists are continuous, vertical indexes of text or images.
- *
- * ![Lists image](https://developer.android.com/images/reference/androidx/compose/material/lists.png)
- *
- * To make this [ListItem] clickable, use [Modifier.clickable].
- * To add a background to the [ListItem], wrap it with a [Surface].
- *
- * This component can be used to achieve the list item templates existing in the spec. For example:
- * - one-line items
- * @sample androidx.compose.material.samples.OneLineListItems
- * - two-line items
- * @sample androidx.compose.material.samples.TwoLineListItems
- * - three-line items
- * @sample androidx.compose.material.samples.ThreeLineListItems
- *
- * You can combine this component with a checkbox or switch as in the following examples:
- * @sample androidx.compose.material.samples.ClickableListItems
- *
- * @param modifier Modifier to be applied to the list item
- * @param icon The leading supporting visual of the list item
- * @param secondaryText The secondary text of the list item
- * @param singleLineSecondaryText Whether the secondary text is single line
- * @param overlineText The text displayed above the primary text
- * @param trailing The trailing meta text, icon, switch or checkbox
- * @param text The primary text of the list item
- */
 @Composable
 fun ListItem(
     modifier: Modifier = Modifier,
@@ -65,10 +30,10 @@ fun ListItem(
 ) {
     val typography = MaterialTheme.typography
 
-    val styledText = applyTextStyle(typography.bodySmall, 1f, text)!!
-    val styledSecondaryText = applyTextStyle(typography.bodyMedium, 0.5f, secondaryText)
-    val styledOverlineText = applyTextStyle(typography.labelSmall, 1f, overlineText)
-    val styledTrailing = applyTextStyle(typography.labelLarge, 0.5f, trailing)
+    val styledText = applyTextStyle(typography.titleMedium, text)!!
+    val styledSecondaryText = applyTextStyle(typography.bodySmall, secondaryText)
+    val styledOverlineText = applyTextStyle(typography.labelSmall, overlineText)
+    val styledTrailing = applyTextStyle(typography.labelSmall, trailing)
 
     val semanticsModifier = modifier.semantics(mergeDescendants = true) {}
 
@@ -98,8 +63,6 @@ fun ListItem(
 }
 
 private object OneLine {
-    // TODO(popam): support wide icons
-    // TODO(popam): convert these to sp
     // List item related defaults.
     private val MinHeight = 48.dp
     private val MinHeightWithIcon = 56.dp
@@ -247,7 +210,6 @@ private object TwoLine {
                     }
                 ) {
                     Box(
-                        // TODO(popam): find way to center and wrap content without minHeight
                         Modifier
                             .heightIn(min = minHeight)
                             .padding(end = TrailingRightPadding),
@@ -327,12 +289,6 @@ private object ThreeLine {
     }
 }
 
-/**
- * Layout that expects [Text] children, and positions them with specific offsets between the
- * top of the layout and the first text, as well as the last baseline and first baseline
- * for subsequent pairs of texts.
- */
-// TODO(popam): consider making this a layout composable in `foundation-layout`.
 @Composable
 private fun BaselinesOffsetColumn(
     offsets: List<Dp>,
@@ -348,7 +304,7 @@ private fun BaselinesOffsetColumn(
         }
         val y = Array(placeables.size) { 0 }
         var containerHeight = 0
-        placeables.mapIndexed{ index, placeable ->
+        placeables.forEachIndexed { index, placeable ->
             val toPreviousBaseline = if (index > 0) {
                 placeables[index - 1].height - placeables[index - 1][LastBaseline]
             } else 0
@@ -361,20 +317,12 @@ private fun BaselinesOffsetColumn(
         }
 
         layout(containerWidth, containerHeight) {
-            placeables.mapIndexed { index, placeable ->
+            placeables.forEachIndexed { index, placeable ->
                 placeable.placeRelative(0, y[index])
             }
         }
     }
 }
-
-/**
- * Layout that takes a child and adds the necessary padding such that the first baseline of the
- * child is at a specific offset from the top of the container. If the child does not have
- * a first baseline, the layout will match the minHeight constraint and will center the
- * child.
- */
-// TODO(popam): support fallback alignment in AlignmentLineOffset, and use that here.
 @Composable
 private fun OffsetToBaselineOrCenter(
     offset: Dp,
@@ -405,13 +353,10 @@ private fun OffsetToBaselineOrCenter(
 
 private fun applyTextStyle(
     textStyle: TextStyle,
-    contentAlpha: Float,
     icon: @Composable (() -> Unit)?
 ): @Composable (() -> Unit)? {
     if (icon == null) return null
     return {
-        CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
-            ProvideTextStyle(textStyle, icon)
-        }
+        ProvideTextStyle(textStyle, icon)
     }
 }
