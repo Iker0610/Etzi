@@ -74,4 +74,8 @@
     <string name="fail">Ez gai</string>
     <string name="pass">Gaindituta</string>
     <string name="outstanding">Bikain</string>
+    <string name="saveToCalendar">Gorde egutegian</string>
+    <string name="ativateNotification">Jakinarazpena aktibatu</string>
+    <string name="chooseCalendarOrNotification">Data egutegian gorde edo jakinarazpena bat aktibatu nahi duzu?</string>
+    <string name="reminder">Abisuak</string>
 </resources>
