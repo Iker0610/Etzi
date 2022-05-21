@@ -222,14 +222,14 @@ fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: ()-> Unit){
     val profilePicture: Bitmap? = accountViewModel.profilePicture
     Box(Modifier.padding(16.dp)) {
         if (profilePicture == null) {
-            LoadingImagePlaceholder(size = 36.dp)
+            LoadingImagePlaceholder(size = 28.dp)
         } else {
             Image(
                 bitmap = profilePicture.asImageBitmap(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(28.dp)
                     .clip(CircleShape)
                     .clickable { onNavigate() },
             )
