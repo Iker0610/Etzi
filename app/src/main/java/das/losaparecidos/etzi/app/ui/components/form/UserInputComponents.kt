@@ -275,7 +275,7 @@ fun DateRangeField(
 
     val onDismiss = { focusManager.clearFocus() }
 
-    Log.d("label", dateRangeLabelText)
+
     //-------------------   UI   -------------------//
     TextField(
         modifier = modifier.onFocusChanged {
@@ -298,6 +298,8 @@ fun DateRangeField(
         singleLine = true,
         maxLines = 1,
 
-        enabled = enabled
+        enabled = enabled,
+
+        textStyle = MaterialTheme.typography.bodyLarge
     )
 }
