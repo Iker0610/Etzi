@@ -5,8 +5,13 @@
     android:layout_height="match_parent"
     android:theme="@android:style/Theme.DeviceDefault.DayNight"
     android:background="?android:attr/colorBackground"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="15dp">
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
         <!-- Fecha -->
         <LinearLayout
             android:layout_width="0dp"
@@ -14,13 +19,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_margin="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Agenda"
-                android:textSize="15dp"
-                android:textAlignment="center"
-                android:gravity="center"></TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -48,61 +46,67 @@
          <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="4"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <!--Agenda List View-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <!--<ScrollView
+                    <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone">
-                    </ScrollView>-->
-
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include><!--App bar-->
-
-                    <LinearLayout
+                        android:id="@+id/horario_agenda">
+                    </ListView>
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:layout_width="0dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/baseline_supervised_user_circle_24"
-                            android:background="?android:attr/selectableItemBackground"
-                            android:tint="?android:attr/colorAccent"
-                            />
-
-                        <ImageButton
-                            android:layout_width="0dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/outline_file_open_24"
-                            android:background="?android:attr/selectableItemBackground"
-                            android:tint="?android:attr/colorAccent"/>
-
-                        <ImageButton
-                            android:layout_width="0dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/outline_web_24"
-                            android:background="?android:attr/selectableItemBackground"
-                            android:tint="?android:attr/colorAccent"/>
-
-                        <!--<ImageButton
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="?android:attr/colorAccent"
-                            android:clickable="true"
-
-                            android:contentDescription=""
-                            android:src="@drawable/common_full_open_on_phone"/-->
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:text="Inicia sesión para ver el horario"
+                        android:textAlignment="center"
+                        android:visibility="gone"
+                        android:id="@+id/agenda_widget_msg_iniciar_sesion"></TextView>
+                    <!--TODO Texto en Strings.xml!-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:text="Inicia sesión para ver el horario"
+                        android:textAlignment="center"
+                        android:visibility="gone"
+                        android:id="@+id/agenda_widget_msg_no_clases"></TextView>
                 </LinearLayout>
             </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/baseline_supervised_user_circle_24"
+            android:background="?android:attr/selectableItemBackground"
+            android:tint="?android:attr/colorAccent"
+            />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/outline_file_open_24"
+            android:background="?android:attr/selectableItemBackground"
+            android:tint="?android:attr/colorAccent"/>
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/outline_web_24"
+            android:background="?android:attr/selectableItemBackground"
+            android:tint="?android:attr/colorAccent"/>
+    </LinearLayout>
 </LinearLayout>

@@ -11,16 +11,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <!--<ScrollView
+                    <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone">
-                    </ScrollView>-->
+                        android:id="@+id/horario_agenda">
+                    </ListView>
 
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include>
-                    <include layout="@layout/agenda_widget_item"></include>
-
-            </LinearLayout>
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="center_vertical"
+                 android:gravity="center"
+                 android:text="Inicia sesión para ver el horario"
+                 android:textAlignment="center"
+                 android:visibility="gone"
+                 android:id="@+id/agenda_widget_msg_iniciar_sesion"></TextView>
+             <!--TODO Texto en Strings.xml!-->
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="center_vertical"
+                 android:gravity="center"
+                 android:text="Inicia sesión para ver el horario"
+                 android:textAlignment="center"
+                 android:visibility="gone"
+                 android:id="@+id/agenda_widget_msg_no_clases"></TextView>
+         </LinearLayout>
 </LinearLayout>
