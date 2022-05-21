@@ -16,10 +16,20 @@
             >
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="16:50"
                 android:gravity="center"
-                android:textColor="?android:attr/textColorPrimary"></TextView>
+                android:id="@+id/widget_item_hora_comienzo"
+                android:textColor="@color/material_dynamic_primary20"></TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="16:50"
+                android:gravity="center"
+                android:id="@+id/widget_item_hora_fin"
+                android:textColor="@color/material_dynamic_primary20"></TextView>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -30,12 +40,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sistemas de Apoyo a la Decisión"
-                android:textColor="?android:attr/textColorPrimary"
+                android:id="@+id/widget_item_asignatura"
+                android:textColor="@color/material_dynamic_primary20"
                 ></TextView>
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edificio Y, P3I5"
-                android:textColor="?android:attr/textColorPrimary"></TextView>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:text="Edificio Y"
+                    android:id="@+id/widget_item_edificio"
+                    android:textColor="@color/material_dynamic_primary20"></TextView>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/widget_item_aula"
+                    android:text="P2I5"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/agenda_widget_borde_radius_aula">
+                </TextView>
+            </LinearLayout>
+
         </LinearLayout>
 </LinearLayout>

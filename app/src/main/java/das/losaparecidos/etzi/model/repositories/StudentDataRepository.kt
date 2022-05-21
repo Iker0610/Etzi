@@ -1,8 +1,11 @@
 package das.losaparecidos.etzi.model.repositories
 
+import android.graphics.Bitmap
+import android.util.Log
 import das.losaparecidos.etzi.model.database.daos.StudentCacheDataDao
 import das.losaparecidos.etzi.model.datastore.Datastore
 import das.losaparecidos.etzi.model.webclients.APIClient
+import io.ktor.client.plugins.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -15,6 +18,7 @@ class StudentDataRepository @Inject constructor(
     private val studentCacheDataDao: StudentCacheDataDao,
     private val datastore: Datastore,
 ) {
+    private lateinit var profileImage: Bitmap
     fun getStudentData() = studentCacheDataDao.getStudentData()
     private suspend fun fetchStudentData() = apiClient.getStudentData()
 
@@ -39,5 +43,27 @@ class StudentDataRepository @Inject constructor(
     }
     suspend fun clearUserPreferences(){
         datastore.clearPreferences()
+    }
+    suspend fun userProfileImage(): Bitmap {
+        if (!this::profileImage.isInitialized) {
+            try {
+                profileImage = apiClient.getUserProfile()
+            } catch (e: ResponseException) {
+                Log.e("HTTP", "Couldn't get profile image.")
+                e.printStackTrace()
+            }
+        }
+        return profileImage
+    }
+
+    suspend fun setUserProfileImage(image: Bitmap): Bitmap {
+        try {
+            apiClient.uploadUserProfile(image)
+            profileImage = image
+        } catch (e: ResponseException) {
+            Log.e("HTTP", "Couldn't upload profile image.")
+            e.printStackTrace()
+        }
+        return profileImage
     }
 }

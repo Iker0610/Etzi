@@ -1,10 +1,16 @@
 package das.losaparecidos.etzi.app.activities.main.screens.account
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
 import androidx.compose.animation.rememberSplineBasedDecay
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,15 +29,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.activities.authentication.AuthenticationActivity
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.composables.StudentDataSection
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
@@ -43,6 +53,9 @@ import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 import das.losaparecidos.etzi.model.entities.Student
+import java.io.File
+import java.nio.file.Files
+import kotlin.system.exitProcess
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
@@ -53,13 +66,31 @@ fun AccountScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val profilePicture: Bitmap? by mutableStateOf(null)
     val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
-    //val profilePicture: Bitmap? = preferencesViewModel.profilePicture
+    val profilePicture: Bitmap? = accountViewModel.profilePicture
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
 
+    /*************************************************
+     **                    Events                   **
+     *************************************************/
+    val toastMsg = stringResource(R.string.profile_not_taken_toast_msg)
 
+    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { pictureTaken ->
+        if (pictureTaken) accountViewModel.setProfileImage()
+        else Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
+    }
+
+    fun onEditImageRequest() {
+        val profileImageDir = File(context.cacheDir, "images/profile/")
+        Files.createDirectories(profileImageDir.toPath())
+
+        val newProfileImagePath = File.createTempFile(student.ldap, ".png", profileImageDir)
+        val contentUri: Uri = getUriForFile(context, "das.losaparecidos.etzi.fileprovider", newProfileImagePath)
+        accountViewModel.profilePicturePath = newProfileImagePath.path
+
+        imagePickerLauncher.launch(contentUri)
+    }
 
 
     if (showSelectLangDialog) {
@@ -110,19 +141,19 @@ fun AccountScreen(
             Box(contentAlignment = Alignment.BottomEnd) {
                 Box {
                     if (profilePicture == null) {
-                        LoadingImagePlaceholder(size = 138.dp)
+                        //LoadingImagePlaceholder(size = 138.dp)
                     } else {
-                        /*Image(
+                        Image(
                             bitmap = profilePicture.asImageBitmap(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.size(120.dp)
-                        )*/
+                        )
                     }
                 }
 
 
-                FilledTonalIconButton(onClick = { /*TODO*/ }, Modifier.size(32.dp)) {
+                FilledTonalIconButton(onClick = { onEditImageRequest() }, Modifier.size(32.dp)) {
                     Icon(Icons.Rounded.PhotoCamera, contentDescription = null, Modifier.size(20.dp))
                 }
 //                Box(
@@ -175,10 +206,10 @@ fun AccountScreen(
             }
 
             OutlinedButton(
-                onClick = { /* TODO cerrar sesión (poner dialog de confirmación cuando la cosa funsione)*/
+                onClick = {
                     accountViewModel.onLogout()
-                    // llevar al usuario a la pantalla del login
-                    // how the hell i'm supposed to do that si no está en la navegación la pantalla
+                    context.startActivity(Intent(context, AuthenticationActivity::class.java))
+                    exitProcess(0)
                 }
             ) {
                 Icon(Icons.Rounded.Logout, contentDescription = null)
@@ -189,13 +220,31 @@ fun AccountScreen(
         }
     }
 }
-
+@Composable
+fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: ()-> Unit){
+    val profilePicture: Bitmap? = accountViewModel.profilePicture
+    Box(Modifier.padding(16.dp)) {
+        if (profilePicture == null) {
+            LoadingImagePlaceholder(size = 36.dp)
+        } else {
+            Image(
+                bitmap = profilePicture.asImageBitmap(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .clickable { onNavigate() },
+            )
+        }
+    }
+}
 /*************************************************
  **          Image Loading Placeholder          **
  *************************************************/
 
 @Composable
-private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
+fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     // Creates an `InfiniteTransition` that runs infinite child animation values.
     val infiniteTransition = rememberInfiniteTransition()
     val alpha by infiniteTransition.animateFloat(
@@ -217,7 +266,7 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     )
 
     Icon(
-        Icons.Rounded.Image, contentDescription = null,
+        Icons.Rounded.AccountCircle, contentDescription = null,
         modifier = Modifier
             .size(size)
             .clip(CircleShape)
@@ -230,7 +279,7 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
-    EtziTheme() {
-        AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
+    EtziTheme{
+        AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp))) {}
     }
 }
