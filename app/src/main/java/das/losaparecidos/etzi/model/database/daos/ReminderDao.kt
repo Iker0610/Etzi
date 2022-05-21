@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  * DAO defining the room database access API related to alarm management
  */
 @Dao
-interface RemainderDao {
+interface ReminderDao {
 //    @Insert
 //    suspend fun addAlarm(alarm: VisitAlarm)
 //
