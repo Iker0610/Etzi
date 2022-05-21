@@ -82,4 +82,7 @@
     <string name="degree_label">Gradua</string>
     <string name="select_lang_dialog_title">Hizkuntza bat hautatu</string>
     <string name="logout_label">Saioa Itxi</string>
+    <string name="language_label">Hizkutza aldatu</string>
+    <string name="student_data">Ikaslearen datuak</string>
+    <string name="settings">Doikuntzak</string>
 </resources>

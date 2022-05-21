@@ -93,5 +93,8 @@
     <string name="degree_label">Grado</string>
     <string name="select_lang_dialog_title">Selecciona un idioma</string>
     <string name="logout_label">Cerrar Sesión</string>
+    <string name="language_label">Cambiar idioma</string>
+    <string name="settings">Ajustes</string>
+    <string name="student_data">Datos del estudiante</string>
 
 </resources>

@@ -97,4 +97,5 @@
     <string name="select_lang_dialog_text">Choose your preferred language for the application.</string>
     <string name="settings">Settings</string>
     <string name="student_data">Student Information</string>
+    <string name="language_label">Change your language</string>
 </resources>
