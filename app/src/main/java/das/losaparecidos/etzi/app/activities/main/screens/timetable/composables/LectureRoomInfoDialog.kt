@@ -12,20 +12,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
+import com.google.android.gms.maps.model.JointType
+import com.google.maps.android.compose.*
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
+import das.losaparecidos.etzi.app.ui.map.buildingsMapData
 import das.losaparecidos.etzi.model.entities.LectureRoom
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
-
-
     Dialog(
         properties = DialogProperties(
             usePlatformDefaultWidth = false,
@@ -42,7 +40,7 @@ fun LectureRoomInfoDialog(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 @Composable
 private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 
-    val room = LatLng(43.2634, -2.9505)
+    val room = buildingsMapData.filter { building -> building.name == lectureRoom.building.name }[0].location
 
     Scaffold(
         topBar = {
@@ -58,7 +56,12 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
         BoxWithConstraints {
 
             if (400.dp > maxHeight) {
-                Row(Modifier.fillMaxHeight().padding(paddingValues).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    Modifier
+                        .fillMaxHeight()
+                        .padding(paddingValues)
+                        .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
+                ) {
 
                     CenteredColumn(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
 
@@ -88,22 +91,34 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                         }
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    MaterialDivider(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxHeight()
+                            .width(1.dp)
+                    )
+                    //Spacer(modifier = Modifier.width(16.dp))
 
                     GoogleMap(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f)
                             .clip(shape = MaterialTheme.shapes.large)
-                            .border(2.dp, MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.large),
-                        cameraPositionState = CameraPositionState(
-                            position = CameraPosition.fromLatLngZoom(room, 17f)
-                        )
-                    ) { Marker(position = room) }
+                            .border(2.dp, MaterialTheme.colorScheme.outline, MaterialTheme.shapes.large),
+                        cameraPositionState = rememberCameraPositionState { position = CameraPosition.fromLatLngZoom(room, 17f) }
+                    ) {
+                        BuildingMapContent(lectureRoom = lectureRoom)
+                    }
+
 
                 }
             } else {
-                Column(Modifier.fillMaxWidth().padding(paddingValues).padding(16.dp)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues)
+                        .padding(16.dp)
+                ) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                         // Aula
                         CenteredColumn() {
@@ -133,8 +148,12 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             Text(text = lectureRoom.building.name, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
+
+
                     // Espacio
-                    Spacer(modifier = Modifier.height(16.dp))
+                    MaterialDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+
                     //Mapa
                     GoogleMap(
                         modifier = Modifier
@@ -143,14 +162,37 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             .clip(shape = MaterialTheme.shapes.large)
                             .border(2.dp, MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.large),
                         cameraPositionState = CameraPositionState(
-                            position = CameraPosition.fromLatLngZoom(room, 17f)
+                            position = CameraPosition.fromLatLngZoom(room, 16f)
                         )
-                    ) { Marker(position = room) }
+                    ) { BuildingMapContent(lectureRoom = lectureRoom) }
                 }
             }
         }
-
-
     }
+}
 
+@Composable
+private fun BuildingMapContent(lectureRoom: LectureRoom) {
+
+    buildingsMapData.forEach { build ->
+
+        if (build.name == lectureRoom.building.name) {
+            Polygon(
+                points = build.polygon,
+                fillColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f),
+                strokeWidth = 10f,
+                strokeColor = MaterialTheme.colorScheme.tertiary,
+                zIndex = 1f
+            )
+            Marker(rememberMarkerState(lectureRoom.building.id, build.location), title = lectureRoom.building.name)
+        } else {
+            Polygon(
+                points = build.polygon,
+                fillColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f),
+                strokeWidth = 4f,
+                strokeColor = MaterialTheme.colorScheme.outline,
+                strokeJointType = JointType.BEVEL
+            )
+        }
+    }
 }

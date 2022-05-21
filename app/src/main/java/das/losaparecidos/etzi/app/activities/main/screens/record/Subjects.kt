@@ -29,6 +29,8 @@ fun SubjectsScreen(
     val cursos = 1..4
 
     var selectedTab by remember { mutableStateOf(0) }
+    val record by recordViewModel.recordGroupedByCourse.collectAsState(initial = emptyMap())
+    val selectedCourseRecord by derivedStateOf { record[selectedTab + 1] ?: emptyList() }
 
 
     Scaffold(
@@ -71,7 +73,7 @@ fun SubjectsScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    CourseContainer(recordViewModel.obtainFilteredRecordByCourse(selectedTab + 1))
+                    CourseContainer(selectedCourseRecord)
                 }
             }
         }

@@ -1,10 +1,12 @@
 package das.losaparecidos.etzi.model.entities
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.datetime.LocalDateTime
 
 // Matriculación de un alumno en una asignatura
+@Immutable
 @Serializable
 data class SubjectEnrollment(
     val subject: Subject,
@@ -14,6 +16,7 @@ data class SubjectEnrollment(
 )
 
 // Convocatoria
+@Immutable
 @Serializable
 data class SubjectCall(
     @SerialName("call_type")
@@ -26,6 +29,7 @@ data class SubjectCall(
 
 
 // Participación del alumno en una convocatoria de examen de una asignatura
+@Immutable
 @Serializable
 data class SubjectCallAttendance(
     val grade: String, // Nota

@@ -3,8 +3,11 @@ package das.losaparecidos.etzi
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 
 /*******************************************************************************
@@ -22,7 +25,7 @@ Avoiding code  repetition
 */
 
 @HiltAndroidApp
-class Etzi : Application() {
+class Etzi : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
@@ -54,6 +57,17 @@ class Etzi : Application() {
         // Register the channels with the system
         notificationManager.createNotificationChannel(ehuInformationChannel)
     }
+
+
+    // Work Manager Configuration
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
 }
 
 

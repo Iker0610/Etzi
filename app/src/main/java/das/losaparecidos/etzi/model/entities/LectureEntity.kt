@@ -1,6 +1,7 @@
 package das.losaparecidos.etzi.model.entities
 
 
+import androidx.compose.runtime.Immutable
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -37,6 +38,7 @@ import kotlinx.serialization.Serializable
         Index(value = ["room_building"])
     ]
 )
+@Immutable
 data class LectureEntity(
     @ColumnInfo(name = "subject_name") val subjectName: String,
     @ColumnInfo(name = "academic_year") val academicYear: LocalDate,
@@ -50,7 +52,7 @@ data class LectureEntity(
     @ColumnInfo(name = "end_date") val endDate: LocalDateTime,
 )
 
-
+@Immutable
 data class Lecture(
     @Embedded val lecture: LectureEntity,
 
@@ -83,6 +85,7 @@ data class Lecture(
     val endDate by lecture::endDate
 }
 
+@Immutable
 @Serializable
 data class SerializableLecture(
     @SerialName("subject_name") val subjectName: String,

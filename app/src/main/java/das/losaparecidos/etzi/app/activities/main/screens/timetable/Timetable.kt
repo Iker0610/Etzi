@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.EventBusy
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Today
@@ -28,14 +29,12 @@ import das.losaparecidos.etzi.model.entities.Lecture
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, onNavigate: () -> Unit) {
 
     val context = LocalContext.current
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember(decayAnimationSpec) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
-    }
+    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
 
 
     Scaffold(
@@ -53,9 +52,14 @@ fun TimetableScreen(studentDataViewModel: StudentDataViewModel, windowSizeClass:
                 },
                 actions = {
                     IconButton(onClick = {
-                        showDatePicker(context, studentDataViewModel::onSelectedDateChange, studentDataViewModel.currentSelectedDay)
+                        showDatePicker(context, studentDataViewModel.currentSelectedDay, studentDataViewModel::onSelectedDateChange)
                     }) {
                         Icon(Icons.Rounded.Today, null)
+                    }
+                    IconButton(onClick = {
+                        onNavigate()
+                    }) {
+                        Icon(MainActivityScreens.Account.icon, null)
                     }
                 },
                 scrollBehavior = scrollBehavior

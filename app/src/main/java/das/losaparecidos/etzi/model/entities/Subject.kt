@@ -1,10 +1,12 @@
 package das.losaparecidos.etzi.model.entities
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.datetime.LocalDate
 
 // ASIGNATURA
+@Immutable
 @Serializable
 data class Subject(
     val name: String,
