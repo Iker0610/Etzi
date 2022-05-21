@@ -120,8 +120,12 @@ dependencies {
     // Compose Nav Animations
     implementation('com.google.accompanist:accompanist-navigation-animation:0.24.9-beta')
 
-    //Pa' webview
+    //Compose webview
     implementation 'com.google.accompanist:accompanist-webview:0.24.9-beta'
+
+    // Compose Pager
+    implementation 'com.google.accompanist:accompanist-pager:0.24.9-beta'
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.9-beta"
 
     // Dialogs and Pickers:
     // implementation 'com.afollestad.material-dialogs:core:3.3.0'

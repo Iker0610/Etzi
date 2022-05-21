@@ -269,7 +269,7 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
-                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") })
+                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen) { navController.navigate("dialog_filter") }
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
