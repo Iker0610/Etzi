@@ -46,7 +46,12 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    fun onPicChanged(lang: String) {
-        // cambiar lenguaje en datastore
+    fun onPicChanged() {
+        // subirla a firebase y reemplazar la actual en local
+    }
+    fun onLogout(){
+        viewModelScope.launch (Dispatchers.IO){
+            studentDataRepository.clearUserPreferences()
+        }
     }
 }

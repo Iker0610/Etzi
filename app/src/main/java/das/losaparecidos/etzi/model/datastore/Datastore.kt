@@ -135,4 +135,9 @@ class Datastore @Inject constructor(
             preferences[PreferencesKeys.USER_LANG(userLdap)] = langCode
         }
     }
+    suspend fun clearPreferences(){
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 }

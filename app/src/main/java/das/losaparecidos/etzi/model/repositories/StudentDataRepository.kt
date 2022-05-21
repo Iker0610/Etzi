@@ -37,4 +37,7 @@ class StudentDataRepository @Inject constructor(
     fun getUserLanguage(userLdap: String): Flow<String> {
         return datastore.getUserLanguage(userLdap)
     }
+    suspend fun clearUserPreferences(){
+        datastore.clearPreferences()
+    }
 }
