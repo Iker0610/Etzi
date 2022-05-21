@@ -1,6 +1,7 @@
 package das.losaparecidos.etzi.app.activities.main.screens.account
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.activities.authentication.AuthenticationActivity
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.composables.StudentDataSection
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
@@ -58,6 +60,7 @@ import das.losaparecidos.etzi.model.entities.Student
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
+import kotlin.system.exitProcess
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
@@ -213,9 +216,8 @@ fun AccountScreen(
                     accountViewModel.onLogout()
                     // llevar al usuario a la pantalla del login
                     // how the hell i'm supposed to do that si no está en la navegación la pantalla
-                    scope.launch {
-                        
-                    }
+                    context.startActivity(Intent(context, AuthenticationActivity::class.java))
+                    exitProcess(0)
                 }
             ) {
                 Icon(Icons.Rounded.Logout, contentDescription = null)
