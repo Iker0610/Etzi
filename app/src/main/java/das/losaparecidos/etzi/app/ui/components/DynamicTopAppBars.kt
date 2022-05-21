@@ -20,7 +20,6 @@ fun DynamicMediumTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.mediumTopAppBarColors(),
-    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     if (windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact) {
         MediumTopAppBar(
@@ -29,7 +28,6 @@ fun DynamicMediumTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            scrollBehavior = scrollBehavior,
         )
     } else {
         SmallTopAppBar(
@@ -38,7 +36,6 @@ fun DynamicMediumTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            // scrollBehavior = scrollBehavior,
         )
     }
 }
@@ -52,7 +49,6 @@ fun DynamicLargeTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.mediumTopAppBarColors(),
-    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     if (windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact) {
         LargeTopAppBar(
@@ -61,7 +57,6 @@ fun DynamicLargeTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            scrollBehavior = scrollBehavior,
         )
     } else {
         SmallTopAppBar(
@@ -70,7 +65,6 @@ fun DynamicLargeTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            // scrollBehavior = scrollBehavior,
         )
     }
 }

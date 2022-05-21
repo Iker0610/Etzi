@@ -63,8 +63,8 @@ fun TutorialsScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
-                //windowSizeClass = windowSizeClass,
+            DynamicLargeMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Tutorials.title(context)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {

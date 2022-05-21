@@ -10,12 +10,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -27,10 +29,7 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.ui.components.CenteredRow
-import das.losaparecidos.etzi.app.ui.components.DynamicLargeTopAppBar
-import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
-import das.losaparecidos.etzi.app.ui.components.showDatePicker
+import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
@@ -56,13 +55,12 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
     val currentSelectedDay by timetableViewModel.currentSelectedDay.collectAsState(initial = LocalDate.today)
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())
 
+
+
     Scaffold(
-        modifier = Modifier.apply {
-            if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
-                nestedScroll(scrollBehavior.nestedScrollConnection)
-        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            DynamicLargeTopAppBar(
+            DynamicLargeMediumTopAppBar(
                 windowSizeClass,
                 title = { Text(text = MainActivityScreens.Timetable.title(LocalContext.current)) },
                 navigationIcon = {
