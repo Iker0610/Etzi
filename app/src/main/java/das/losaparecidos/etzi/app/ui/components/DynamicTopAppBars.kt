@@ -38,7 +38,7 @@ fun DynamicMediumTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            scrollBehavior = scrollBehavior,
+            // scrollBehavior = scrollBehavior,
         )
     }
 }
@@ -70,7 +70,7 @@ fun DynamicLargeTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors,
-            scrollBehavior = scrollBehavior,
+            // scrollBehavior = scrollBehavior,
         )
     }
 }
