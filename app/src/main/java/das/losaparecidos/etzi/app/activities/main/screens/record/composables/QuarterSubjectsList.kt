@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat.startActivity
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.SubjectCall
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
@@ -173,10 +174,7 @@ private fun ExamDateTime(subjectCall: SubjectCall) {
 
 fun addExamOnCalendar(ctx: Context, subjectName: String, examDate: LocalDateTime) {
 
-    val startDateTime: Long = Calendar.getInstance().run {
-        set(examDate.year, examDate.monthNumber-1, examDate.dayOfMonth, examDate.hour, examDate.minute)
-        timeInMillis
-    }
+    val startDateTime: Long = examDate.epochUTCMilliseconds
 
     val intent = Intent(Intent.ACTION_INSERT)
         .setData(CalendarContract.Events.CONTENT_URI)

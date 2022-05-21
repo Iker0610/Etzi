@@ -17,6 +17,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
+import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.model.entities.Professor
 import kotlinx.datetime.LocalDateTime
 import java.util.*
@@ -93,10 +94,7 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
 
 fun addTutorialOnCalendar(ctx: Context, professor: Professor, tutorialDate: LocalDateTime, tutorial: String) {
 
-    val startDateTime: Long = Calendar.getInstance().run {
-        set(tutorialDate.year, tutorialDate.monthNumber-1, tutorialDate.dayOfMonth, tutorialDate.hour, tutorialDate.minute)
-        timeInMillis
-    }
+    val startDateTime: Long = tutorialDate.epochUTCMilliseconds
 
     val intent = Intent(Intent.ACTION_INSERT)
         .setData(CalendarContract.Events.CONTENT_URI)
