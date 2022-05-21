@@ -16,6 +16,8 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredBox
+import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
+import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +37,8 @@ fun SubjectsScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            DynamicMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Subjects.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -43,7 +46,8 @@ fun SubjectsScreen(
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
-                })
+                }
+            )
         }
     ) { paddingValues ->
 
