@@ -44,7 +44,7 @@ fun ExamsScreen(
         topBar = {
             DynamicLargeMediumTopAppBar(
                 windowSizeClass = windowSizeClass,
-                title = { Text(text = MainActivityScreens.Grades.title(LocalContext.current)) },
+                title = { Text(text = MainActivityScreens.Exams.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = onMenuOpen) {
@@ -104,7 +104,7 @@ fun ExamsScreen(
                     }
                 }
             }
-            else -> EmptyCollectionScreen(Icons.Rounded.ContentPasteOff, stringResource(id = R.string.noGrades), Modifier.padding(paddingValues))
+            else -> EmptyCollectionScreen(Icons.Rounded.ContentPasteOff, stringResource(id = R.string.no_exams), Modifier.padding(paddingValues))
         }
     }
 }

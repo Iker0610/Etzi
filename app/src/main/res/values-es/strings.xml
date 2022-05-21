@@ -102,7 +102,11 @@
     <string name="exams_screen_title">Calendario de exámenes</string>
     <string name="quarter">cuatrimestre</string>
     <string name="profile_not_taken_toast_msg">No se ha tomado una instantánea</string>
-    <string name="select_lang_dialog_text">Selecciona tu idioma deseado</string>
+    <string name="select_lang_dialog_text">Selecciona el idioma deseado.</string>
     <string name="academic_year">Año Académico</string>
+    <string name="no_exams">Todavía no hay exámenes programados</string>
+    <string name="exam">Examen</string>
+    <string name="no_tutorials_dialog_message">No hay tutorías disponibles</string>
+    <string name="tutorial">Tutoria</string>
 
 </resources>

@@ -105,4 +105,7 @@
     <string name="time">Time</string>
     <string name="exams_screen_title">Exams timetable</string>
     <string name="quarter">quarter</string>
+    <string name="no_exams">There are no exams scheduled yet</string>
+    <string name="exam">Exam</string>
+    <string name="tutorial">Tutorial</string>
 </resources>
