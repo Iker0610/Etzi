@@ -42,7 +42,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRem
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
+import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
      **                  ViewModel                  **
      *************************************************/
 
-    private val studentDataViewModel: StudentDataViewModel by viewModels()
+    private val timetableViewModel: TimetableViewModel by viewModels()
     private val accountViewModel: AccountViewModel by viewModels()
 
     /*************************************************
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             EtziTheme {
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(studentDataViewModel, navController, accountViewModel)
+                EtziAppScreen(timetableViewModel, navController, accountViewModel)
             }
         }
     }
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun EtziAppScreen(
-    studentDataViewModel: StudentDataViewModel,
+    timetableViewModel: TimetableViewModel,
     navController: NavHostController,
     accountViewModel: AccountViewModel
 ) {
@@ -185,7 +185,7 @@ private fun EtziAppScreen(
                 ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
 
                 MainNavigationGraph(
-                    studentDataViewModel,
+                    timetableViewModel,
                     navController,
                     windowSizeClass,
                     onNavigationMenuOpen,
@@ -212,7 +212,7 @@ private fun EtziAppScreen(
 @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun MainNavigationGraph(
-    studentDataViewModel: StudentDataViewModel,
+    timetableViewModel: TimetableViewModel,
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
     onNavigationMenuOpen: () -> Unit,
@@ -257,7 +257,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount)
+            TimetableScreen(timetableViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount)
         }
 
         navigation(
