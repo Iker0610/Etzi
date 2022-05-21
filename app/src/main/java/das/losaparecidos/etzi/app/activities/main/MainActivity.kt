@@ -25,9 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.dialog
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -114,6 +112,7 @@ private fun EtziAppScreen(
 
     //-----------   Navigation-drawer   ------------//
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val enableNavigationDrawerGestures by derivedStateOf { enableNavigationElements && navigationDrawerState.isOpen }
 
 
     /*************************************************
@@ -160,10 +159,10 @@ private fun EtziAppScreen(
       */
 
     EtziNavigationDrawer(
-        currentRoute,
-        onNavigate,
-        navigationDrawerState,
-        enableNavigationElements
+        currentRoute = currentRoute,
+        onNavigate = onNavigate,
+        drawerState = navigationDrawerState,
+        gesturesEnabled = enableNavigationDrawerGestures,
     ) {
         Scaffold(
             bottomBar = {
@@ -258,7 +257,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen,onNavigateToAccount)
+            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount)
         }
 
         navigation(
@@ -274,7 +273,7 @@ private fun MainNavigationGraph(
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
-                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+                // val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
                 TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
             }

@@ -22,6 +22,7 @@ import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredBox
+import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
 import das.losaparecidos.etzi.app.ui.components.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,8 @@ fun SubjectsScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            DynamicMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Subjects.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -50,7 +52,8 @@ fun SubjectsScreen(
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
-                })
+                }
+            )
         }
     ) { paddingValues ->
 
@@ -87,7 +90,7 @@ fun SubjectsScreen(
                         count = courses.size,
                         state = pagerState,
 
-                    ) { pageIndex ->
+                        ) { pageIndex ->
                         CourseContainer(record[pageIndex + 1] ?: emptyList())
                     }
                 }

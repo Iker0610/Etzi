@@ -9,10 +9,10 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
@@ -21,11 +21,7 @@ import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.ui.components.CenteredBox
-import das.losaparecidos.etzi.app.ui.components.CenteredColumn
-import das.losaparecidos.etzi.app.ui.components.CenteredRow
-import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
-import das.losaparecidos.etzi.model.entities.SubjectEnrollment
+import das.losaparecidos.etzi.app.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +35,8 @@ fun GradesScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            DynamicLargeMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Grades.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -47,7 +44,8 @@ fun GradesScreen(
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
-                })
+                }
+            )
         }
     ) { paddingValues ->
 
