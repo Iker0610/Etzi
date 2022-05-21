@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Book
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.School
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
@@ -32,7 +29,9 @@ import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
 import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
+import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +61,6 @@ fun TutorialsFilterDialog(
     }
 
     // UI
-
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()
     val backgroundColor = MaterialTheme.colorScheme.surface
@@ -117,6 +115,18 @@ fun TutorialsFilterDialog(
             DateRangeDoubleField(
                 dateRange = tutorialsFilterViewModel.dateRange,
                 onDateRangeSelected = tutorialsFilterViewModel::onDateRangeChange,
+
+                startDateTrailingIcon = {
+                    IconButton(onClick = { tutorialsFilterViewModel.startDate = LocalDate.today }, modifier = Modifier.size(20.dp)) {
+                        Icon(Icons.Rounded.RestartAlt , null, tint = MaterialTheme.colorScheme.secondary)
+                    }
+                },
+
+                endDateTrailingIcon = {
+                    IconButton(onClick = { tutorialsFilterViewModel.endDate = null }, modifier = Modifier.size(20.dp)) {
+                        Icon(Icons.Rounded.HighlightOff , null, tint = MaterialTheme.colorScheme.secondary)
+                    }
+                }
             )
 
             MaterialDivider(Modifier.padding(vertical = 8.dp))

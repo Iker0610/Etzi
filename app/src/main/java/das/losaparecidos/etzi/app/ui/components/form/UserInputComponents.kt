@@ -177,8 +177,8 @@ enum class DateRangeFieldTextMode { FROM_TO, TO, FROM }
 fun DateRangeDoubleField(
     modifier: Modifier = Modifier,
 
-    onDateRangeSelected: (LocalDate, LocalDate) -> Unit,
-    dateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
+    onDateRangeSelected: (LocalDate, LocalDate?) -> Unit,
+    dateRange: Pair<LocalDate?, LocalDate?> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
     dateFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT),
 
     startDateLabel: @Composable () -> Unit = { Text(text = stringResource(id = R.string.date_from_label)) },
@@ -203,7 +203,7 @@ fun DateRangeDoubleField(
         DateRangeField(
             modifier = Modifier.weight(1f),
 
-            onDateRangeSelected = onDateRangeSelected,
+            onSelectDateRange = onDateRangeSelected,
             dateRange = dateRange,
             dateFormatter = dateFormatter,
             labelDisplayMode = DateRangeFieldTextMode.FROM,
@@ -220,7 +220,7 @@ fun DateRangeDoubleField(
         DateRangeField(
             modifier = Modifier.weight(1f),
 
-            onDateRangeSelected = onDateRangeSelected,
+            onSelectDateRange = onDateRangeSelected,
             dateRange = dateRange,
             dateFormatter = dateFormatter,
             labelDisplayMode = DateRangeFieldTextMode.TO,
@@ -239,8 +239,8 @@ fun DateRangeDoubleField(
 fun DateRangeField(
     modifier: Modifier = Modifier,
 
-    onDateRangeSelected: (LocalDate, LocalDate) -> Unit,
-    dateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
+    onSelectDateRange: (LocalDate, LocalDate?) -> Unit,
+    dateRange: Pair<LocalDate?, LocalDate?> = Pair(LocalDate.today, LocalDate.today.plus(7, DateTimeUnit.DAY)),
     dateFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT),
     labelDisplayMode: DateRangeFieldTextMode = DateRangeFieldTextMode.FROM_TO,
 
@@ -259,10 +259,10 @@ fun DateRangeField(
     val focusManager = LocalFocusManager.current
 
     // Formatted date as string
-    val dateRangeLabelText = when (labelDisplayMode) {
-        DateRangeFieldTextMode.FROM_TO -> "${dateRange.first.format(dateFormatter)} - ${dateRange.second.format(dateFormatter)}"
-        DateRangeFieldTextMode.FROM -> dateRange.first.format(dateFormatter)
-        DateRangeFieldTextMode.TO -> dateRange.second.format(dateFormatter)
+    val dateRangeLabelText: String = when (labelDisplayMode) {
+        DateRangeFieldTextMode.FROM_TO -> "${dateRange.first?.format(dateFormatter) ?: "_"} - ${dateRange.second?.format(dateFormatter) ?: "_"}"
+        DateRangeFieldTextMode.FROM -> dateRange.first?.format(dateFormatter) ?: "-"
+        DateRangeFieldTextMode.TO -> dateRange.second?.format(dateFormatter) ?: "-"
     }
 
     val onDateRangeSelected: (LocalDate, LocalDate) -> Unit = { startDate, endDate ->
@@ -270,7 +270,7 @@ fun DateRangeField(
         focusManager.clearFocus()
 
         // Call event callback
-        onDateRangeSelected(startDate, endDate)
+        onSelectDateRange(startDate, endDate)
     }
 
     val onDismiss = { focusManager.clearFocus() }
@@ -281,7 +281,7 @@ fun DateRangeField(
         modifier = modifier.onFocusChanged {
             // If the field is focused open the picker dialog
             if (it.isFocused) {
-                showDateRangePicker(context, initialStartDate = dateRange.first, initialEndDate = dateRange.second, onDateRangeSelected, onDismiss)
+                showDateRangePicker(context, initialStartDate = dateRange.first, initialEndDate = dateRange.second, onDateSelected = onDateRangeSelected, onDismiss = onDismiss)
             }
         },
 

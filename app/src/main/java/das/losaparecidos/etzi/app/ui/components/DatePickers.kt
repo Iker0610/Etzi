@@ -3,6 +3,8 @@ package das.losaparecidos.etzi.app.ui.components
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.app.utils.fromEpochMilliseconds
@@ -36,19 +38,26 @@ fun showDatePicker(
 
 fun showDateRangePicker(
     context: Context,
-    initialStartDate: LocalDate = LocalDate.today,
-    initialEndDate: LocalDate = LocalDate.today + DatePeriod(0, 0, 5),
+    initialStartDate: LocalDate? = LocalDate.today,
+    initialEndDate: LocalDate? = LocalDate.today + DatePeriod(0, 0, 5),
+    enablePastDateSelection: Boolean = false,
     onDateSelected: (LocalDate, LocalDate) -> Unit,
     onDismiss: () -> Unit = {}
 ) {
     val activity = context.getActivity() as AppCompatActivity
 
-    val picker = MaterialDatePicker.Builder.dateRangePicker().setSelection(
-        Pair(
-            initialStartDate.epochUTCMilliseconds,
-            initialEndDate.epochUTCMilliseconds
-        )
-    ).build()
+    val constraintsBuilder = CalendarConstraints.Builder().apply {
+        if (!enablePastDateSelection) setValidator(DateValidatorPointForward.now())
+    }
+
+    val picker = MaterialDatePicker.Builder.dateRangePicker()
+        .setCalendarConstraints(constraintsBuilder.build())
+        .setSelection(
+            Pair(
+                initialStartDate?.epochUTCMilliseconds,
+                initialEndDate?.epochUTCMilliseconds
+            )
+        ).build()
 
     activity.let {
         picker.show(it.supportFragmentManager, picker.toString())

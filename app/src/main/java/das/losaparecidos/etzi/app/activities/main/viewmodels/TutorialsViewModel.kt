@@ -94,7 +94,7 @@ class TutorialsViewModel @Inject constructor(
      **                    Events                   **
      *************************************************/
 
-    fun onFilterChange(subjectName: String?, newFromDate: LocalDate, newToDate: LocalDate, newSelectedProfessors: Map<ProfessorWithTutorials, Boolean>) {
+    fun onFilterChange(subjectName: String?, newFromDate: LocalDate, newToDate: LocalDate?, newSelectedProfessors: Map<ProfessorWithTutorials, Boolean>) {
         selectedSubject = subjectName
         startDate = newFromDate
         endDate = newToDate
