@@ -56,15 +56,20 @@ fun AccountScreen(
     val context = LocalContext.current
     val profilePicture: Bitmap? by mutableStateOf(null)
     val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
+    val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
+    //val profilePicture: Bitmap? = preferencesViewModel.profilePicture
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
+
 
 
 
     if (showSelectLangDialog) {
         // TODO revisar esto para conectarlo con el viewmodel
         LanguagePickerDialog(
-            selectedLanguage = AppLanguage.ES,
-            onLanguageSelected = { /*TODO aquí debería ir la llamada del viewmodel preferencesViewModel.changeLang(it, context);*/ showSelectLangDialog = false },
+            selectedLanguage = prefLanguage,
+            onLanguageSelected = {
+                accountViewModel.onLanguageChanged(it, context)
+                showSelectLangDialog = false },
             onDismiss = { showSelectLangDialog = false }
         )
     }
@@ -160,12 +165,12 @@ fun AccountScreen(
                 ListItem(
                     // TODO poner el idioma actualmente seleccionado
                     icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
-                    secondaryText = { Text(text = "Idioma"/*prefLanguage.language*/) },
+                    secondaryText = { Text(text = prefLanguage.name) },
                     modifier = Modifier.clickable {
                         showSelectLangDialog = true
                     }
                 ) {
-                    Text(text = "Idioma pruebita"/*stringResource(R.string.app_lang_setting_title)*/)
+                    Text(text = stringResource(R.string.language_label))
                 }
                 //------------   Logout Section    ------------//
 
