@@ -19,7 +19,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
-import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseContainer
+import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseSubjectsList
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredBox
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
@@ -84,14 +84,12 @@ fun SubjectsScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     HorizontalPager(
                         count = courses.size,
                         state = pagerState,
 
                         ) { pageIndex ->
-                        CourseContainer(record[pageIndex + 1] ?: emptyList())
+                        CourseSubjectsList(record[pageIndex + 1] ?: emptyList())
                     }
                 }
             }
