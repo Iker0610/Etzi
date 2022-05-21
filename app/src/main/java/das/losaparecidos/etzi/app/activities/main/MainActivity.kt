@@ -34,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
 import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.ExamsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
@@ -292,13 +293,13 @@ private fun MainNavigationGraph(
 
         navigation(
             route = MainActivityScreens.Record.route,
-            startDestination = MainActivityScreens.Grades.route
+            startDestination = MainActivityScreens.Subjects.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, navigateBack)
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, onNavigateToAccount)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
@@ -313,6 +314,13 @@ private fun MainNavigationGraph(
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
                 CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+            }
+
+            composable(route = MainActivityScreens.Exams.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
             }
         }
 

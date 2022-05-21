@@ -38,6 +38,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     Subjects("subjects",Icons.Filled.Book),
     Credits("credits", Icons.Filled.CardMembership),
     Grades("grades", Icons.Filled.Grade),
+    Exams("exams", Icons.Filled.EventNote),
     Account("account", Icons.Filled.Person),
     Egela("egela", Icons.Filled.Web);
 
@@ -54,7 +55,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     // Utility variables and methods
     companion object {
 
-        val screensWithNavigationElements = setOf(Timetable, Tutorials, TutorialReminders, Grades, Credits, Subjects, Egela)
+        val screensWithNavigationElements = setOf(Timetable, Tutorials, TutorialReminders, Grades, Credits, Subjects, Exams, Egela)
 
         // List of screens that must appear in navigation rail / navigation bar
         val mainSections = setOf(Timetable, TutorialsSection, Record, Egela)
@@ -63,7 +64,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         val menuScreens = mapOf(
             Timetable to setOf(Timetable),
             TutorialsSection to setOf(Tutorials, TutorialReminders),
-            Record to setOf(Grades, Subjects, Credits),
+            Record to setOf(Subjects, Grades, Credits, Exams),
             Egela to setOf(Egela)
         )
 
@@ -74,6 +75,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
             Grades.route to Record.route,
             Subjects.route to Record.route,
             Credits.route to Record.route,
+            Exams.route to Record.route,
             Egela.route to Egela.route,
             Account.route to Account.route
         )
@@ -90,6 +92,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
                 Subjects.route -> Subjects
                 Credits.route -> Credits
                 Grades.route -> Grades
+                Exams.route -> Exams
                 Account.route -> Account
                 Egela.route -> Egela
                 else -> Timetable
