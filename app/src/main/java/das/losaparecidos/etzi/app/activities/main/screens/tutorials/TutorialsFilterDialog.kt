@@ -31,6 +31,7 @@ import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsFilterView
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.form.DateRangeDoubleField
+import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,6 @@ fun TutorialsFilterDialog(
         tutorialsViewModel.endDate,
         tutorialsViewModel.selectedProfessors
     ),
-    windowSizeClass: WindowSizeClass,
     onClose: () -> Unit
 ) {
 
@@ -96,7 +96,7 @@ fun TutorialsFilterDialog(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FilterSectionTitle(icon = Icons.Rounded.Book, text = stringResource(id = R.string.subject))
+            SectionTitle(icon = Icons.Rounded.Book, text = stringResource(id = R.string.subject))
 
 
             SubjectDropdownMenu(
@@ -111,7 +111,7 @@ fun TutorialsFilterDialog(
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
-            FilterSectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date_range))
+            SectionTitle(icon = Icons.Rounded.DateRange, text = stringResource(id = R.string.date_range))
 
 
             DateRangeDoubleField(
@@ -122,7 +122,7 @@ fun TutorialsFilterDialog(
             MaterialDivider(Modifier.padding(vertical = 8.dp))
 
 
-            FilterSectionTitle(icon = Icons.Rounded.School, text = stringResource(id = R.string.professors_label))
+            SectionTitle(icon = Icons.Rounded.School, text = stringResource(id = R.string.professors_label))
 
 
             FilterChipGroup(
@@ -131,14 +131,5 @@ fun TutorialsFilterDialog(
                 itemToStringMapper = ProfessorWithTutorials::fullName
             )
         }
-    }
-}
-
-@Composable
-private fun FilterSectionTitle(text: String, icon: ImageVector) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(icon, null, tint = MaterialTheme.colorScheme.primary)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text, style = MaterialTheme.typography.titleMedium)
     }
 }

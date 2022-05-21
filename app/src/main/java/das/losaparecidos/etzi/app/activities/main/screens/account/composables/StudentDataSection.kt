@@ -13,68 +13,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
-import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.model.entities.Student
 
 @Composable
 fun StudentDataSection(student: Student, modifier: Modifier = Modifier) {
     // Class and time
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = 16.dp, horizontal = 24.dp)
-    ) {
-        CenteredRow(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "${stringResource(R.string.student_full_name_label)}:",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = student.name + " " + student.surname,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+    Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
-                Text(
-                    text = "${stringResource(R.string.ldap_title)}:",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    student.ldap,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+        DataSection(stringResource(R.string.student_full_name_label), "${student.name} ${student.surname}")
 
-                Text(
-                    text = "${stringResource(R.string.email_label)}:",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    student.email,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+        DataSection(stringResource(R.string.ldap_title), student.ldap)
 
-                Text(
-                    text = "${stringResource(R.string.degree_label)}:",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    student.enrolledDegree,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
+        DataSection(stringResource(R.string.email_label), student.email)
+
+        DataSection(stringResource(R.string.ldap_title), student.enrolledDegree)
+    }
+}
+
+@Composable
+fun DataSection(title: String, value: String) {
+    Column(Modifier.fillMaxWidth()) {
+
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+
+        Text(value, style = MaterialTheme.typography.bodyMedium)
     }
 }
 

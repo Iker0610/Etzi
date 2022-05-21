@@ -285,7 +285,6 @@ private fun MainNavigationGraph(
 
                 TutorialsFilterDialog(
                     tutorialsViewModel = tutorialsViewModel,
-                    windowSizeClass = windowSizeClass,
                     onClose = navigateBack
                 )
             }

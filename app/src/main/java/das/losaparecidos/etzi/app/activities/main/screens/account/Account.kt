@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import androidx.compose.animation.core.*
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,14 +31,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.composables.StudentDataSection
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
+import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
 import das.losaparecidos.etzi.app.ui.components.ListItem
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
+import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.AppLanguage
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
@@ -51,115 +54,132 @@ fun AccountScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val rememberNavController = rememberNavController()
     val profilePicture: Bitmap? by mutableStateOf(null)
-    val student by accountViewModel.studentData.collectAsState(initial = Student("","","","",""))
+    val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
+
+
+
+    if (showSelectLangDialog) {
+        // TODO revisar esto para conectarlo con el viewmodel
+        LanguagePickerDialog(
+            selectedLanguage = AppLanguage.ES,
+            onLanguageSelected = { /*TODO aquí debería ir la llamada del viewmodel preferencesViewModel.changeLang(it, context);*/ showSelectLangDialog = false },
+            onDismiss = { showSelectLangDialog = false }
+        )
+    }
+
+
+    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
+    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SmallTopAppBar(
+            DynamicLargeMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = {onBack()}) {
+                        IconButton(onClick = { onBack() }) {
                             Icon(Icons.Filled.ArrowBack, null)
                         }
                     }
 
-                })
+                },
+                scrollBehavior = scrollBehavior
+            )
         }
     ) { paddingValues ->
         CenteredColumn(
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
+                .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(paddingValues)
-                .padding(vertical = 16.dp)
+                .padding(vertical = 24.dp)
         ) {
+
             /*------------------------------------------------
             |                    Dialogs                     |
             ------------------------------------------------*/
 
-            if (showSelectLangDialog) {
-                // TODO revisar esto para conectarlo con el viewmodel
-                LanguagePickerDialog(
-                    title = stringResource(R.string.select_lang_dialog_title),
-                    selectedLanguage = AppLanguage.ES,
-                    onLanguageSelected = { /*TODO aquí debería ir la llamada del viewmodel preferencesViewModel.changeLang(it, context);*/ showSelectLangDialog = false },
-                    onDismiss = { showSelectLangDialog = false }
-                )
-            }
             Box(contentAlignment = Alignment.BottomEnd) {
-                Box(Modifier.padding(16.dp)) {
+                Box {
                     if (profilePicture == null) {
-                        LoadingImagePlaceholder(size = 120.dp)
+                        LoadingImagePlaceholder(size = 138.dp)
                     } else {
-                        //TODO hacer que al hacer click abra la ventanita para seleccionar una foto
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                Icons.Rounded.Image, contentDescription = null,
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape),
-                            )
-                            /*Image(
-                                bitmap = profilePicture.asImageBitmap(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape),
-                            )*/
-                            /*Icon(
-                                Icons.Rounded.ExitToApp, contentDescription = null,
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape),
-                            )*/
-                        }
+                        /*Image(
+                            bitmap = profilePicture.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(120.dp)
+                        )*/
                     }
                 }
 
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(bottom = 16.dp, end = 8.dp)
-                        .clip(CircleShape)
-                    //.clickable(onClick = ::onEditImageRequest)
+
+                FilledTonalIconButton(onClick = { /*TODO*/ }, Modifier.size(32.dp)) {
+                    Icon(Icons.Rounded.PhotoCamera, contentDescription = null, Modifier.size(20.dp))
+                }
+//                Box(
+//                    contentAlignment = Alignment.Center,
+//                    modifier = Modifier
+//                        .padding(bottom = 16.dp, end = 8.dp)
+//                        .clip(CircleShape)
+//                    //.clickable(onClick = ::onEditImageRequest)
+//                ) {
+//
+//                    Icon(Icons.Rounded.Circle, contentDescription = null, Modifier.size(34.dp), tint = MaterialTheme.colorScheme.primary)
+//                    Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.surface)
+//                }
+            }
+
+            Column(
+                Modifier.padding(top = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+
+            ) {
+                MaterialDivider(Modifier.padding(vertical = 8.dp, horizontal = 16.dp))
+
+
+                SectionTitle(
+                    icon = Icons.Rounded.Badge, text = stringResource(id = R.string.student_data), modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                )
+                StudentDataSection(student = student, Modifier.padding(horizontal = 16.dp))
+
+
+                MaterialDivider(Modifier.padding(vertical = 8.dp, horizontal = 16.dp))
+
+
+                //------------   Language Section   ------------//
+
+                SectionTitle(icon = Icons.Rounded.Settings, text = stringResource(id = R.string.settings), modifier = Modifier.padding(horizontal = 16.dp))
+                ListItem(
+                    // TODO poner el idioma actualmente seleccionado
+                    icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
+                    secondaryText = { Text(text = "Idioma"/*prefLanguage.language*/) },
+                    modifier = Modifier.clickable {
+                        showSelectLangDialog = true
+                    }
                 ) {
-
-                    //Icon(Icons.Rounded.Circle, contentDescription = null, Modifier.size(34.dp), tint = MaterialTheme.colorScheme.primary)
-                    Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.surface)
+                    Text(text = "Idioma pruebita"/*stringResource(R.string.app_lang_setting_title)*/)
                 }
+                //------------   Logout Section    ------------//
+
+                MaterialDivider(Modifier.padding(vertical = 8.dp))
             }
 
-            StudentDataSection(student = student)
-            
-            MaterialDivider(Modifier.padding(top = 32.dp, bottom = 16.dp))
-
-
-            //------------   Language Section   ------------//
-
-            ListItem(
-                // TODO poner el idioma actualmente seleccionado
-                icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
-                secondaryText = { Text(text = "Idioma"/*prefLanguage.language*/) },
-                modifier = Modifier.clickable {
-                    showSelectLangDialog = true
-                }
+            OutlinedButton(
+                onClick = { /* TODO */ }
             ) {
-                Text(text = "Idioma pruebita"/*stringResource(R.string.app_lang_setting_title)*/)
+                Icon(Icons.Rounded.Logout, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(id = R.string.logout_label))
             }
-            //------------   Logout Section    ------------//
-            ListItem(
-                // TODO poner el idioma actualmente seleccionado
-                icon = { Icon(Icons.Rounded.Logout, null, Modifier.padding(top = 7.dp)) },
-                modifier = Modifier.clickable { showSelectLangDialog = true }
-                // TODO setRememberLogin a false y cerrar y volver abrir la app
-            ) {
-                Text(text = stringResource(id = R.string.logout_label)/*stringResource(R.string.app_lang_setting_title)*/)
-            }
+
         }
     }
 }
@@ -205,6 +225,6 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
     EtziTheme() {
-        AccountScreen(viewModel(),WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)),{})
+        AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
     }
 }

@@ -6,16 +6,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.components.ListItem
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -127,7 +131,6 @@ class LanguageManager @Inject constructor() {
 fun LanguagePickerDialog(
     selectedLanguage: AppLanguage,
     onLanguageSelected: (AppLanguage) -> Unit,
-    title: String,
     onDismiss: () -> Unit,
 ) {
     /*------------------------------------------------
@@ -140,56 +143,33 @@ fun LanguagePickerDialog(
     /*------------------------------------------------
     |                 User Interface                 |
     ------------------------------------------------*/
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            shape = RectangleShape,
-            color = MaterialTheme.colorScheme.surface,
-            //contentColor = contentColorFor(backgroundColor),
-        ) {
-            Column {
+    AlertDialog(
+        onDismissRequest = onDismiss,
 
-                //--------------   Dialog Title   --------------//
+        icon = { Icon(Icons.Rounded.Language, null) },
+        title = { Text(text = stringResource(id = R.string.select_lang_dialog_title), textAlign = TextAlign.Center) },
+        text = {
+            Column(Modifier.fillMaxWidth()) {
+                Text(text = stringResource(id = R.string.select_lang_dialog_text), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+
+                Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.secondary)
+
                 Column(
-                    Modifier
-                    .padding(horizontal = 24.dp)
-                    .height(64.dp), verticalArrangement = Arrangement.Center) {
-                    Text(text = title, style = MaterialTheme.typography.labelSmall)
-                }
-
-                Divider()
-
-                //---------   Dialog Content (List)   ----------//
-                Column(Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 24.dp)
+                    Modifier.verticalScroll(rememberScrollState())
                 ) {
                     AppLanguage.values().forEach { lang ->
                         ListItem(
                             modifier = Modifier.clickable { selected = lang.code },
                             trailing = { Checkbox(checked = selected == lang.code, onCheckedChange = { selected = lang.code }) },
-                            text = { Text(text = lang.language, style = MaterialTheme.typography.bodyMedium) }
+                            text = { Text(text = lang.language) }
                         )
                     }
                 }
 
-                //-------------   Dialog Buttons   -------------//
-                Divider()
-
-                CenteredRow(Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp), horizontalArrangement = Arrangement.End) {
-                    CenteredRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-
-                        // Cancel TextButton
-                        TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.cancel_button)) }
-
-                        // Apply TextButton
-                        TextButton(onClick = { onLanguageSelected(AppLanguage.getFromCode(selected)) }) {
-                            Text(text = stringResource(R.string.ok_button))
-                        }
-                    }
-                }
+                Divider(Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.secondary)
             }
-        }
-    }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.cancel_button)) } },
+        confirmButton = { TextButton(onClick = { onLanguageSelected(AppLanguage.getFromCode(selected)) }) { Text(text = stringResource(R.string.ok_button)) } }
+    )
 }
