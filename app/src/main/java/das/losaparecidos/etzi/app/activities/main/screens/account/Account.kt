@@ -266,7 +266,7 @@ fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     )
 
     Icon(
-        Icons.Rounded.Image, contentDescription = null,
+        Icons.Rounded.AccountCircle, contentDescription = null,
         modifier = Modifier
             .size(size)
             .clip(CircleShape)
