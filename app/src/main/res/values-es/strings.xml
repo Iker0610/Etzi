@@ -48,7 +48,7 @@
     <string name="masterclass">Magistral</string>
 
     <!-- Expediente -->
-    <string name="course">curso</string>
+    <string name="course">Curso</string>
     <string name="pending">Créditos pendientes de obtener</string>
     <string name="unassessed">Créditos pendientes de evaluar</string>
     <string name="expedient">Créditos aprobados</string>
@@ -98,5 +98,6 @@
     <string name="student_data">Datos del estudiante</string>
     <string name="profile_not_taken_toast_msg">No se ha tomado una instantánea</string>
     <string name="select_lang_dialog_text">Selecciona tu idioma deseado</string>
+    <string name="academic_year">Año Académico</string>
 
 </resources>

@@ -40,7 +40,7 @@ fun SubjectDataContent(
         }
         Row() {
             Text(
-                text = "${stringResource(id = R.string.date)}:",
+                text = "${stringResource(id = R.string.academic_year)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.weight(0.2f)
@@ -48,7 +48,7 @@ fun SubjectDataContent(
             Spacer(modifier = Modifier.weight(0.05f))
 
             Text(
-                text = subjectEnrollment.subject.academicYear.toString(),
+                text = "${subjectEnrollment.subject.academicYear.year} - ${subjectEnrollment.subject.academicYear.year+1}",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(0.7f)
             )
