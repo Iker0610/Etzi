@@ -26,8 +26,8 @@ fun CourseContainer(subjects: List<SubjectEnrollment>) {
 
     Column(
         Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
     ) {
         subjects.forEach { subjectEnrollment ->
             Card(
