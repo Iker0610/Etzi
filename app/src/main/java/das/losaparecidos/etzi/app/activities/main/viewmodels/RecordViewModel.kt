@@ -33,40 +33,62 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
     var loadingData by mutableStateOf(true)
         private set
 
-    private var fullRecord: List<SubjectEnrollment> by mutableStateOf(emptyList())
+    private var fullRawRecord: List<SubjectEnrollment> by mutableStateOf(emptyList())
 
     // Initialization
     init {
         Log.d("VIEWMODEL", "Se ha creado un RecordViewModel")
 
         viewModelScope.launch(Dispatchers.IO) {
-            fullRecord = studentDataRepository.getRecord()
+            fullRawRecord = studentDataRepository.getRecord()
             loadingData = false
         }
     }
 
+    // Por cada asignatura obtenemos la matriculación más reciente
+    private val lastEnrollmentPerSubjectRecords: Flow<List<SubjectEnrollment>> = snapshotFlow {
+        fullRawRecord.groupBy { "${it.subject.degree}&&&&${it.subject.name}" }.mapNotNull { (_, enrollmentList) -> enrollmentList.maxByOrNull { it.subject.academicYear } }
+    }
 
-    val recordGroupedByCourse: Flow<Map<Int, List<SubjectEnrollment>>> = snapshotFlow { fullRecord }
+    // Por cada asignatura obtenemos solo aquellas convocatorias a las que el usuario haya atendido
+    private val recordWithLastCallAttendance: Flow<List<SubjectEnrollment>> = lastEnrollmentPerSubjectRecords.map { subjectEnrollments ->
+        subjectEnrollments.map { subjectEnrollment ->
+            val lastCall = subjectEnrollment.subjectCalls.filter { subjectCall -> subjectCall.subjectCallAttendances.isNotEmpty() }.maxByOrNull { subjectCall -> subjectCall.examDate }
+            val filteredCalls = if (lastCall != null) listOf(lastCall) else emptyList()
+
+            subjectEnrollment.copy(subjectCalls = filteredCalls)
+        }
+    }
+
+    val recordGroupedByCourse: Flow<Map<Int, List<SubjectEnrollment>>> = recordWithLastCallAttendance
         .map { recordList -> recordList.groupBy { record -> record.subject.course } }
 
 
-    val provisionalSubjectGrades: Flow<List<SubjectEnrollment>> = snapshotFlow { fullRecord }
-        .map { records ->
-            records.filter {
-                it.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.provisional ?: false
-            }
-        }
+    val provisionalSubjectGrades: Flow<List<SubjectEnrollment>> = lastEnrollmentPerSubjectRecords.map { subjectEnrollments ->
+        subjectEnrollments.mapNotNull { subjectEnrollment ->
+            subjectEnrollment.subjectCalls.forEach { subjectCall ->
+                val provisionalGrade = subjectCall.subjectCallAttendances.firstOrNull { it.provisional }
 
-    val enrolledCourseSet: Flow<SortedSet<Int>> = snapshotFlow { fullRecord }
+                if (provisionalGrade != null)
+                    return@mapNotNull subjectEnrollment.copy(subjectCalls = listOf(subjectCall.copy(subjectCallAttendances = listOf(provisionalGrade))))
+            }
+            return@mapNotNull null
+        }
+    }
+
+
+    val enrolledCourseSet: Flow<SortedSet<Int>> = lastEnrollmentPerSubjectRecords
         .map { records -> records.map { it.subject.course }.toSortedSet() }
 
-    val approvedCreditsInDegree: Flow<Int> = snapshotFlow { fullRecord }
+    val approvedCreditsInDegree: Flow<Int> = lastEnrollmentPerSubjectRecords
         .map { records ->
             records.fold(0) { credits, subjectEnrollment ->
-                if ((subjectEnrollment.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.grade?.toFloat() ?: 0f) >= 5f) {
-                    credits + subjectEnrollment.subject.credits
-                }
-                else credits
+
+                val isSubjectPassed = subjectEnrollment.subjectCalls
+                    .flatMap { it.subjectCallAttendances }
+                    .any { subjectCallAttendance -> !subjectCallAttendance.provisional && subjectCallAttendance.grade.toFloat() >= 5f }
+
+                return@fold if (isSubjectPassed) credits + subjectEnrollment.subject.credits else credits
             }
         }
 

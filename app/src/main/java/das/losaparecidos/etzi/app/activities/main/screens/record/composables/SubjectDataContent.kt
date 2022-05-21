@@ -16,7 +16,7 @@ fun SubjectDataContent(
     modifier: Modifier = Modifier
 ) {
 
-    val grade = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade
+    val grade = subjectEnrollment.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.grade ?: ""
 
 
     Column(
