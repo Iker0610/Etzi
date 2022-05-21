@@ -96,5 +96,10 @@
     <string name="language_label">Cambiar idioma</string>
     <string name="settings">Ajustes</string>
     <string name="student_data">Datos del estudiante</string>
+    <string name="ordinaryExam">Examen ordinario</string>
+    <string name="extraordinaryExam">Examen extraordinario</string>
+    <string name="time">Hora</string>
+    <string name="exams_screen_title">Calendario de exámenes</string>
+    <string name="quarter">cuatrimestre</string>
 
 </resources>

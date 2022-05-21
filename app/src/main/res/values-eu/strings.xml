@@ -85,4 +85,9 @@
     <string name="language_label">Hizkutza aldatu</string>
     <string name="student_data">Ikaslearen datuak</string>
     <string name="settings">Doikuntzak</string>
+    <string name="ordinaryExam">Ohiko azterketa</string>
+    <string name="extraordinaryExam">Ezohiko azterketa</string>
+    <string name="time">Ordua</string>
+    <string name="exams_screen_title">Azterketen ordutegia</string>
+    <string name="quarter">lauhileko</string>
 </resources>

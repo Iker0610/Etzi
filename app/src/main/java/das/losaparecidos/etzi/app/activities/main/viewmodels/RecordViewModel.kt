@@ -8,12 +8,15 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import das.losaparecidos.etzi.app.utils.now
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
@@ -45,10 +48,16 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
         }
     }
 
-
     val recordGroupedByCourse: Flow<Map<Int, List<SubjectEnrollment>>> = snapshotFlow { fullRecord }
         .map { recordList -> recordList.groupBy { record -> record.subject.course } }
 
+    val actualCourseRecord: Flow<List<SubjectEnrollment>> = snapshotFlow { fullRecord }
+        .map { records ->
+            records.filter {
+                it.subject.academicYear.year == LocalDateTime.now.year
+                || (LocalDateTime.now.year - it.subject.academicYear.year == 1 && LocalDateTime.now.monthNumber < 8)
+            }
+        }
 
     val provisionalSubjectGrades: Flow<List<SubjectEnrollment>> = snapshotFlow { fullRecord }
         .map { records ->

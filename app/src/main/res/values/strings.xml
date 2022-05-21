@@ -98,4 +98,9 @@
     <string name="settings">Settings</string>
     <string name="student_data">Student Information</string>
     <string name="language_label">Change your language</string>
+    <string name="ordinaryExam">Ordinary exam</string>
+    <string name="extraordinaryExam">Extraordinary exam</string>
+    <string name="time">Time</string>
+    <string name="exams_screen_title">Exams timetable</string>
+    <string name="quarter">quarter</string>
 </resources>
