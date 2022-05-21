@@ -299,7 +299,7 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, navigateBack)
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, onNavigateToAccount)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {

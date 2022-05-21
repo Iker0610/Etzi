@@ -114,12 +114,9 @@ fun AccountScreen(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { onBack() }) {
-                            Icon(Icons.Filled.ArrowBack, null)
-                        }
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
                     }
-
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -225,14 +222,14 @@ fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: ()-> Unit){
     val profilePicture: Bitmap? = accountViewModel.profilePicture
     Box(Modifier.padding(16.dp)) {
         if (profilePicture == null) {
-            LoadingImagePlaceholder(size = 36.dp)
+            LoadingImagePlaceholder(size = 28.dp)
         } else {
             Image(
                 bitmap = profilePicture.asImageBitmap(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(28.dp)
                     .clip(CircleShape)
                     .clickable { onNavigate() },
             )
