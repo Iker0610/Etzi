@@ -1,6 +1,8 @@
 package das.losaparecidos.etzi.app.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +25,9 @@ fun EmptyCollectionScreen(
         Card {
             BoxWithConstraints {
                 if (400.dp <= maxHeight) {
-                    CenteredColumn(Modifier.padding(horizontal = 32.dp, vertical = 64.dp)) {
+                    CenteredColumn(
+                        Modifier.padding(horizontal = 32.dp, vertical = 64.dp)
+                    ) {
                         Icon(
                             icon,
                             contentDescription = null,
@@ -31,10 +35,12 @@ fun EmptyCollectionScreen(
                             modifier = Modifier.size(64.dp)
                         )
                         Spacer(modifier = Modifier.height(32.dp))
-                        Text(text = message, style = MaterialTheme.typography.displaySmall, textAlign = TextAlign.Center)
+                        Text(text = message, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
                     }
                 } else {
-                    CenteredRow(Modifier.padding(horizontal = 64.dp, vertical = 32.dp)) {
+                    CenteredRow(
+                        Modifier.padding(horizontal = 64.dp, vertical = 32.dp)
+                    ) {
                         Icon(
                             icon,
                             contentDescription = null,
@@ -42,7 +48,7 @@ fun EmptyCollectionScreen(
                             modifier = Modifier.size(48.dp)
                         )
                         Spacer(modifier = Modifier.width(32.dp))
-                        Text(text = message, style = MaterialTheme.typography.displaySmall, textAlign = TextAlign.Center)
+                        Text(text = message, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
                     }
                 }
             }

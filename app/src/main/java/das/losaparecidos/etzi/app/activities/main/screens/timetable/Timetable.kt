@@ -99,7 +99,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
                         }
                     }
 
-                    else -> EmptyCollectionScreen(Icons.Rounded.EventBusy, stringResource(R.string.no_lectures_dialog_message), modifier = Modifier.verticalScroll(rememberScrollState()))
+                    else -> EmptyCollectionScreen(Icons.Rounded.EventBusy, stringResource(R.string.no_lectures_dialog_message))
                 }
             }
 
