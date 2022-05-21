@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.SizeF
@@ -61,7 +62,6 @@ class AgendaWidget : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
-        val items = intent?.extras
         super.onReceive(context, intent)
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, AgendaWidget::class.java))
@@ -74,78 +74,47 @@ class AgendaWidget : AppWidgetProvider() {
 
 
             coroutineScope.launch {
-                if(loginRepo.getLastLoggedUser()!=null && loginRepo.getRememberLogin()){
+                if(loginRepo.getLastLoggedUser()!=null){
                     repo.getTodayTimetable().collect{ _itemHorario ->
-                        for(appWidgetId in ids){
-                            val itr = _itemHorario.iterator()
-                            val awlp = AgendaWidgetListProvider(context)
-                            System.out.println("Tamaño lista: "+_itemHorario.size)
                             if(_itemHorario.isEmpty()){
                                 remoteViews.setViewVisibility(R.id.horario_agenda, View.GONE)
                                 remoteViews.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
                                 remoteViews.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.VISIBLE)
-                                /*remoteViews_2x4.setViewVisibility(R.id.horario_agenda, View.GONE)
-                                remoteViews_2x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
-                                remoteViews_2x4.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.VISIBLE)
-                                remoteViews_4x4.setViewVisibility(R.id.horario_agenda, View.GONE)
-                                remoteViews_4x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
-                                remoteViews_4x4.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.VISIBLE)*/
                             }else{
                                 remoteViews.setViewVisibility(R.id.horario_agenda, View.VISIBLE)
                                 remoteViews.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
                                 remoteViews.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
-                                /*remoteViews_2x4.setViewVisibility(R.id.horario_agenda, View.VISIBLE)
-                                remoteViews_2x4.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
-                                remoteViews_2x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
-                                remoteViews_4x4.setViewVisibility(R.id.horario_agenda, View.VISIBLE)
-                                remoteViews_4x4.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
-                                remoteViews_4x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)*/
                             }
-                            while(itr.hasNext()){
-                                val lectureListElem = itr.next()
-                                awlp.addItem(lectureListElem)
+
+                            var i = Intent(context, WidgetService::class.java).apply {
+                                //putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, idWidget)
+                                //data= Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+                                val extrasBundle = Bundle()
+                                
                             }
-                            remoteViews.setRemoteAdapter(
-                                R.id.horario_agenda,
-                                RemoteViews.RemoteCollectionItems.Builder().build()
-                            )
-                            /*remoteViews_2x4.setRemoteAdapter(
-                                R.id.horario_agenda,
-                                RemoteViews.RemoteCollectionItems.Builder().build()
-                            )
-                            remoteViews_4x4.setRemoteAdapter(
-                                R.id.horario_agenda,
-                                RemoteViews.RemoteCollectionItems.Builder().build()
-                            )*/
+                            remoteViews.setRemoteAdapter(R.id.horario_agenda, i)
+                            appWidgetManager.updateAppWidget(idWidget, remoteViews)
                         }
-                    }
                 }else{
-                    System.out.println("El usuario no ha iniciado sesión")
                     remoteViews.setViewVisibility(R.id.horario_agenda, View.GONE)
                     remoteViews.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.VISIBLE)
-                    /*remoteViews_2x4.setViewVisibility(R.id.horario_agenda, View.GONE)
-                    remoteViews_2x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.VISIBLE)
-                    remoteViews_4x4.setViewVisibility(R.id.horario_agenda, View.GONE)
-                    remoteViews_4x4.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.VISIBLE)*/
+                    remoteViews.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
+                    appWidgetManager.updateAppWidget(idWidget, remoteViews)
                 }
-                appWidgetManager.updateAppWidget(idWidget, remoteViews/*RemoteViews(getMapaResponsive(context))*/)
+
             }
         }
 
     }
 
     private fun getLayoutResponsive(width: Int, height: Int): Int {
-        System.out.println("getLayoutResponsive")
         var layout:Int
         if(width>270 && height>250){
             layout=R.layout.agenda_widget_4x4
-            System.out.println("Dimensión 4x4")
         }else if (width>265 && height>118){
             layout = R.layout.agenda_widget_2x4
-            System.out.println("Dimensión 2x4")
         }else{
             layout = R.layout.agenda_widget_2x3
-            System.out.println("Dimensión 2x3")
         }
         return layout
     }
@@ -157,11 +126,5 @@ class AgendaWidget : AppWidgetProvider() {
         newOptions: Bundle?
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-        /*val width = newOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-        val height = newOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-        System.out.println("Width: "+width+". Height: "+height)*/
-        //appWidgetManager?.updateAppWidget(appWidgetId, RemoteViews(getMapaResponsive(context)))
-
-        //print("Width: "+newOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH))
     }
 }

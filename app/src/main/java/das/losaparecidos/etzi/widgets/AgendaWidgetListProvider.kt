@@ -6,12 +6,14 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.Lecture
 import javax.inject.Singleton
 
-@Singleton
+
 class AgendaWidgetListProvider(private val context: Context) :
     RemoteViewsService.RemoteViewsFactory {
-    private val lectureList = mutableListOf<Lecture>()
+    private val lectureList=mutableListOf<Lecture>()
 
-    override fun onCreate() {}
+    override fun onCreate() {
+
+    }
 
     override fun onDataSetChanged() {}
 
@@ -20,7 +22,13 @@ class AgendaWidgetListProvider(private val context: Context) :
     override fun getCount(): Int = lectureList.count()
 
     override fun getViewAt(position: Int): RemoteViews {
-        return constructRemoteViews(context, lectureList.get(position))
+        return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply{
+            setTextViewText(R.id.widget_item_hora_comienzo, lectureList[position].startDate.toString())
+            setTextViewText(R.id.widget_item_hora_fin, lectureList[position].endDate.toString())
+            setTextViewText(R.id.widget_item_asignatura, lectureList[position].subjectName)
+            setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
+            setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
+        }
     }
 
     override fun getLoadingView(): RemoteViews? = null
@@ -31,30 +39,6 @@ class AgendaWidgetListProvider(private val context: Context) :
 
     override fun hasStableIds(): Boolean = true
     fun addItem(lectureListElem: Lecture) {
-        System.out.println("Agregado item a listado: "+lectureListElem)
         lectureList.add(lectureListElem)
-    }
-    fun clearLectureList(){
-        lectureList.clear()
-    }
-    companion object {
-
-        const val REQUEST_CODE_FROM_COLLECTION_WIDGET = 2
-        const val EXTRA_VIEW_ID = "extra_view_id"
-        const val REQUEST_CODE = "request_code"
-
-        internal fun constructRemoteViews(
-            context: Context,
-            item: Lecture
-        ): RemoteViews {
-            System.out.println("Plasmando datos en AgendaWidgetListProvider")
-            val remoteViews = RemoteViews(context.packageName, R.layout.agenda_widget_item)
-            remoteViews.setTextViewText(R.id.widget_item_hora_comienzo, item.startDate.toString())
-            remoteViews.setTextViewText(R.id.widget_item_hora_fin, item.endDate.toString())
-            remoteViews.setTextViewText(R.id.widget_item_asignatura, item.subjectName)
-            remoteViews.setTextViewText(R.id.widget_item_edificio, item.building.name)
-            remoteViews.setTextViewText(R.id.widget_item_aula, item.lectureRoom.fullCode)
-            return remoteViews
-        }
     }
 }
