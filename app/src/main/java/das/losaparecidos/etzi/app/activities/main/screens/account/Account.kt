@@ -41,7 +41,6 @@ import das.losaparecidos.etzi.app.ui.components.ListItem
 import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import das.losaparecidos.etzi.app.utils.AppLanguage
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 import das.losaparecidos.etzi.model.entities.Student
 
@@ -64,7 +63,6 @@ fun AccountScreen(
 
 
     if (showSelectLangDialog) {
-        // TODO revisar esto para conectarlo con el viewmodel
         LanguagePickerDialog(
             selectedLanguage = prefLanguage,
             onLanguageSelected = {
@@ -163,7 +161,6 @@ fun AccountScreen(
 
                 SectionTitle(icon = Icons.Rounded.Settings, text = stringResource(id = R.string.settings), modifier = Modifier.padding(horizontal = 16.dp))
                 ListItem(
-                    // TODO poner el idioma actualmente seleccionado
                     icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
                     secondaryText = { Text(text = prefLanguage.name) },
                     modifier = Modifier.clickable {
@@ -178,7 +175,11 @@ fun AccountScreen(
             }
 
             OutlinedButton(
-                onClick = { /* TODO */ }
+                onClick = { /* TODO cerrar sesión (poner dialog de confirmación cuando la cosa funsione)*/
+                    accountViewModel.onLogout()
+                    // llevar al usuario a la pantalla del login
+                    // how the hell i'm supposed to do that si no está en la navegación la pantalla
+                }
             ) {
                 Icon(Icons.Rounded.Logout, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
