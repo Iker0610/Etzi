@@ -258,7 +258,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(timetableViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount)
+            TimetableScreen(timetableViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
         }
 
         navigation(
@@ -269,7 +269,7 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
-                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen) { navController.navigate("dialog_filter") }
+                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
             }
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
@@ -298,7 +298,7 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, navigateBack)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
