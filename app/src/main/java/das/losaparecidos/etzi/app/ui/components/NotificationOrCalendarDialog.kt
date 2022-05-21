@@ -94,7 +94,7 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
 fun addTutorialOnCalendar(ctx: Context, professor: Professor, tutorialDate: LocalDateTime, tutorial: String) {
 
     val startDateTime: Long = Calendar.getInstance().run {
-        set(tutorialDate.year, tutorialDate.monthNumber, tutorialDate.dayOfMonth, tutorialDate.hour, tutorialDate.minute)
+        set(tutorialDate.year, tutorialDate.monthNumber-1, tutorialDate.dayOfMonth, tutorialDate.hour, tutorialDate.minute)
         timeInMillis
     }
 

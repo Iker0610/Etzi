@@ -174,7 +174,7 @@ private fun ExamDateTime(subjectCall: SubjectCall) {
 fun addExamOnCalendar(ctx: Context, subjectName: String, examDate: LocalDateTime) {
 
     val startDateTime: Long = Calendar.getInstance().run {
-        set(examDate.year, examDate.monthNumber, examDate.dayOfMonth, examDate.hour, examDate.minute)
+        set(examDate.year, examDate.monthNumber-1, examDate.dayOfMonth, examDate.hour, examDate.minute)
         timeInMillis
     }
 
