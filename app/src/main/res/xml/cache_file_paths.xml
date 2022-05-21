@@ -1,0 +1,6 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<paths>
+    <cache-path
+        name="temp_profile_images"
+        path="images/profile/" />
+</paths>

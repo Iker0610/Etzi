@@ -3,8 +3,13 @@ package das.losaparecidos.etzi.app.activities.main.screens.account
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
 import androidx.compose.animation.rememberSplineBasedDecay
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,13 +28,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
@@ -43,6 +55,9 @@ import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 import das.losaparecidos.etzi.model.entities.Student
+import kotlinx.coroutines.launch
+import java.io.File
+import java.nio.file.Files
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
@@ -53,13 +68,32 @@ fun AccountScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val profilePicture: Bitmap? by mutableStateOf(null)
     val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
-    //val profilePicture: Bitmap? = preferencesViewModel.profilePicture
+    val profilePicture: Bitmap? = accountViewModel.profilePicture
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
+    /*************************************************
+     **                    Events                   **
+     *************************************************/
+    val toastMsg = stringResource(R.string.profile_not_taken_toast_msg)
 
+    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { pictureTaken ->
+        if (pictureTaken) accountViewModel.setProfileImage()
+        else Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
+    }
+
+    fun onEditImageRequest() {
+        val profileImageDir = File(context.cacheDir, "images/profile/")
+        Files.createDirectories(profileImageDir.toPath())
+
+        val newProfileImagePath = File.createTempFile(student.ldap, ".png", profileImageDir)
+        val contentUri: Uri = getUriForFile(context, "das.losaparecidos.etzi.fileprovider", newProfileImagePath)
+        accountViewModel.profilePicturePath = newProfileImagePath.path
+
+        imagePickerLauncher.launch(contentUri)
+    }
 
 
     if (showSelectLangDialog) {
@@ -112,17 +146,17 @@ fun AccountScreen(
                     if (profilePicture == null) {
                         LoadingImagePlaceholder(size = 138.dp)
                     } else {
-                        /*Image(
+                        Image(
                             bitmap = profilePicture.asImageBitmap(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.size(120.dp)
-                        )*/
+                        )
                     }
                 }
 
 
-                FilledTonalIconButton(onClick = { /*TODO*/ }, Modifier.size(32.dp)) {
+                FilledTonalIconButton(onClick = { onEditImageRequest() }, Modifier.size(32.dp)) {
                     Icon(Icons.Rounded.PhotoCamera, contentDescription = null, Modifier.size(20.dp))
                 }
 //                Box(
@@ -179,6 +213,9 @@ fun AccountScreen(
                     accountViewModel.onLogout()
                     // llevar al usuario a la pantalla del login
                     // how the hell i'm supposed to do that si no está en la navegación la pantalla
+                    scope.launch {
+                        
+                    }
                 }
             ) {
                 Icon(Icons.Rounded.Logout, contentDescription = null)

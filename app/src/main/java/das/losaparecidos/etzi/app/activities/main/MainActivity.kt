@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EtziTheme {
+                accountViewModel.reloadLang(accountViewModel.prefLang.collectAsState(initial = accountViewModel.currentSetLang).value, this)
                 val navController: NavHostController = rememberAnimatedNavController()
                 EtziAppScreen(timetableViewModel, navController, accountViewModel)
             }
