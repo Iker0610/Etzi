@@ -84,7 +84,7 @@
 
         <!-- Widget -->
         <receiver
-            android:name=".widgets.AgendaWidget"
+            android:name=".widgets.TimetableWidgetProvider"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -96,7 +96,7 @@
                 android:resource="@xml/agenda_widget" />
         </receiver>
 
-        <service android:name=".widgets.WidgetService"
+        <service android:name=".widgets.TimetableWidgetService"
             android:permission="android.permission.BIND_REMOTE_VIEWS"/>
 
         <!-- File provider for profile picture-->
