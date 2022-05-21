@@ -114,12 +114,9 @@ fun AccountScreen(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { onBack() }) {
-                            Icon(Icons.Filled.ArrowBack, null)
-                        }
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
                     }
-
                 },
                 scrollBehavior = scrollBehavior
             )
