@@ -78,4 +78,23 @@
     <string name="type">Type</string>
     <string name="date">Date</string>
     <string name="no_lectures_dialog_message">There are no lectures for today</string>
+    <string name="date_range">Date Range</string>
+    <string name="email_salutation">Dear sir/madam</string>
+    <string name="email_subject">Tutorial dated for %1$s</string>
+    <string name="email_label" translatable="false">Email</string>
+    <string name="fail">No pass</string>
+    <string name="pass">Pass</string>
+    <string name="outstanding">Outstanding</string>
+    <string name="no_tutorials_dialog_message">There are no tutorials available</string>
+    <string name="saveToCalendar">Save to calendar</string>
+    <string name="ativateNotification">Activate notification</string>
+    <string name="chooseCalendarOrNotification">Do you want to save the date in the calendar or activate a notification for an hour before?</string>
+    <string name="reminder">Reminder</string>
+    <string name="student_full_name_label">Full name</string>
+    <string name="degree_label">Degree</string>
+    <string name="select_lang_dialog_title">Select Language</string>
+    <string name="logout_label">Logout</string>
+    <string name="select_lang_dialog_text">Choose your preferred language for the application.</string>
+    <string name="settings">Settings</string>
+    <string name="student_data">Student Information</string>
 </resources>

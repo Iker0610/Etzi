@@ -1,7 +1,10 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
 import YearCreditsScreen
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
@@ -25,7 +28,12 @@ fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeC
 
     var selectedTab by remember { mutableStateOf(0) }
 
-    val courses = recordViewModel.obtainEnrolledCourseSet()
+    val courses by recordViewModel.enrolledCourseSet.collectAsState(initial = emptySet())
+
+    val record by recordViewModel.recordGroupedByCourse.collectAsState(initial = emptyMap())
+    val selectedCourseRecord by derivedStateOf { record[selectedTab + 1] ?: emptyList() }
+    val approvedCreditsInDegree by recordViewModel.approvedCreditsInDegree.collectAsState(initial = 0)
+
 
     Scaffold(
         topBar = {
@@ -43,7 +51,7 @@ fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeC
         }
     ) { paddingValues ->
         when {
-            recordViewModel.loadingData -> {
+            recordViewModel.loadingData || courses.isEmpty() -> {
                 CenteredBox(
                     Modifier
                         .fillMaxSize()
@@ -64,7 +72,7 @@ fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeC
                         )
                     }
                 }
-                YearCreditsScreen(recordViewModel.obtainFilteredRecordByCourse(selectedTab + 1), recordViewModel.obtainApprobedCreditsInDegree())
+                YearCreditsScreen(selectedCourseRecord, approvedCreditsInDegree)
             }
         }
     }

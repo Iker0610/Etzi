@@ -78,5 +78,20 @@
     <string name="distinction">Matrícula de honor</string>
     <string name="type">Tipo</string>
     <string name="date">Fecha</string>
+    <string name="email_salutation">Hola</string>
+    <string name="no_lectures_dialog_message">No tienes clase</string>
+    <string name="email_subject">Tutoría para el día %1$s</string>
+    <string name="date_range">Rango de fechas</string>
+    <string name="fail">No aprobado</string>
+    <string name="pass">Aprobado</string>
+    <string name="outstanding">Sobresaliente</string>
+    <string name="saveToCalendar">Guardar en calendario</string>
+    <string name="ativateNotification">Activar notificación</string>
+    <string name="chooseCalendarOrNotification">¿Quieres almacenar la fecha en el calendario o activar una notificación para una hora antes?</string>
+    <string name="reminder">Recordatorios</string>
+    <string name="student_full_name_label">Nombre completo</string>
+    <string name="degree_label">Grado</string>
+    <string name="select_lang_dialog_title">Selecciona un idioma</string>
+    <string name="logout_label">Cerrar Sesión</string>
 
 </resources>

@@ -6,18 +6,7 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,13 +18,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,9 +37,10 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.StudentDataViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
@@ -74,7 +58,7 @@ class MainActivity : AppCompatActivity() {
      *************************************************/
 
     private val studentDataViewModel: StudentDataViewModel by viewModels()
-
+    private val accountViewModel: AccountViewModel by viewModels()
 
     /*************************************************
      **          Activity Lifecycle Methods         **
@@ -83,11 +67,10 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             EtziTheme {
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(studentDataViewModel, navController)
+                EtziAppScreen(studentDataViewModel, navController, accountViewModel)
             }
         }
     }
@@ -98,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 private fun EtziAppScreen(
     studentDataViewModel: StudentDataViewModel,
     navController: NavHostController,
+    accountViewModel: AccountViewModel
 ) {
     /*************************************************
      **             Variables and States            **
@@ -128,6 +112,7 @@ private fun EtziAppScreen(
 
     //-----------   Navigation-drawer   ------------//
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val enableNavigationDrawerGestures by derivedStateOf { enableNavigationElements && navigationDrawerState.isOpen }
 
 
     /*************************************************
@@ -174,10 +159,10 @@ private fun EtziAppScreen(
       */
 
     EtziNavigationDrawer(
-        currentRoute,
-        onNavigate,
-        navigationDrawerState,
-        enableNavigationElements
+        currentRoute = currentRoute,
+        onNavigate = onNavigate,
+        drawerState = navigationDrawerState,
+        gesturesEnabled = enableNavigationDrawerGestures,
     ) {
         Scaffold(
             bottomBar = {
@@ -203,7 +188,8 @@ private fun EtziAppScreen(
                     studentDataViewModel,
                     navController,
                     windowSizeClass,
-                    onNavigationMenuOpen
+                    onNavigationMenuOpen,
+                    accountViewModel
                 )
             }
         }
@@ -230,6 +216,7 @@ private fun MainNavigationGraph(
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
     onNavigationMenuOpen: () -> Unit,
+    accountViewModel: AccountViewModel,
 ) {
     /*************************************************
      **             Variables and States            **
@@ -270,7 +257,7 @@ private fun MainNavigationGraph(
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
         ) {
-            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen)
+            TimetableScreen(studentDataViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount)
         }
 
         navigation(
@@ -286,7 +273,7 @@ private fun MainNavigationGraph(
 
             composable(route = MainActivityScreens.TutorialReminders.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
-                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+                // val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
                 TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
             }
@@ -295,8 +282,10 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
-                TutorialsFilterDialog(tutorialsViewModel = tutorialsViewModel, windowSizeClass = windowSizeClass) {
-                }
+                TutorialsFilterDialog(
+                    tutorialsViewModel = tutorialsViewModel,
+                    onClose = navigateBack
+                )
             }
         }
 
@@ -331,7 +320,8 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Account.route) {
-            AccountScreen()
+            //val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
+            AccountScreen(accountViewModel, windowSizeClass, navigateBack)
         }
     }
 }

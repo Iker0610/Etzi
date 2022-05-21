@@ -12,10 +12,13 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectDropdownMenu(asignaturas: List<String>, modifier: Modifier = Modifier, onSubjectSelected: (String) -> Unit) {
-    val default = 0
+fun SubjectDropdownMenu(
+    subjectList: Iterable<String>,
+    modifier: Modifier = Modifier,
+    selectedSubject: String = subjectList.first(),
+    onSubjectSelected: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedSubject by remember { mutableStateOf(asignaturas[default]) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -25,12 +28,10 @@ fun SubjectDropdownMenu(asignaturas: List<String>, modifier: Modifier = Modifier
         TextField(
             readOnly = true,
             value = selectedSubject,
-            onValueChange = { onSubjectSelected(selectedSubject) },
+            onValueChange = {},
             label = { Text(stringResource(id = R.string.subject)) },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
-                )
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             modifier = modifier.fillMaxWidth()
@@ -39,10 +40,10 @@ fun SubjectDropdownMenu(asignaturas: List<String>, modifier: Modifier = Modifier
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            asignaturas.forEach { selectionOption ->
+            subjectList.forEach { selectionOption ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedSubject = selectionOption
+                        onSubjectSelected(selectionOption)
                         expanded = false
                     },
                     text = { Text(text = selectionOption) },
@@ -59,6 +60,6 @@ fun SubjectDropdownMenu(asignaturas: List<String>, modifier: Modifier = Modifier
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun SubjectsMenuPreview() {
     EtziTheme {
-        SubjectDropdownMenu(asignaturas = listOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
+        SubjectDropdownMenu(subjectList = setOf("Asignatura 1", "Asignatura 2", "Asignatura 3"), onSubjectSelected = {})
     }
 }

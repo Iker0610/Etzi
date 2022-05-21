@@ -1,20 +1,12 @@
 package das.losaparecidos.etzi.app.utils
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toJavaLocalDateTime
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
 import java.time.format.DateTimeFormatter
 
 
 val LocalDate.Companion.today get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-fun LocalDate.format(formatPattern: String): String = this.toJavaLocalDate().format(DateTimeFormatter.ofPattern(formatPattern))
+fun LocalDate.format(formatPattern: String): String = this.format(DateTimeFormatter.ofPattern(formatPattern))
+fun LocalDate.format(formatter: DateTimeFormatter): String = this.toJavaLocalDate().format(formatter)
 
 val LocalDate.epochSeconds get() = this.atStartOfDayIn(TimeZone.currentSystemDefault()).epochSeconds
 val LocalDate.epochUTCMilliseconds get() = this.atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
@@ -29,7 +21,8 @@ fun LocalDate.Companion.fromEpochSeconds(seconds: Long): LocalDate =
 
 
 val LocalDateTime.Companion.now get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-fun LocalDateTime.format(formatPattern: String): String = this.toJavaLocalDateTime().format(DateTimeFormatter.ofPattern(formatPattern))
+fun LocalDateTime.format(formatPattern: String): String = this.format(DateTimeFormatter.ofPattern(formatPattern))
+fun LocalDateTime.format(formatter: DateTimeFormatter): String = this.toJavaLocalDateTime().format(formatter)
 
 val LocalDateTime.epochSecond get(): Long = this.toInstant(TimeZone.currentSystemDefault()).epochSeconds
 

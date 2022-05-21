@@ -9,14 +9,13 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -30,10 +29,8 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.BiometricAuthManager
 import das.losaparecidos.etzi.model.entities.AuthUser
 import das.losaparecidos.etzi.model.webclients.APIClient
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import das.losaparecidos.etzi.services.StudentDataUpdateWorker
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -83,9 +80,10 @@ class AuthenticationActivity : FragmentActivity() {
                 // Initialize Navigation (used for transition between splash screen and auth screen)
                 val navController = rememberAnimatedNavController()
 
-                var splashScreenFinished by remember { mutableStateOf(false) }
-                var preLoginFinished by remember { mutableStateOf(false) }
-                var preLoginSuccessful by remember { mutableStateOf(false) }
+                val preLoginStarted by rememberSaveable { mutableStateOf(true) }
+                var splashScreenFinished by rememberSaveable { mutableStateOf(false) }
+                var preLoginFinished by rememberSaveable { mutableStateOf(false) }
+                var preLoginSuccessful by rememberSaveable { mutableStateOf(false) }
 
                 AnimatedNavHost(
                     navController = navController,
@@ -113,9 +111,11 @@ class AuthenticationActivity : FragmentActivity() {
                     }
                 }
 
-                scope.launch(Dispatchers.IO) {
-                    if (authViewModel.checkRemindLogin() != null) launch(Dispatchers.Main) { preLoginSuccessful = true }
-                    launch(Dispatchers.Main) { preLoginFinished = true }
+                LaunchedEffect(preLoginStarted) {
+                    withContext(Dispatchers.IO) {
+                        if (authViewModel.checkRemindLogin() != null) launch(Dispatchers.Main) { preLoginSuccessful = true }
+                        launch(Dispatchers.Main) { preLoginFinished = true }
+                    }
                 }
 
                 LaunchedEffect(preLoginFinished, splashScreenFinished) {
@@ -145,6 +145,9 @@ class AuthenticationActivity : FragmentActivity() {
      * @param user Logged in user's username
      */
     private fun onSuccessfulLogin(user: AuthUser) {
+        // Load and cache this user data
+        loadAndCacheStudentData()
+
         // Set the last logged user
         authViewModel.updateLastLoggedUsername(user)
 
@@ -164,6 +167,13 @@ class AuthenticationActivity : FragmentActivity() {
         finish()
     }
 
+    private fun loadAndCacheStudentData() {
+        val uploadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<StudentDataUpdateWorker>().build()
+        WorkManager
+            .getInstance(this)
+            .enqueue(uploadWorkRequest)
+
+    }
 
     /**
      * Deletes the current FCM token and creates a new one. Then subscribes the user to the next topics: All and its username's topic

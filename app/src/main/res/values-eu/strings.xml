@@ -67,4 +67,19 @@
     <string name="distinction">Ohorezko matrikula</string>
     <string name="type">Mota</string>
     <string name="date">Data</string>
+    <string name="email_salutation">Kaixo,</string>
+    <string name="email_subject">Tutoretza %1$s-ean</string>
+    <string name="date_range">Data-tartea</string>
+    <string name="no_lectures_dialog_message">Gaur ez duzu klaserik</string>
+    <string name="fail">Ez gai</string>
+    <string name="pass">Gaindituta</string>
+    <string name="outstanding">Bikain</string>
+    <string name="saveToCalendar">Gorde egutegian</string>
+    <string name="ativateNotification">Jakinarazpena aktibatu</string>
+    <string name="chooseCalendarOrNotification">Data egutegian gorde edo jakinarazpena bat aktibatu nahi duzu?</string>
+    <string name="reminder">Abisuak</string>
+    <string name="student_full_name_label">Izen-Abizenak</string>
+    <string name="degree_label">Gradua</string>
+    <string name="select_lang_dialog_title">Hizkuntza bat hautatu</string>
+    <string name="logout_label">Saioa Itxi</string>
 </resources>

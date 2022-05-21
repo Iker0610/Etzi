@@ -1,9 +1,11 @@
 package das.losaparecidos.etzi.model.entities
 
+import androidx.compose.runtime.Immutable
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 data class Tutorial(
     @SerialName("lecture_room")
@@ -14,6 +16,7 @@ data class Tutorial(
     val endDate: LocalDateTime,
 )
 
+@Immutable
 @Serializable
 data class ProfessorWithTutorials(
     val name: String,
@@ -28,6 +31,7 @@ data class ProfessorWithTutorials(
     }
 }
 
+@Immutable
 @Serializable
 data class SubjectTutorial(
     @SerialName("name")
