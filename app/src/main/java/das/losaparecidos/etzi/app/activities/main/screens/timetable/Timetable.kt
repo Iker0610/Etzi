@@ -7,8 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
@@ -29,7 +27,10 @@ import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.ui.components.*
+import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.DynamicLargeTopAppBar
+import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
+import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
@@ -56,7 +57,10 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.apply {
+            if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
+                nestedScroll(scrollBehavior.nestedScrollConnection)
+        },
         topBar = {
             DynamicLargeTopAppBar(
                 windowSizeClass,
@@ -85,6 +89,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
+            TimetableNavigationBar(currentSelectedDay, timetableViewModel::onSelectedDateChange)
 
             Crossfade(targetState = timetable, animationSpec = tween(500), modifier = Modifier.weight(1f)) { timetable ->
                 when {
@@ -102,44 +107,48 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
                     else -> EmptyCollectionScreen(Icons.Rounded.EventBusy, stringResource(R.string.no_lectures_dialog_message))
                 }
             }
+        }
+    }
+}
 
-            CenteredRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        MaterialTheme.colorScheme.surfaceTint
-                            .copy(alpha = (((4.5f * ln(3.0.dp.value + 1)) + 2f) / 100f))
-                            .compositeOver(MaterialTheme.colorScheme.surface)
-                    )
+@Composable
+private fun TimetableNavigationBar(
+    date: LocalDate,
+    onDateChange: (LocalDate) -> Unit
+) {
+    val context = LocalContext.current
 
-            ) {
-                IconButton(onClick = { timetableViewModel.onSelectedDateChange(currentSelectedDay.minus(DatePeriod(days = 7))) }) {
-                    Icon(Icons.Rounded.FirstPage, null, tint = MaterialTheme.colorScheme.secondary)
-                }
+    CenteredRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                MaterialTheme.colorScheme.surfaceTint
+                    .copy(alpha = (((4.5f * ln(3.0.dp.value + 1)) + 2f) / 100f))
+                    .compositeOver(MaterialTheme.colorScheme.surface)
+            )
 
-                IconButton(onClick = { timetableViewModel.onSelectedDateChange(currentSelectedDay.minus(DatePeriod(days = 1))) }) {
-                    Icon(Icons.Rounded.NavigateBefore, null, tint = MaterialTheme.colorScheme.primary)
-                }
+    ) {
+        IconButton(onClick = { onDateChange(date.minus(DatePeriod(days = 7))) }) {
+            Icon(Icons.Rounded.FirstPage, null, tint = MaterialTheme.colorScheme.secondary)
+        }
 
-                TextButton(onClick = { showDatePicker(context, currentSelectedDay, timetableViewModel::onSelectedDateChange) }) {
-                    Text(
-                        text = "${currentSelectedDay.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))} (${currentSelectedDay.dayOfWeek.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault())})",
-                        style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp)
-                    )
-                }
+        IconButton(onClick = { onDateChange(date.minus(DatePeriod(days = 1))) }) {
+            Icon(Icons.Rounded.NavigateBefore, null, tint = MaterialTheme.colorScheme.primary)
+        }
 
-                IconButton(onClick = { timetableViewModel.onSelectedDateChange(currentSelectedDay.plus(DatePeriod(days = 1))) }) {
-                    Icon(Icons.Rounded.NavigateNext, null, tint = MaterialTheme.colorScheme.primary)
-                }
+        TextButton(onClick = { showDatePicker(context, date, onDateChange) }, modifier = Modifier.weight(1f, fill = false)) {
+            Text(
+                text = "${date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))} - ${date.dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault())}",
+                style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp)
+            )
+        }
 
-                IconButton(onClick = { timetableViewModel.onSelectedDateChange(currentSelectedDay.plus(DatePeriod(days = 7))) }) {
-                    Icon(Icons.Rounded.LastPage, null, tint = MaterialTheme.colorScheme.secondary)
-                }
-            }
+        IconButton(onClick = { onDateChange(date.plus(DatePeriod(days = 1))) }) {
+            Icon(Icons.Rounded.NavigateNext, null, tint = MaterialTheme.colorScheme.primary)
+        }
 
-            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                MaterialDivider()
-            }
+        IconButton(onClick = { onDateChange(date.plus(DatePeriod(days = 7))) }) {
+            Icon(Icons.Rounded.LastPage, null, tint = MaterialTheme.colorScheme.secondary)
         }
     }
 }

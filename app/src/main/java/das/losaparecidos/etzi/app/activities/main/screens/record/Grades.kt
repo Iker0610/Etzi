@@ -63,19 +63,19 @@ fun GradesScreen(
 
             subjectEnrollments.isNotEmpty() -> {
                 CenteredColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier
                         .padding(paddingValues)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState())
+                        .padding(vertical = 24.dp, horizontal = 16.dp)
                 ) {
                     subjectEnrollments.forEach { subjectEnrollment ->
 
                         val grade = subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade
 
                         ElevatedCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                            modifier = Modifier.fillMaxWidth()
                         ) {
 
                             CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {

@@ -60,7 +60,7 @@ fun YearCreditsScreen(subjectEnrollments: List<SubjectEnrollment>, totalCredits:
                     .compositeOver(MaterialTheme.colorScheme.surface)
             )
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 32.dp)
+            .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
 
         // Créditos pendientes

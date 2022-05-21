@@ -33,7 +33,7 @@ fun CourseSubjectsList(subjects: List<SubjectEnrollment>) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 32.dp)
+            .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         subjects.forEach { subjectEnrollment ->
             SubjectCard(
