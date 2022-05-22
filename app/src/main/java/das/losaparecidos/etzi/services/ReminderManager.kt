@@ -45,6 +45,7 @@ class ReminderManager : BroadcastReceiver() {
      *************************************************/
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.i("ALARMMANAGER-REMINDER", "Received broadcast. ${intent.action}")
         when (intent.action) {
             "android.intent.action.BOOT_COMPLETED" -> reloadAlarms(context)
             launchLectureReminderAction -> {
@@ -165,11 +166,10 @@ class ReminderManager : BroadcastReceiver() {
 
             // Get alarm manager and schedule a new alarm
             val systemTZ = TimeZone.currentSystemDefault()
-            Log.d("ALARMMANAGER-REMINDER", systemTZ.toString())
 
             (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                lectureReminder.lectureDate.toInstant(TimeZone.UTC).minus(DateTimePeriod(minutes = minutesBeforeReminder), TimeZone.UTC).toEpochMilliseconds()
+                lectureReminder.lectureDate.toInstant(systemTZ).minus(DateTimePeriod(minutes = minutesBeforeReminder), systemTZ).toEpochMilliseconds()
                     .also { Log.d("ALARMMANAGER-REMINDER", it.toString()) },
                 alarmIntent
             )
@@ -188,11 +188,10 @@ class ReminderManager : BroadcastReceiver() {
 
             // Get alarm manager and schedule a new alarm
             val systemTZ = TimeZone.currentSystemDefault()
-            Log.d("ALARMMANAGER-REMINDER", systemTZ.toString())
 
             (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                tutorialReminder.tutorialDate.toInstant(TimeZone.UTC).minus(DateTimePeriod(minutes = minutesBeforeReminder), TimeZone.UTC).toEpochMilliseconds(),
+                tutorialReminder.tutorialDate.toInstant(systemTZ).minus(DateTimePeriod(minutes = minutesBeforeReminder), systemTZ).toEpochMilliseconds(),
                 alarmIntent
             )
         }

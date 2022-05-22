@@ -99,6 +99,15 @@
                 android:resource="@xml/agenda_widget" />
         </receiver>
 
+        <receiver
+            android:name=".services.ReminderManager"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <!-- File provider for profile picture-->
         <provider
             android:name="androidx.core.content.FileProvider"
