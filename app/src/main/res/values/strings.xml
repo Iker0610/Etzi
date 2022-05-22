@@ -133,4 +133,6 @@
     <string name="change_user_profile_title">Update profile image</string>
     <string name="change_user_profile_text">Change your user profile. You can change it whenever you want.</string>
     <string name="notable">Notable</string>
+    <string name="provisional_grade_notification_title">New note available</string>
+    <string name="provisional_grade_notification_text">The %1$s grade has been raised.</string>
 </resources>
