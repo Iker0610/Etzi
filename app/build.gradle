@@ -103,7 +103,7 @@ dependencies {
 
     // Work Manager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
-    implementation 'androidx.startup:startup-runtime:1.0.0'
+    implementation 'androidx.startup:startup-runtime:1.1.1'
 
     // Room
     kapt("androidx.room:room-compiler:$room_version")
@@ -173,7 +173,8 @@ dependencies {
 
 
     // Firebase
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.5'
+    implementation 'com.google.firebase:firebase-messaging:23.0.3'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
 
 
     // Google Play Services

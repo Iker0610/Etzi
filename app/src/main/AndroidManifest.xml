@@ -36,6 +36,32 @@
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
+        <!--  ###  FIREBASE  ###  -->
+
+        <!--FCM Meta data-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_name" />
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="EHU_INFORMATION" />
+
+
+        <!--Firebase FCM Service-->
+        <service
+            android:name=".services.FCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
         <!--  ###  ACTIVITIES  ###  -->
 
         <!--Main Activity-->
@@ -60,35 +86,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBAvJdJVpxQBqXOLGqInwuLvNPChdyHXNc" />
 
-
-        <!--  ###  FIREBASE  ###  -->
-
-        <!--FCM Meta data-->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_stat_name" />
-
-        <meta-data
-            android:name="firebase_messaging_auto_init_enabled"
-            android:value="false" />
-
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="EHU_INFORMATION" />
-
-
-        <!--Firebase FCM Service-->
-        <service
-            android:name=".services.FCMService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <!-- Widget -->
         <receiver
