@@ -11,7 +11,6 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.*
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Image
@@ -74,7 +73,6 @@ fun AccountScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
@@ -137,7 +135,9 @@ fun AccountScreen(
     //-----------   Logout confirm dialog   -----------//
     if (showConfirmLogoutDialog) {
         AlertDialog(
-            text = { Text(text = stringResource(R.string.confirm_logout_message), textAlign = TextAlign.Justify) },
+            icon = { Icon(Icons.Rounded.Logout, null) },
+            title = { Text(text = stringResource(R.string.logout_label), textAlign = TextAlign.Center) },
+            text = { Text(text = stringResource(R.string.confirm_logout_message)) },
             onDismissRequest = { showConfirmLogoutDialog = false },
             confirmButton = {
                 TextButton(onClick = {
@@ -146,7 +146,7 @@ fun AccountScreen(
                     context.startActivity(Intent(context, AuthenticationActivity::class.java))
                     exitProcess(0)
                 }) {
-                    Text(text = stringResource(R.string.ok_button))
+                    Text(text = stringResource(R.string.confirm_logout_button))
                 }
             },
             dismissButton = {
@@ -244,7 +244,12 @@ fun AccountScreen(
                                     .clickable { openChooseImageDialog = true }
                             )
 
-                            FilledTonalIconButton(onClick = { openChooseImageDialog = true }, Modifier.size(32.dp).padding(bottom = 8.dp, end = 8.dp)) {
+                            FilledTonalIconButton(
+                                onClick = { openChooseImageDialog = true },
+                                Modifier
+                                    .size(32.dp)
+                                    .padding(bottom = 8.dp, end = 8.dp)
+                            ) {
                                 Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(18.dp))
                             }
 
@@ -291,7 +296,7 @@ fun AccountScreen(
                 SectionTitle(icon = Icons.Rounded.Settings, text = stringResource(id = R.string.settings), modifier = Modifier.padding(horizontal = 16.dp))
                 ListItem(
                     icon = { Icon(Icons.Rounded.Language, null, Modifier.padding(top = 7.dp)) },
-                    secondaryText = { Text(text = prefLanguage.name) },
+                    secondaryText = { Text(text = prefLanguage.language) },
                     modifier = Modifier.clickable {
                         showSelectLangDialog = true
                     }

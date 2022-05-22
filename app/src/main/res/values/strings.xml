@@ -125,4 +125,8 @@
     <string name="takeFromCamera">Take photo from camera</string>
     <string name="changePhoto">Change photo</string>
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
+    <string name="confirm_logout_button">Logout</string>
+    <string name="app_exit_dialog_title">Exit Etzi</string>
+    <string name="app_exit_dialog_text">Are you sure you want to exit?</string>
+    <string name="exit_button">Exit</string>
 </resources>
