@@ -99,7 +99,7 @@
     <string name="student_data">Student Information</string>
     <string name="language_label">Change your language</string>
     <string name="profile_not_taken_toast_msg">No picture taken</string>
-    <string name="academic_year">Academic Year</string>
+    <string name="academic_year">Year</string>
     <string name="ordinaryExam">Ordinary exam</string>
     <string name="extraordinaryExam">Extraordinary exam</string>
     <string name="time">Time</string>
