@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,17 +50,10 @@ android:description=""
 
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:initialLayout="@layout/agenda_widget_2x3"
-    android:previewLayout="@layout/agenda_widget_2x3"
-    android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="3"
-    android:targetCellHeight="2"
     android:minWidth="167dp"
     android:minHeight="119dp"
-    android:maxResizeHeight="400dp"
+    android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen"
-    android:widgetFeatures="reconfigurable"
-
-    />
+    android:widgetCategory="home_screen">
+</appwidget-provider>

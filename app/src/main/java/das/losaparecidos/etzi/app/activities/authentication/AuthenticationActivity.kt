@@ -22,6 +22,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.WidgetOpenerActions
 import das.losaparecidos.etzi.app.activities.authentication.screens.AnimatedSplashScreen
 import das.losaparecidos.etzi.app.activities.authentication.screens.AuthenticationScreen
 import das.losaparecidos.etzi.app.activities.main.MainActivity
@@ -44,7 +45,7 @@ class AuthenticationActivity : FragmentActivity() {
     lateinit var httpClient: APIClient
     private val authViewModel: AuthenticationViewModel by viewModels()
     private lateinit var biometricAuthManager: BiometricAuthManager
-
+    private var flagWidgetAction: String? = null
 
     /*************************************************
      **          Activity Lifecycle Methods         **
@@ -132,8 +133,13 @@ class AuthenticationActivity : FragmentActivity() {
                 }
             }
         }
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        flagWidgetAction = intent.action
+    }
 
     /*************************************************
      **           Login and Sign In Events          **
@@ -161,6 +167,10 @@ class AuthenticationActivity : FragmentActivity() {
         // Open the main activity
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("LOGGED_USER_LDAP", user.ldap)
+
+            if (WidgetOpenerActions.values().any { it.name == flagWidgetAction }) {
+                action = flagWidgetAction
+            }
         }
 
         startActivity(intent)

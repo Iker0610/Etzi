@@ -1,7 +1,9 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable
 
+import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.rememberSplineBasedDecay
@@ -15,11 +17,13 @@ import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import das.losaparecidos.etzi.R
@@ -104,7 +108,46 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
         }
     }
 
-    // UI
+
+    //-----------------------------------------------------------------------------------------
+
+    // Exit dialog
+    /*************************************************
+     **                Event Handlers               **
+     *************************************************/
+
+    var showExitAlertDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler { showExitAlertDialog = true }
+
+
+    /*------------------------------------------------
+    |                    Dialogs                     |
+    ------------------------------------------------*/
+    if (showExitAlertDialog) {
+        AlertDialog(
+            icon = { Icon(Icons.Rounded.Error, null) },
+            title = { Text(stringResource(R.string.app_exit_dialog_title), textAlign = TextAlign.Center) },
+            text = { Text(stringResource(R.string.app_exit_dialog_text)) },
+            confirmButton = {
+                TextButton(onClick = { (context as Activity).finish() }) {
+                    Text(text = stringResource(id = R.string.exit_button))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitAlertDialog = false }) {
+                    Text(text = stringResource(id = R.string.cancel_button))
+                }
+            },
+            onDismissRequest = { showExitAlertDialog = false }
+        )
+    }
+
+    //-----------------------------------------------------------------------------------------
+
+    /*************************************************
+     **                User Interface               **
+     *************************************************/
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

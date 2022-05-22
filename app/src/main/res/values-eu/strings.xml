@@ -101,5 +101,6 @@
     <string name="takeFromCamera">Atera argazkia kamerarekin</string>
     <string name="changePhoto">Aldatu argazkia</string>
     <string name="confirm_logout_message">Saioa itxi nahi duzu?</string>
+    <string name="confirm_logout_button">Itxi</string>
     <string name="logInToSeeTimetable">Hasi saioa ordutegia ikusteko</string>
 </resources>
