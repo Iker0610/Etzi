@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Channels -->
+    <string name="ehu_information_channel_name">Información de la UPV</string>
+    <string name="ehu_information_channel_description">La UPV ha enviado notificaciones y alertas informativas.</string>
+    <string name="save_button">Guardar</string>
+    <string name="enroll_button">Configurar</string>
+
+
+    <!-- Buttons -->
+    <string name="cancel_button">Cancelar</string>
+
+
+    <!-- Login Screen -->
+    <string name="password_label">Contraseña</string>
+    <string name="password_placeholder">Contraseña</string>
+    <string name="password_icon_visible">Contraseña visible</string>
+    <string name="password_icon_hidden">Contraseña oculta</string>
+    <string name="biometric_auth_failed_toast_message">Fallo en la autentificación, inténtelo de nuevo.</string>
+    <string name="biometric_auth_error_toast_message">Error de autentificación: %1$s</string>
+    <string name="biometric_auth_prompt_title">Iniciar sesión como %1$s</string>
+    <string name="biometric_auth_prompt_text">Iniciar sesión con las credenciales biométricas de su dispositivo</string>
+    <string name="login_label">Iniciar Sesión</string>
+    <string name="remind_me_label">Recuerdame</string>
+    <string name="no_biometrics_enrolled_dialog_title">Acceso biometrico no configurado</string>
+    <string name="no_biometrics_enrolled_dialog_text_1">El dispositivo permite acceso biométrico, pero no está configurado.</string>
+    <string name="no_biometrics_enrolled_dialog_text_2">¿Desea configurarlo?</string>
+    <string name="biometrics_button">Autentificación Biométrica</string>
+    <string name="server_error_dialog_title">Ha ocurrido un error inesperado. Inténtelo más tarde.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Las credenciales guardadas no son válidas</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">Las credenciales del usuario anterior no son actualmente válidas. Esto puede deberse a que el usuario ya no existe o a un cambio de contraseña.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">Para continuar vuelve a iniciar sesión con el nombre de usuario y la contraseña.</string>
+    <string name="processing">Procesando</string>
+    <string name="incorrect_login_error_message">Nombre de usuario o contraseña incorrectas.</string>
+    <string name="invalid_account_login_dialog_title">Cuenta no válida</string>
+    <string name="invalid_account_login_dialog_text">No ha iniciado sesión con una cuenta válida previamente. Acceda con una cuenta y contraseña válidas para poder hacer uso de la autentifcación biométrica.</string>
+
+    <!-- Horario -->
+    <string name="subgroup">Subgrupo</string>
+    <string name="professor">Profesor</string>
+    <string name="subject">Asignatura</string>
+    <string name="roomInfo">Localización</string>
+    <string name="floor">Piso</string>
+    <string name="building">Edificio</string>
+    <string name="classroom">Aula</string>
+    <string name="masterclass">Magistral</string>
+
+    <!-- Expediente -->
+    <string name="course">curso</string>
+    <string name="pending">Créditos pendientes de obtener</string>
+    <string name="unassessed">Créditos pendientes de evaluar</string>
+    <string name="expedient">Créditos aprobados</string>
+    <string name="course_total">Total de créditos del curso</string>
+
+    <!-- Date time picker -->
+    <string name="select_date_label">Seleccione fecha</string>
+
+    <!-- Screen titles -->
+    <string name="timetable_screen_title">Horario</string>
+    <string name="tutorials_section_screen_title">Tutorías</string>
+    <string name="tutorials_screen_title">Tutorías</string>
+    <string name="tutorial_reminders_screen_title">Recordatorios de tutorías</string>
+    <string name="record_screen_title">Expediente</string>
+    <string name="subjects_screen_title">Asignaturas</string>
+    <string name="credits_screen_title">Créditos</string>
+    <string name="grades_screen_title">Notas provisionales</string>
+    <string name="account_screen_title">Cuenta</string>
+    <string name="egela_screen_title">eGela</string>
+    <string name="date_from_label">Desde</string>
+    <string name="date_to_label">Hasta</string>
+    <string name="total_degree">Total de créditos aprobados en todos los cursos</string>
+    <string name="call">Convocatoria</string>
+    <string name="grade">Nota</string>
+    <string name="noGrades">No hay notas provisionales</string>
+    <string name="professors_label">Professors</string>
+    <string name="distinction">Matrícula de honor</string>
+    <string name="type">Tipo</string>
+    <string name="date">Fecha</string>
+    <string name="email_salutation">Hola</string>
+    <string name="no_lectures_dialog_message">No tienes clase</string>
+    <string name="email_subject">Tutoría para el día %1$s</string>
+    <string name="date_range">Rango de fechas</string>
+    <string name="fail">No aprobado</string>
+    <string name="pass">Aprobado</string>
+    <string name="outstanding">Sobresaliente</string>
+    <string name="saveToCalendar">Guardar en calendario</string>
+    <string name="activateNotification">Activar notificación</string>
+    <string name="chooseCalendarOrNotification">¿Quieres almacenar la fecha en el calendario o activar una notificación para una hora antes?</string>
+    <string name="reminder">Recordatorios</string>
+    <string name="student_full_name_label">Nombre completo</string>
+    <string name="degree_label">Grado</string>
+    <string name="select_lang_dialog_title">Selecciona un idioma</string>
+    <string name="logout_label">Cerrar Sesión</string>
+    <string name="language_label">Cambiar idioma</string>
+    <string name="settings">Ajustes</string>
+    <string name="student_data">Datos del estudiante</string>
+    <string name="ordinaryExam">Examen ordinario</string>
+    <string name="extraordinaryExam">Examen extraordinario</string>
+    <string name="time">Hora</string>
+    <string name="exams_screen_title">Calendario de exámenes</string>
+    <string name="quarter">cuatrimestre</string>
+    <string name="profile_not_taken_toast_msg">No se ha tomado una instantánea</string>
+    <string name="select_lang_dialog_text">Selecciona el idioma deseado.</string>
+    <string name="academic_year">Año</string>
+    <string name="no_exams">Todavía no hay exámenes programados</string>
+    <string name="exam">Examen</string>
+    <string name="no_tutorials_dialog_message">No hay tutorías disponibles</string>
+    <string name="tutorial">Tutoria</string>
+    <string name="chooseFromGallery">Escoger imagen de galería</string>
+    <string name="takeFromCamera">Sacar foto desde la cámara</string>
+    <string name="changePhoto">Cambiar foto</string>
+    <string name="confirm_logout_message">¿Estás seguro que quieres cerrar sesión?</string>
+    <string name="confirm_logout_button">Cerrar</string>
+    <string name="logInToSeeTimetable">Inicie sesión para ver el horario</string>
+    <string name="notable">Notable</string>
+    <string name="provisional_grade_notification_title">Nueva nota disponible</string>
+    <string name="provisional_grade_notification_text">Se ha subido la nota de %1$s.</string>
+    <string name="tutorial_reminder_channel_name">Recordatorios de tutorías</string>
+    <string name="tutorial_reminder_channel_description">Notificaciones relacionadas con recordatorios de tutorías configurados por el usuario.</string>
+    <string name="lecture_reminder_channel_name">Recordatorios de clase</string>
+    <string name="lecture_reminder_channel_description">Notificaciones relacionadas con recordatorios de clase configurados por el usuario.</string>
+    <string name="lecture_reminder_notification_title">Tienes klase a las %1$s</string>
+    <string name="lecture_reminder_notification_text">Tienes clase de %1$s a las %2$s en el aula %3$s.</string>
+    <string name="tutorial_reminder_notification_title">Tienes una totoría  a las %1$s.</string>
+    <string name="tutorial_reminder_notification_text">Tienes tutoría con %1$s a las %2$s en el aula %3$s.</string>
+    <string name="lecture_reminder_set_toast">Recordatorio de clase activado.</string>
+    <string name="lecture_reminder_removed_toast">Recordatorio de clase eliminado.</string>
+    <string name="tutorial_reminder_set_toast">Recordatorio de tutoría activado.</string>
+    <string name="tutorial_reminder_removed_toast">Recordatorio de tutoría eliminado.</string>
+    <string name="remove_notification">Eliminar notificación</string>
+    <string name="app_exit_dialog_title">Salir de Etzi</string>
+    <string name="app_exit_dialog_text">¿Estás seguro de que quieres salir?</string>
+    <string name="exit_button">Salir</string>
+    <string name="change_user_profile_title">Actualizar foto de perfil</string>
+    <string name="change_user_profile_text">Cambia tu perfil de usuario. Puedes cambiarlo cuando quieras.</string>
+
+</resources>

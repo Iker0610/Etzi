@@ -1,84 +1,370 @@
 package das.losaparecidos.etzi.app.activities.main
 
+import android.app.Activity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
+import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material3.Card
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.google.android.material.color.DynamicColors
+import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.dialog
+import androidx.navigation.navigation
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
-import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.WidgetOpenerActions
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
+import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.ExamsScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
+import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
+import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
+import das.losaparecidos.etzi.app.activities.main.viewmodels.*
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
+import das.losaparecidos.etzi.app.ui.components.EtziNavigationRail
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
+class MainActivity : AppCompatActivity() {
+    /*************************************************
+     **                  ViewModel                  **
+     *************************************************/
+
+    private val timetableViewModel: TimetableViewModel by viewModels()
+    private val accountViewModel: AccountViewModel by viewModels()
+
+    /*************************************************
+     **          Activity Lifecycle Methods         **
+     *************************************************/
+
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val context = LocalContext.current
-
             EtziTheme {
-                Scaffold(
-                    topBar = {
-                        SmallTopAppBar(
-                            title = { Text("Inicio", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
-                            actions = {
-                                IconButton(onClick = { Toast.makeText(context, "TODO: Perfil de usuario", Toast.LENGTH_SHORT).show() }) {
-                                    Icon(Icons.Rounded.AccountCircle, null)
-                                }
-                            }
-                        )
-                    }
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 32.dp, horizontal = 16.dp)
-                    ) {
-                        Card {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                                modifier = Modifier.padding(vertical = 32.dp, horizontal = 64.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_ehu_logo),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(120.dp))
-                                Text(
-                                    text = "Etzi",
-                                    style = MaterialTheme.typography.displayLarge,
-                                )
-                            }
-                        }
-                    }
+                accountViewModel.reloadLang(accountViewModel.prefLang.collectAsState(initial = accountViewModel.currentSetLang).value, this)
+                val navController: NavHostController = rememberAnimatedNavController()
+
+                val initialScreenRoute = when (intent.action) {
+                    WidgetOpenerActions.OPEN_EGELA.name -> MainActivityScreens.Egela.route
+                    WidgetOpenerActions.OPEN_EXPEDIENTE.name -> MainActivityScreens.Record.route
+                    WidgetOpenerActions.OPEN_TUTORIALS.name -> MainActivityScreens.TutorialsSection.route
+                    else -> null
                 }
+
+                EtziAppScreen(timetableViewModel, navController, accountViewModel, initialScreenRoute)
+
             }
+        }
+        // intent.action?.let { Log.d("MAINACTIVITY", it) }
+    }
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
+@Composable
+private fun EtziAppScreen(
+    timetableViewModel: TimetableViewModel,
+    navController: NavHostController,
+    accountViewModel: AccountViewModel,
+    initialScreenRoute: String?
+) {
+    val rememberInitialization = rememberSaveable { mutableStateOf(true) }
+
+    /*************************************************
+     **             Variables and States            **
+     *************************************************/
+
+
+    //-----------   Utility variables   ------------//
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val windowSizeClass = calculateWindowSizeClass(context as Activity)
+
+
+    //-------------   Nav-Controller   -------------//
+    val currentNavBackStackEntry by navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
+    val currentRoute by derivedStateOf { currentNavBackStackEntry?.destination?.route }
+    val currentSection by derivedStateOf { MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute] }
+
+
+    //-----------   Navigation States   ------------//
+    val enableNavigationElements by derivedStateOf {
+        MainActivityScreens.hasNavigationElements(
+            currentRoute
+        )
+    }
+    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact }
+    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact }
+
+
+    //-----------   Navigation-drawer   ------------//
+    val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val enableNavigationDrawerGestures by derivedStateOf { enableNavigationElements && navigationDrawerState.isOpen }
+
+
+    /*************************************************
+     **                    Events                   **
+     *************************************************/
+
+    // Close bottom navigation menu if it was open and we changed layout to the one with a navigation rail
+    LaunchedEffect(navigationDrawerState) {
+        if (!enableBottomNavigation && navigationDrawerState.currentValue != DrawerValue.Closed) {
+            scope.launch { navigationDrawerState.close() }
+        }
+    }
+
+
+    /*************************************************
+     **            Common Event Callbacks           **
+     *************************************************/
+
+    // Navigate to a route
+    val onNavigate = { route: String ->
+
+        val newSectionRoute = MainActivityScreens.screenRouteToSectionRouteMapping[route] ?: MainActivityScreens.Timetable.route
+        val areFromSameSection = newSectionRoute == MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute]
+
+        if (areFromSameSection) {
+
+            navController.navigate(route) {
+
+                popUpTo(newSectionRoute) {
+                    // saveState = true
+                }
+                launchSingleTop = true
+                // restoreState = true
+            }
+        } else {
+            navController.navigate(route) {
+                popUpTo(MainActivityScreens.Timetable.route)
+                launchSingleTop = true
+            }
+        }
+
+    }
+
+    // Navigate to a section
+    val onNavigateToSection = { route: String ->
+        navController.navigate(route) {
+            popUpTo(MainActivityScreens.Timetable.route)
+            launchSingleTop = true
+        }
+    }
+
+    // Open menu
+    val onNavigationMenuOpen: () -> Unit = { scope.launch { navigationDrawerState.open() } }
+
+
+    /*************************************************
+     **                   Main UI                   **
+     *************************************************/
+
+    /*
+     ENVOLVER EL NAVIGATION GRAPH CON LOS ELEMENTOS DE NAVEGACIÓN:
+
+     - Primero con el navigation drawer
+     - Luego con el navigation rail SI FUERA NECESARIO
+     - Luego añadir el bottom navigation bar SI FUERA NECESARIO
+
+      */
+
+    EtziNavigationDrawer(
+        currentRoute = currentRoute,
+        onNavigate = onNavigate,
+        drawerState = navigationDrawerState,
+        gesturesEnabled = enableNavigationDrawerGestures,
+    ) {
+        Scaffold(
+            bottomBar = {
+                AnimatedVisibility(
+                    enableBottomNavigation,
+                    enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
+                    exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
+                ) { EtziNavigationBar(currentSection, onNavigateToSection) }
+            }
+        ) { paddingValues ->
+            Row(
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                AnimatedVisibility(
+                    enableNavigationRail,
+                    enter = slideInHorizontally(initialOffsetX = { -it }) + expandHorizontally(),
+                    exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
+                ) { EtziNavigationRail(currentSection, onNavigateToSection, onNavigationMenuOpen) }
+
+                MainNavigationGraph(
+                    timetableViewModel,
+                    navController,
+                    windowSizeClass,
+                    onNavigationMenuOpen,
+                    accountViewModel
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(rememberInitialization) {
+        initialScreenRoute?.let {
+            scope.launch { onNavigateToSection(it) }
+        }
+    }
+
+    //------------   Debug Log Screen   ------------//
+    LaunchedEffect(currentRoute) {
+        Log.d("navigation",
+            "Back stack changed $currentRoute \n ${
+                navController.backQueue.joinToString(
+                    "  -  "
+                ) { it.destination.route ?: "root_path" }
+            }"
+        )
+    }
+}
+
+
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
+@Composable
+private fun MainNavigationGraph(
+    timetableViewModel: TimetableViewModel,
+    navController: NavHostController,
+    windowSizeClass: WindowSizeClass,
+    onNavigationMenuOpen: () -> Unit,
+    accountViewModel: AccountViewModel,
+) {
+    /*************************************************
+     **             Variables and States            **
+     *************************************************/
+
+    //-----------   Utility variables   ------------//
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+
+    /*************************************************
+     **            Common Event Callbacks           **
+     *************************************************/
+
+    // Pop current screen from backstack (if we didn't pop anything make sure to travel to main screen)
+    val navigateBack: () -> Unit = {
+        scope.launch(Dispatchers.Main) {
+            if (!navController.popBackStack()) {
+                navController.navigate(MainActivityScreens.Timetable.route)
+            }
+        }
+    }
+
+    // Navigate to the current user's account page. (Passing the current user as a parameter in the route)
+    val onNavigateToAccount = { navController.navigate(MainActivityScreens.Account.route) { launchSingleTop = true } }
+
+
+    /*************************************************
+     **                   Main UI                   **
+     *************************************************/
+
+    AnimatedNavHost(
+        navController = navController,
+        startDestination = MainActivityScreens.Timetable.route
+    ) {
+        composable(
+            route = MainActivityScreens.Timetable.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+        ) {
+            TimetableScreen(timetableViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
+        }
+
+        navigation(
+            route = MainActivityScreens.TutorialsSection.route,
+            startDestination = MainActivityScreens.Tutorials.route
+        ) {
+            composable(route = MainActivityScreens.Tutorials.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+
+                TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
+            }
+
+            dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+                val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
+
+                TutorialsFilterDialog(
+                    tutorialsViewModel = tutorialsViewModel,
+                    onClose = navigateBack
+                )
+            }
+        }
+
+        navigation(
+            route = MainActivityScreens.Record.route,
+            startDestination = MainActivityScreens.Subjects.route
+        ) {
+            composable(route = MainActivityScreens.Grades.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, onNavigateToAccount)
+            }
+
+            composable(route = MainActivityScreens.Subjects.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
+            }
+
+            composable(route = MainActivityScreens.Credits.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
+            }
+
+            composable(route = MainActivityScreens.Exams.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
+            }
+        }
+
+        composable(route = MainActivityScreens.Egela.route) {
+            val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
+            val egelaViewModel: EgelaViewModel = hiltViewModel(egelaBackStackEntry)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
+        }
+
+        composable(route = MainActivityScreens.Account.route) {
+            //val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Timetable.route) }
+            AccountScreen(accountViewModel, windowSizeClass, navigateBack)
         }
     }
 }

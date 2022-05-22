@@ -4,8 +4,8 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.20'
-    // id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -16,26 +16,36 @@ android {
         minSdk 27
         targetSdk 32
         versionCode 1
-        versionName "0.0-alpha"
+        versionName "v1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.debug
+
             minifyEnabled true
             shrinkResources true
 
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
-            minifyEnabled true
-            shrinkResources true
+        debug {
+            /*
+                minifyEnabled true
+                shrinkResources true
 
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+             */
         }
     }
 
@@ -69,7 +79,14 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+        exclude "mozilla/public-suffix-list.txt"
+        exclude "META-INF/DEPENDENCIES"
+        exclude 'META-INF/kotlinx-io.kotlin_module'
+        exclude 'META-INF/atomicfu.kotlin_module'
+        exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
+        exclude 'META-INF/kotlinx-coroutines-core.kotlin_module'
     }
+    namespace 'das.losaparecidos.etzi'
 }
 
 dependencies {
@@ -78,10 +95,15 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.fragment:fragment-ktx:1.4.1"
     implementation "androidx.biometric:biometric:1.1.0"
-    implementation "androidx.window:window:1.0.0"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.0'
 
+    // Google font
+    implementation 'androidx.compose.ui:ui-text-google-fonts:1.2.0-beta02'
+
+    // Work Manager
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation 'androidx.startup:startup-runtime:1.0.0'
 
     // Room
     kapt("androidx.room:room-compiler:$room_version")
@@ -92,16 +114,27 @@ dependencies {
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha10"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha12'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha12'
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.navigation:navigation-compose:2.4.2"
 
+    // Compose Flow Layout
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.24.9-beta'
+
     // System UI compose control
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta'
 
     // Compose Nav Animations
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
+    implementation('com.google.accompanist:accompanist-navigation-animation:0.24.9-beta')
+
+    //Compose webview
+    implementation 'com.google.accompanist:accompanist-webview:0.24.9-beta'
+
+    // Compose Pager
+    implementation 'com.google.accompanist:accompanist-pager:0.24.9-beta'
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.9-beta"
 
     // Dialogs and Pickers:
     // implementation 'com.afollestad.material-dialogs:core:3.3.0'
@@ -110,9 +143,11 @@ dependencies {
     // Hilt dependencies
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
+
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
-    // implementation 'androidx.hilt:hilt-work:1.0.0'
-    // kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+
 
     // Datastore Dependencies
     implementation "androidx.datastore:datastore:1.0.0"
@@ -123,10 +158,35 @@ dependencies {
     implementation "io.ktor:ktor-client-cio:$ktor_version"
     implementation "io.ktor:ktor-client-auth:$ktor_version"
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+    implementation "io.ktor:ktor-utils-jvm:$ktor_version"
+    implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
 
     // Kotlin Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3'
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
+
+    // Glance for Widgets
+    //noinspection GradleDependency
+    // implementation "androidx.glance:glance-appwidget:1.0.0-alpha03"
+
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.5'
+
+
+    // Google Play Services
+    // implementation 'com.google.android.gms:play-services-location:19.0.1'
+    // implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0'
+
+
+    // Google Maps
+    implementation 'com.google.maps.android:maps-compose:2.1.1'
+    implementation "com.google.android.gms:play-services-maps:18.0.2"
+
+    // Permission Request
+    // implementation "com.google.accompanist:accompanist-permissions:0.24.7-alpha"
 
 
     // Testing dependencies
@@ -138,24 +198,17 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-    // Glance for Widgets
-    //noinspection GradleDependency
-    // implementation "androidx.glance:glance-appwidget:1.0.0-alpha03"
+    // Jackson
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
 
-    // Google Play Services
-    // implementation 'com.google.android.gms:play-services-location:19.0.1'
-    // implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0'
+    // Corutinas
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1')
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.1')
 
-    // Firebase
-    // implementation 'com.google.firebase:firebase-messaging:23.0.3'
-    // implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
+    // Skrapeit
+    implementation("it.skrape:skrapeit:1.2.1")
 
-    // Google Maps
-    // implementation "com.google.maps.android:maps-compose:1.0.0"
-    // implementation "com.google.android.gms:play-services-maps:18.0.2"
 
-    // Permission Request
-    // implementation "com.google.accompanist:accompanist-permissions:0.24.7-alpha"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
