@@ -108,5 +108,8 @@
     <string name="exam">Examen</string>
     <string name="no_tutorials_dialog_message">No hay tutorías disponibles</string>
     <string name="tutorial">Tutoria</string>
+    <string name="chooseFromGallery">Escoger imagen de galería</string>
+    <string name="takeFromCamera">Sacar foto desde la cámara</string>
+    <string name="changePhoto">Cambiar foto</string>
 
 </resources>

@@ -97,4 +97,7 @@
     <string name="select_lang_dialog_text">Aukeratu nahi duzun hizkuntza.</string>
     <string name="no_tutorials_dialog_message">Ez daude tutoriarik</string>
     <string name="tutorial">Tutoría</string>
+    <string name="chooseFromGallery">Aukeratu argazkia galeriatik</string>
+    <string name="takeFromCamera">Atera argazkia kamerarekin</string>
+    <string name="changePhoto">Aldatu argazkia</string>
 </resources>

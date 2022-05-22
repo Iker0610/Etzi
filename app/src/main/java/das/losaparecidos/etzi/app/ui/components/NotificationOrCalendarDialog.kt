@@ -32,7 +32,7 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
 
     Dialog(onDismissRequest = onDismiss) {
 
-        Card(
+        ElevatedCard(
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
         ) {

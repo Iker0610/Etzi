@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="das.losaparecidos.etzi">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".Etzi"

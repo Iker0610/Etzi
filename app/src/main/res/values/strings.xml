@@ -108,4 +108,7 @@
     <string name="no_exams">There are no exams scheduled yet</string>
     <string name="exam">Exam</string>
     <string name="tutorial">Tutorial</string>
+    <string name="chooseFromGallery">Choose image from Gallery</string>
+    <string name="takeFromCamera">Take photo from camera</string>
+    <string name="changePhoto">Change photo</string>
 </resources>
