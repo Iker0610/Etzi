@@ -6,7 +6,7 @@ import android.provider.CalendarContract
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.model.entities.Professor
+import das.losaparecidos.etzi.services.ReminderStatus
 import kotlinx.datetime.LocalDateTime
 
 
@@ -28,6 +29,7 @@ import kotlinx.datetime.LocalDateTime
 fun NotificationOrCalendarDialog(
     tutorialDate: LocalDateTime,
     professor: Professor,
+    notificationState: ReminderStatus,
     onNotificationClick: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -38,7 +40,7 @@ fun NotificationOrCalendarDialog(
     Dialog(onDismissRequest = onDismiss) {
 
         Card(
-            shape = RoundedCornerShape(10.dp),
+            shape = MaterialTheme.shapes.extraLarge,
             modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
         ) {
 
@@ -47,7 +49,7 @@ fun NotificationOrCalendarDialog(
                 CenteredColumn(
                     modifier = Modifier.padding(32.dp),
                 ) {
-                    Icon(Icons.Rounded.Info, null)
+                    Icon(Icons.Rounded.Notifications, null)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -76,19 +78,28 @@ fun NotificationOrCalendarDialog(
                     horizontalAlignment = Alignment.End
                 ) {
 
-                    TextButton(
+                    ElevatedButton(
+                        shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp, topStart = 12.dp, topEnd = 12.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             onNotificationClick()
                             onDismiss()
-                        })
-                    { Text(stringResource(id = R.string.ativateNotification), color = MaterialTheme.colorScheme.tertiary) }
+                        }
+                    )
+                    {
+                        val textResource = if (notificationState != ReminderStatus.ON) R.string.activateNotification else R.string.remove_notification
+                        Text(stringResource(id = textResource))
+                    }
 
-                    TextButton(
+                    ElevatedButton(
+                        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomStart = 12.dp, bottomEnd = 12.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             addTutorialOnCalendar(ctx, professor, tutorialDate, tutorial)
                             onDismiss()
-                        })
-                    { Text(stringResource(id = R.string.saveToCalendar), color = MaterialTheme.colorScheme.tertiary) }
+                        }
+                    )
+                    { Text(stringResource(id = R.string.saveToCalendar)) }
 
 
                 }

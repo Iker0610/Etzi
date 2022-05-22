@@ -87,7 +87,7 @@
     <string name="outstanding">Outstanding</string>
     <string name="no_tutorials_dialog_message">There are no tutorials available</string>
     <string name="saveToCalendar">Save to calendar</string>
-    <string name="ativateNotification">Activate notification</string>
+    <string name="activateNotification">Activate notification</string>
     <string name="chooseCalendarOrNotification">Do you want to save the date in the calendar or activate a notification for an hour before?</string>
     <string name="reminder">Reminder</string>
     <string name="student_full_name_label">Full name</string>
@@ -120,4 +120,5 @@
     <string name="lecture_reminder_removed_toast">Lecture reminder removed.</string>
     <string name="tutorial_reminder_set_toast">Tutorial reminder set.</string>
     <string name="tutorial_reminder_removed_toast">Tutorial reminder removed.</string>
+    <string name="remove_notification">Remove Notification</string>
 </resources>

@@ -86,7 +86,7 @@
     <string name="pass">Aprobado</string>
     <string name="outstanding">Sobresaliente</string>
     <string name="saveToCalendar">Guardar en calendario</string>
-    <string name="ativateNotification">Activar notificación</string>
+    <string name="activateNotification">Activar notificación</string>
     <string name="chooseCalendarOrNotification">¿Quieres almacenar la fecha en el calendario o activar una notificación para una hora antes?</string>
     <string name="reminder">Recordatorios</string>
     <string name="student_full_name_label">Nombre completo</string>

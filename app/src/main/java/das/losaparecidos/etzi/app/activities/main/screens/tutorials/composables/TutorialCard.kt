@@ -50,6 +50,7 @@ fun TutorialCard(
         NotificationOrCalendarDialog(
             tutorialDate = tutorial.startDate,
             professor = professor,
+            notificationState = reminderStatus,
             onNotificationClick = { onReminderClick(tutorial, professor, reminderStatus) },
             onDismiss = { showReminderDialog = false }
         )
