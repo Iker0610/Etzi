@@ -124,4 +124,5 @@
     <string name="chooseFromGallery">Choose image from Gallery</string>
     <string name="takeFromCamera">Take photo from camera</string>
     <string name="changePhoto">Change photo</string>
+    <string name="confirm_logout_message">Are you sure you want to logout?</string>
 </resources>

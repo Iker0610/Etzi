@@ -38,6 +38,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -79,6 +80,7 @@ fun AccountScreen(
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
     val profilePicture: Bitmap? = accountViewModel.profilePicture
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
+    var showConfirmLogoutDialog by rememberSaveable { mutableStateOf(false) }
 
     /*************************************************
      **                    Events                   **
@@ -130,6 +132,28 @@ fun AccountScreen(
                 showSelectLangDialog = false
             },
             onDismiss = { showSelectLangDialog = false }
+        )
+    }
+    //-----------   Logout confirm dialog   -----------//
+    if (showConfirmLogoutDialog) {
+        AlertDialog(
+            text = { Text(text = stringResource(R.string.confirm_logout_message), textAlign = TextAlign.Justify) },
+            onDismissRequest = { showConfirmLogoutDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    showConfirmLogoutDialog = false
+                    accountViewModel.onLogout()
+                    context.startActivity(Intent(context, AuthenticationActivity::class.java))
+                    exitProcess(0)
+                }) {
+                    Text(text = stringResource(R.string.ok_button))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showConfirmLogoutDialog = false }) {
+                    Text(text = stringResource(R.string.cancel_button))
+                }
+            }
         )
     }
 
@@ -281,9 +305,7 @@ fun AccountScreen(
 
             OutlinedButton(
                 onClick = {
-                    accountViewModel.onLogout()
-                    context.startActivity(Intent(context, AuthenticationActivity::class.java))
-                    exitProcess(0)
+                    showConfirmLogoutDialog = true
                 }
             ) {
                 Icon(Icons.Rounded.Logout, contentDescription = null)
