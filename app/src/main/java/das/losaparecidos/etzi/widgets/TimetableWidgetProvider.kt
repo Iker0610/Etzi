@@ -50,13 +50,21 @@ class TimetableWidgetProvider : AppWidgetProvider() {
             val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
             val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
             val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height))
-            if(getLayoutResponsive(width, height)==R.layout.agenda_widget_4x4){
-                val fecha = Date()
-                val sdfDia = SimpleDateFormat("dd")
-                val sdfMes = SimpleDateFormat("MMMM")
 
-                remoteView.setTextViewText(R.id.agenda_widget_fecha_dia,sdfDia.format(fecha))
-                remoteView.setTextViewText(R.id.agenda_widget_fecha_mes,sdfMes.format(fecha))
+            //Acciones específicas en función del RemoteView
+            switch(getLayoutResponsive(width,height)){
+               case R.layout.agenda_widget_4x4:
+                    //Config decha
+                    val fecha = Date()
+                    val sdfDia = SimpleDateFormat("dd")
+                    val sdfMes = SimpleDateFormat("MMMM")
+                    remoteView.setTextViewText(R.id.agenda_widget_fecha_dia,sdfDia.format(fecha))
+                    remoteView.setTextViewText(R.id.agenda_widget_fecha_mes,sdfMes.format(fecha))
+                    //Config botones
+               case R.layout.agenda_widget_2x4:
+                    remoteView.setOnClickPendingIntent(R.id.btn_tutorias, /*TODO*/)
+                    remoteView.setOnClickPendingIntent(R.id.btn_expediente, /*TODO*/)
+                    remoteView.setOnClickPendingIntent(R.id.btn_egela, /*TODO*/)
             }
 
             // Mostramos la lista
