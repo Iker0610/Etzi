@@ -137,4 +137,6 @@
     <string name="reminder_channel_group_description">Remainder notifications.</string>
     <string name="provisional_grades_channel_name">Provisional grades upload</string>
     <string name="provisional_grades_channel_description">Notifies about provisional grade uploads.</string>
+    <string name="provisional_grade_notification_title">New note available</string>
+    <string name="provisional_grade_notification_text">The %1$s grade has been raised.</string>
 </resources>

@@ -104,4 +104,6 @@
     <string name="confirm_logout_button">Itxi</string>
     <string name="logInToSeeTimetable">Hasi saioa ordutegia ikusteko</string>
     <string name="notable">Oso ongi</string>
+    <string name="provisional_grade_notification_title">Nota berria jarrita</string>
+    <string name="provisional_grade_notification_text">%1$s-ko nota igo da.</string>
 </resources>

@@ -115,5 +115,7 @@
     <string name="confirm_logout_button">Cerrar</string>
     <string name="logInToSeeTimetable">Inicie sesión para ver el horario</string>
     <string name="notable">Notable</string>
+    <string name="provisional_grade_notification_title">Nueva nota disponible</string>
+    <string name="provisional_grade_notification_text">Se ha subido la nota de %1$s.</string>
 
 </resources>

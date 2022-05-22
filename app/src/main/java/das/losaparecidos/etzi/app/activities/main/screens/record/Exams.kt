@@ -105,7 +105,7 @@ fun ExamsScreen(
 
                         else {
                             QuarterSubjectsList(subjects = courseRecord.filter {
-                                it.subjectCalls[0].examDate.monthNumber > 11 && it.subjectCalls[0].examDate.monthNumber < 2
+                                it.subjectCalls[0].examDate.monthNumber > 11 || it.subjectCalls[0].examDate.monthNumber < 2
                             })
                         }
                     }
