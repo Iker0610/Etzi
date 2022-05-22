@@ -8,21 +8,31 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import das.losaparecidos.etzi.app.utils.now
 import das.losaparecidos.etzi.app.utils.today
+import das.losaparecidos.etzi.model.entities.TutorialReminder
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import das.losaparecidos.etzi.model.entities.SubjectTutorial
+import das.losaparecidos.etzi.model.repositories.ReminderRepository
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
+import das.losaparecidos.etzi.services.ReminderManager
+import das.losaparecidos.etzi.services.ReminderStatus
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.*
+import kotlinx.datetime.TimeZone
 import java.util.*
 import javax.inject.Inject
 
 
 @HiltViewModel
 class TutorialsViewModel @Inject constructor(
-    private val studentDataRepository: StudentDataRepository
+    private val studentDataRepository: StudentDataRepository,
+    private val reminderRepository: ReminderRepository,
 ) : ViewModel() {
 
     init {
@@ -90,6 +100,36 @@ class TutorialsViewModel @Inject constructor(
         }
     }
 
+    // REMINDERS
+    private val refreshFlow: Flow<Unit> = flow {
+        while (true) {
+            emit(Unit)
+            delay(1000)
+        }
+    }
+
+    private val currentReminders = reminderRepository.getStudentTutorialReminders()
+
+    val tutorialRemainderStates = combine(filteredTutorials, currentReminders, refreshFlow) { tutorials, reminders, _ ->
+        val systemTZ = TimeZone.currentSystemDefault()
+
+        tutorials
+            .flatMap { subjectTutorial -> subjectTutorial.professors }.associate { it.professor to it.tutorials }
+            .map { (professor, tutorials) ->
+                tutorials.associate { tutorial ->
+                    val tutorialReminderLimit = tutorial.startDate.toInstant(systemTZ).minus(DateTimePeriod(minutes = ReminderManager.minutesBeforeReminder), systemTZ)
+
+                    "${professor.email}&&${tutorial.startDate}" to when {
+                        tutorialReminderLimit <= LocalDateTime.now.toInstant(systemTZ) -> ReminderStatus.UNAVAILABLE
+                        reminders.any { it.tutorialDate == tutorial.startDate && it.professorEmail == professor.email } -> ReminderStatus.ON
+                        else -> ReminderStatus.OFF
+                    }
+                }
+            }
+            .fold(mutableMapOf<String, ReminderStatus>()) { outMap, map -> outMap.apply { putAll(map) } }
+    }
+
+
     /*************************************************
      **                    Events                   **
      *************************************************/
@@ -100,4 +140,9 @@ class TutorialsViewModel @Inject constructor(
         endDate = newToDate
         selectedProfessors = newSelectedProfessors
     }
+
+
+    // REMAINDERS
+    suspend fun addTutorialReminder(tutorial: TutorialReminder) = reminderRepository.addCurrentStudentTutorialReminder(tutorial)
+    suspend fun removeTutorialReminder(tutorial: TutorialReminder): TutorialReminder? = reminderRepository.removeCurrentUserTutorialReminder(tutorial)
 }

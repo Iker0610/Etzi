@@ -44,7 +44,7 @@ class TimetableViewModel @Inject constructor(
     val timeTable: Flow<List<Lecture>> = fullTimetable.combine(currentSelectedDay) { timetable, selectedDay -> timetable[selectedDay.toString()] ?: emptyList() }
 
 
-    // REMAINDERS
+    // REMINDERS
     private val refreshFlow: Flow<Unit> = flow {
         while (true) {
             emit(Unit)
@@ -81,7 +81,7 @@ class TimetableViewModel @Inject constructor(
     }
 
 
-    // REMAINDERS
+    // REMINDERS
     suspend fun addLectureReminder(lecture: LectureReminder) = reminderRepository.addCurrentStudentLectureReminder(lecture)
     suspend fun removeLectureReminder(lecture: LectureReminder): LectureReminder? = reminderRepository.removeCurrentUserLectureReminder(lecture)
 }

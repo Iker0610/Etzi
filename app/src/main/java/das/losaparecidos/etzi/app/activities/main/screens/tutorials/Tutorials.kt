@@ -3,18 +3,15 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EventBusy
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -27,12 +24,9 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,14 +37,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
-import das.losaparecidos.etzi.app.activities.main.screens.account.LoadingImagePlaceholder
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
-import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
-import das.losaparecidos.etzi.model.entities.SubjectTutorial
+import das.losaparecidos.etzi.model.entities.*
+import das.losaparecidos.etzi.services.ReminderManager
+import das.losaparecidos.etzi.services.ReminderStatus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -63,9 +59,50 @@ fun TutorialsScreen(
     onNavigate: () -> Unit
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     // STATES
     val tutorials by tutorialsViewModel.filteredTutorials.collectAsState(initial = emptyList())
+    val tutorialReminderStates by tutorialsViewModel.tutorialRemainderStates.collectAsState(initial = emptyMap())
+
+
+    //------------------------------------------------------------------------------------------------------
+
+    // Events
+    // Set or unset item alarm
+    val onTutorialRemainder: (Tutorial, Professor, ReminderStatus) -> Unit = { tutorial, professor, remainderStatus ->
+        val baseTutorialReminder = TutorialReminder(tutorial = tutorial, professor = professor)
+
+        when (remainderStatus) {
+            ReminderStatus.UNAVAILABLE -> {
+                Log.d("REMAINDERS", "onItemRemainder when status is UNAVAILABLE")
+            }
+
+            ReminderStatus.OFF -> {
+                scope.launch(Dispatchers.IO) {
+                    tutorialsViewModel.addTutorialReminder(baseTutorialReminder)?.let {
+                        ReminderManager.addTutorialReminder(context, it)
+
+                        scope.launch(Dispatchers.Main) {
+                            Toast.makeText(context, context.resources.getString(R.string.tutorial_reminder_set_toast), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+
+            ReminderStatus.ON -> {
+                scope.launch(Dispatchers.IO) {
+                    tutorialsViewModel.removeTutorialReminder(baseTutorialReminder)?.let {
+                        ReminderManager.removeTutorialReminder(context, it)
+                    }
+                }
+                Toast.makeText(context, "Remainder removed.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------
+
     var currentExpandedSubject: String? by rememberSaveable { mutableStateOf(null) }
     val currentExpandedProfessor = rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -128,7 +165,9 @@ fun TutorialsScreen(
                                 currentExpandedProfessor.value = null
                                 currentExpandedSubject = if (currentExpandedSubject != subjectWithTutorial.subjectName) subjectWithTutorial.subjectName else null
                             },
-                            expandedProfessorState = currentExpandedProfessor
+                            expandedProfessorState = currentExpandedProfessor,
+                            tutorialReminderStates = tutorialReminderStates,
+                            onTutorialRemainderClick = onTutorialRemainder,
                         )
 
 
@@ -152,6 +191,8 @@ fun LazyListScope.subjectCollapsableSection(
     expanded: Boolean = true,
     onExpand: () -> Unit,
     expandedProfessorState: MutableState<String?>,
+    tutorialReminderStates: Map<String, ReminderStatus>,
+    onTutorialRemainderClick: (Tutorial, Professor, ReminderStatus) -> Unit,
 ) {
     val expand by derivedStateOf { expanded || (!collapsible) }
     val singleProfessorSelection by derivedStateOf { subjectWithTutorial.professors.size == 1 }
@@ -224,7 +265,9 @@ fun LazyListScope.subjectCollapsableSection(
                 expanded = currentExpandedProfessor == professor.email,
                 onExpand = {
                     currentExpandedProfessor = if (currentExpandedProfessor != professor.email) professor.email else null
-                }
+                },
+                tutorialReminderStates = tutorialReminderStates,
+                onTutorialRemainderClick = onTutorialRemainderClick,
             )
         }
     }
@@ -236,7 +279,9 @@ fun LazyListScope.professorCollapsable(
     professor: ProfessorWithTutorials,
     collapsible: Boolean = true,
     expanded: Boolean = true,
-    onExpand: () -> Unit = {}
+    onExpand: () -> Unit = {},
+    tutorialReminderStates: Map<String, ReminderStatus>,
+    onTutorialRemainderClick: (Tutorial, Professor, ReminderStatus) -> Unit,
 ) {
     val expand by derivedStateOf { expanded || !collapsible }
 
@@ -302,8 +347,11 @@ fun LazyListScope.professorCollapsable(
             exit = fadeOut(animationSpec = TweenSpec(100, 0, FastOutLinearInEasing)) + shrinkVertically(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing))
         ) {
             TutorialCard(
-                tutorial = tutorial, professor = professor.professor,
-                Modifier
+                tutorial = tutorial,
+                professor = professor.professor,
+                reminderStatus = tutorialReminderStates["${professor.email}&&${tutorial.startDate}"] ?: ReminderStatus.UNAVAILABLE,
+                onReminderClick = onTutorialRemainderClick,
+                modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
             )
@@ -319,6 +367,6 @@ fun LazyListScope.professorCollapsable(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun TutorialsScreenPreview() {
     EtziTheme {
-        TutorialsScreen(viewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {}, {}, viewModel(),{})
+        TutorialsScreen(viewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {}, {}, viewModel(), {})
     }
 }

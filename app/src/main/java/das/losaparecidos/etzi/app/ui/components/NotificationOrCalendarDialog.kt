@@ -1,3 +1,5 @@
+package das.losaparecidos.etzi.app.ui.components
+
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
@@ -16,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import das.losaparecidos.etzi.R
-import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.model.entities.Professor
 import kotlinx.datetime.LocalDateTime
@@ -24,7 +25,12 @@ import kotlinx.datetime.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Professor, onDismiss: () -> Unit) {
+fun NotificationOrCalendarDialog(
+    tutorialDate: LocalDateTime,
+    professor: Professor,
+    onNotificationClick: () -> Unit,
+    onDismiss: () -> Unit
+) {
 
     val ctx = LocalContext.current
     val tutorial = stringResource(id = R.string.tutorial)
@@ -72,15 +78,15 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
 
                     TextButton(
                         onClick = {
-                            onDismiss
-                            // TODO ACTIVAR NOTIFICACIÓN
+                            onNotificationClick()
+                            onDismiss()
                         })
                     { Text(stringResource(id = R.string.ativateNotification), color = MaterialTheme.colorScheme.tertiary) }
 
                     TextButton(
                         onClick = {
                             addTutorialOnCalendar(ctx, professor, tutorialDate, tutorial)
-                            onDismiss
+                            onDismiss()
                         })
                     { Text(stringResource(id = R.string.saveToCalendar), color = MaterialTheme.colorScheme.tertiary) }
 

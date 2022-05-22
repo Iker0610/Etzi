@@ -18,7 +18,7 @@ class ReminderRepository @Inject constructor(
 ) {
     private val loggedUser = datastore.getLastLoggedUserFlow()
 
-    suspend fun addLectureReminder(lectureReminder: LectureReminder): Boolean {
+    private suspend fun addLectureReminder(lectureReminder: LectureReminder): Boolean {
         return try {
             reminderDao.addLectureReminder(lectureReminder)
             true
@@ -58,7 +58,7 @@ class ReminderRepository @Inject constructor(
 
     //------------------------------------------------------------------------------
 
-    suspend fun addTutorialReminder(tutorialReminder: TutorialReminder): Boolean {
+    private suspend fun addTutorialReminder(tutorialReminder: TutorialReminder): Boolean {
         return try {
             reminderDao.addTutorialReminder(tutorialReminder)
             true
@@ -67,7 +67,7 @@ class ReminderRepository @Inject constructor(
         }
     }
 
-    suspend fun addCurrentTutorialReminder(tutorialReminder: TutorialReminder): TutorialReminder? {
+    suspend fun addCurrentStudentTutorialReminder(tutorialReminder: TutorialReminder): TutorialReminder? {
         val currentUserLdap = loggedUser.first()?.ldap ?: return null
 
         val newTutorialReminder = tutorialReminder.copy(studentLdap = currentUserLdap)
@@ -92,6 +92,6 @@ class ReminderRepository @Inject constructor(
 
     suspend fun getAllTutorialReminders() = reminderDao.getAllTutorialReminders()
 
-    fun getStudentTutorialReminders(ldap: String): Flow<List<TutorialReminder>> =
+    fun getStudentTutorialReminders(): Flow<List<TutorialReminder>> =
         runBlocking { return@runBlocking loggedUser.first()?.let { reminderDao.getStudentTutorialReminders(it.ldap) } ?: emptyFlow() }
 }
