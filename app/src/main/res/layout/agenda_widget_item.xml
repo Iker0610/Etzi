@@ -76,7 +76,7 @@
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
                     android:textSize="10dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:background="@drawable/agenda_widget_borde_radius_aula">
                 </TextView>
             </LinearLayout>

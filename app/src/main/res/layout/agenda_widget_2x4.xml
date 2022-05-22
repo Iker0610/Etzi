@@ -30,17 +30,16 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:text="Inicia sesión para ver el horario"
+                android:text="@string/logInToSeeTimetable"
                 android:textAlignment="center"
                 android:visibility="gone"></TextView>
-            <!--TODO Texto en Strings.xml!-->
             <TextView
                 android:id="@+id/agenda_widget_msg_no_clases"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:text="No hay clases programadas para ese día"
+                android:text="@string/no_lectures_dialog_message"
                 android:textAlignment="center"
                 android:visibility="gone"></TextView>
         </LinearLayout>
