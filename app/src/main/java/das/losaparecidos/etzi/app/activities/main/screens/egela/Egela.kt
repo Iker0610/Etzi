@@ -46,7 +46,7 @@ fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, egelaV
 
         val ldap = egelaViewModel.loggedUser.ldap
         val pass = egelaViewModel.loggedUser.password
-        val datosEgela: JSONObject = runBlocking() { getCookieEgela(ldap, pass) }
+        val datosEgela: JSONObject = runBlocking{getCookieEgela(ldap, pass)}
         val egela = rememberWebViewState("https://egela.ehu.eus")
 
 
@@ -55,8 +55,12 @@ fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, egelaV
             Modifier.padding(paddingValues)
         )
 
-        val cookie = datosEgela.get("cookie").toString().substring(0, datosEgela.get("cookie").toString().indexOf("/") + 1)
-        CookieManager.getInstance().setCookie("https://egela.ehu.eus", cookie)
+        try {
+            val cookie = datosEgela.get("cookie").toString().substring(0, datosEgela.get("cookie").toString().indexOf("/") + 1)
+            CookieManager.getInstance().setCookie("https://egela.ehu.eus", cookie)
+        }catch (e: Exception){
+            pass
+        }
     }
 }
 
@@ -121,6 +125,8 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
         if (response2.status.value == 303) { // aqui aparece el testsession (respuesta de la peticion 2)
             resultado.put("cookie", cookie)
         }
+    }else{
+        return@withContext JSONObject()
     }
 
     client.close()
