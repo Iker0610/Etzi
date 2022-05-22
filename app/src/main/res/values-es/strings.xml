@@ -117,5 +117,23 @@
     <string name="notable">Notable</string>
     <string name="provisional_grade_notification_title">Nueva nota disponible</string>
     <string name="provisional_grade_notification_text">Se ha subido la nota de %1$s.</string>
+    <string name="tutorial_reminder_channel_name">Recordatorios de tutorías</string>
+    <string name="tutorial_reminder_channel_description">Notificaciones relacionadas con recordatorios de tutorías configurados por el usuario.</string>
+    <string name="lecture_reminder_channel_name">Recordatorios de clase</string>
+    <string name="lecture_reminder_channel_description">Notificaciones relacionadas con recordatorios de clase configurados por el usuario.</string>
+    <string name="lecture_reminder_notification_title">Tienes klase a las %1$s</string>
+    <string name="lecture_reminder_notification_text">Tienes clase de %1$s a las %2$s en el aula %3$s.</string>
+    <string name="tutorial_reminder_notification_title">Tienes una totoría  a las %1$s.</string>
+    <string name="tutorial_reminder_notification_text">Tienes tutoría con %1$s a las %2$s en el aula %3$s.</string>
+    <string name="lecture_reminder_set_toast">Recordatorio de clase activado.</string>
+    <string name="lecture_reminder_removed_toast">Recordatorio de clase eliminado.</string>
+    <string name="tutorial_reminder_set_toast">Recordatorio de tutoría activado.</string>
+    <string name="tutorial_reminder_removed_toast">Recordatorio de tutoría eliminado.</string>
+    <string name="remove_notification">Eliminar notificación</string>
+    <string name="app_exit_dialog_title">Salir de Etzi</string>
+    <string name="app_exit_dialog_text">¿Estás seguro de que quieres salir?</string>
+    <string name="exit_button">Salir</string>
+    <string name="change_user_profile_title">Actualizar foto de perfil</string>
+    <string name="change_user_profile_text">Cambia tu perfil de usuario. Puedes cambiarlo cuando quieras.</string>
 
 </resources>
