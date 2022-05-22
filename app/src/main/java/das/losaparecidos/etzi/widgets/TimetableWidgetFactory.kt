@@ -3,6 +3,7 @@ package das.losaparecidos.etzi.widgets
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -60,15 +61,30 @@ class TimetableWidgetFactory(
 
     override fun getViewAt(position: Int): RemoteViews {
         Log.d("WIDGET-FACTORY", "Generando UN item")
-        return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
-            val horaComienzo=lectureList[position].startDate
-            val horaFin=lectureList[position].endDate
-            setTextViewText(R.id.widget_item_hora_comienzo, horaComienzo.format("HH:mm"))
-            setTextViewText(R.id.widget_item_hora_fin, horaFin.format("HH:mm"))
-            setTextViewText(R.id.widget_item_asignatura, lectureList[position].subjectName)
-            setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
-            setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
+        when (Build.VERSION.SDK_INT){
+            //TODO Swap layouts
+            in 1..Build.VERSION_CODES.S -> return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
+                Log.d("WIDGET-FACTORY", "Fallback de layout - versión antigua")
+                val horaComienzo=lectureList[position].startDate
+                val horaFin=lectureList[position].endDate
+                setTextViewText(R.id.widget_item_hora_comienzo, horaComienzo.format("HH:mm"))
+                setTextViewText(R.id.widget_item_hora_fin, horaFin.format("HH:mm"))
+                setTextViewText(R.id.widget_item_asignatura, lectureList[position].subjectName)
+                setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
+                setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
+            }
+            else -> return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
+                Log.d("WIDGET-FACTORY", "Fallback de layout - versión nueva")
+                val horaComienzo=lectureList[position].startDate
+                val horaFin=lectureList[position].endDate
+                setTextViewText(R.id.widget_item_hora_comienzo, horaComienzo.format("HH:mm"))
+                setTextViewText(R.id.widget_item_hora_fin, horaFin.format("HH:mm"))
+                setTextViewText(R.id.widget_item_asignatura, lectureList[position].subjectName)
+                setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
+                setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
+            }
         }
+
     }
 
     override fun getLoadingView(): RemoteViews? = null

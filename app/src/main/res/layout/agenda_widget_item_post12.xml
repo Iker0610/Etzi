@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/agenda_widget_borde_radius"
+    android:background="@drawable/agenda_widget_borde_radius_post12"
     android:layout_margin="5dp"
     android:padding="10dp">
 
@@ -14,6 +14,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             >
             <TextView
                 android:layout_width="match_parent"
@@ -43,15 +44,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Servicios Telemáticos Avanzados"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textStyle="bold"
                 android:textSize="12dp"
                 android:id="@+id/widget_item_asignatura"
                 android:textColor="@color/material_dynamic_primary20"
+                android:layout_margin="2dp"
+
                 ></TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_margin="2dp">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
@@ -71,7 +76,7 @@
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
                     android:textSize="10dp"
-                    android:background="@drawable/agenda_widget_borde_radius_aula">
+                    android:background="@drawable/agenda_widget_borde_radius_aula_post12">
                 </TextView>
             </LinearLayout>
 
