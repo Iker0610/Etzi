@@ -63,7 +63,6 @@ class Etzi : Application(), Configuration.Provider {
         }
 
 
-
         // Create the Tutorial Reminder Channel
         val tutorialReminderChannelName = getString(NotificationChannelID.TUTORIAL_REMINDER.nameId)
         val tutorialReminderChannelDescription = getString(NotificationChannelID.TUTORIAL_REMINDER.descriptionId)
@@ -118,6 +117,9 @@ enum class NotificationChannelID(val nameId: Int, val descriptionId: Int) {
 
     LECTURE_REMINDER(R.string.lecture_reminder_channel_name, R.string.lecture_reminder_channel_description),
     TUTORIAL_REMINDER(R.string.tutorial_reminder_channel_name, R.string.tutorial_reminder_channel_description),
+    REMAINDER_GROUP(R.string.reminder_channel_group_name, R.string.reminder_channel_group_description),
+
+    PROVISIONAL_GRADES(R.string.provisional_grades_channel_name, R.string.provisional_grades_channel_description)
 }
 
 enum class NotificationID(val id: Int) {
@@ -125,12 +127,13 @@ enum class NotificationID(val id: Int) {
 
     LECTURE_REMINDER(20),
     TUTORIAL_REMINDER(21),
+
+    PROVISIONAL_GRADE(30)
 }
 
 
-
 //WIDGET PENDING INTENTS
-enum class WidgetOpenerActions(){
+enum class WidgetOpenerActions() {
     OPEN_TUTORIALS,
     OPEN_EXPEDIENTE,
     OPEN_EGELA
