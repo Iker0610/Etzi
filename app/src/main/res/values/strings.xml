@@ -129,4 +129,5 @@
     <string name="app_exit_dialog_title">Exit Etzi</string>
     <string name="app_exit_dialog_text">Are you sure you want to exit?</string>
     <string name="exit_button">Exit</string>
+    <string name="logInToSeeTimetable">Log in to see de timetable</string>
 </resources>
