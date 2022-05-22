@@ -19,7 +19,6 @@ class FCMService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.notification?.let { notification ->
-
             Log.d("FCM", "Message Notification Title: ${notification.title}")
             Log.d("FCM", "Message Notification Body: ${notification.body}")
 
@@ -34,6 +33,7 @@ class FCMService : FirebaseMessagingService() {
             with(NotificationManagerCompat.from(this)) {
                 notify(NotificationID.CORPORATION_NOTIFICATION.id, builder.build())
             }
+
         }
     }
 }
