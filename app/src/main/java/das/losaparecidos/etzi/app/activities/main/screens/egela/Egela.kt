@@ -95,7 +95,7 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
 
     //////////////////////////////////////// SEGUNDA PETICIÓN ////////////////////////////////////////
 
-
+    // Hacemos la petición
     val response1: HttpResponse = client.post(
         "https://egela.ehu.eus/login/index.php"
     ) {
@@ -108,24 +108,31 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
             append("password", password)
         })
     }
-    println(response1.body<String>())
+
     val status1 = response1.status.value
+
     val resultado = JSONObject()
-    if (status1 == 303) {
+
+    if (status1 == 303) { // Comprobamos la respuesta de la petición
         val cookieEntera = response1.headers.get("Set-Cookie")
         val location = response1.headers.get("Location")
 
-        val cookie = cookieEntera.toString().substring(0, cookieEntera.toString().indexOf("/") + 1)
+        val cookie = cookieEntera.toString().substring(0, cookieEntera.toString().indexOf("/") + 1) // Obtenemos la cookie
+
         //////////////////////////////////////// TERCERA PETICIÓN ////////////////////////////////////////
+
+        // Hacemos la petición
         val response2: HttpResponse = client.post(location.toString()) {
             headers {
                 append("Cookie", cookie)
             }
         }
-        if (response2.status.value == 303) { // aqui aparece el testsession (respuesta de la peticion 2)
+        if (response2.status.value == 303) { // Comprobamos la respuesta de la petición
             resultado.put("cookie", cookie)
         }
+
     }else{
+        // Si el usuario no tiene cuenta en egela (Si es un usuario de prueba no tiene cuenta real de la universidad)
         return@withContext JSONObject()
     }
 
@@ -135,14 +142,13 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
 
 fun getToken(body: String): String {
     try {
+        // Obtenemos el inputtoken
         val inputToken = "<input type=\"hidden\" name=\"logintoken\" value=\".*\""
         val regex = inputToken.toRegex()
         val token = regex.find(body)
         if (token != null) {
             return token.value.substring(46, token.value.length - 1)
         }
-    } finally {
-
-    }
+    } catch (e: Exception) { }
     return "fail"
 }
