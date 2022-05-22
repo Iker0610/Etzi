@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Etzi"
@@ -30,7 +30,6 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
-
 
 
         <!--  ###  ACTIVITIES  ###  -->
@@ -56,7 +55,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBAvJdJVpxQBqXOLGqInwuLvNPChdyHXNc" />
-
 
 
         <!--  ###  FIREBASE  ###  -->
@@ -101,8 +99,10 @@
                 android:resource="@xml/agenda_widget" />
         </receiver>
 
-        <service android:name=".widgets.TimetableWidgetService"
-            android:permission="android.permission.BIND_REMOTE_VIEWS"/>
+        <service
+            android:name=".widgets.TimetableWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTE_VIEWS" />
 
         <!-- File provider for profile picture-->
         <provider

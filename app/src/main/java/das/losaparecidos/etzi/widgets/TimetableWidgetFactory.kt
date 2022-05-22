@@ -1,59 +1,62 @@
 package das.losaparecidos.etzi.widgets
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.Lecture
-import das.losaparecidos.etzi.model.entities.LectureEntity
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class TimetableWidgetService : RemoteViewsService() {
-    override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
-        System.out.println("onGetViewFactory")
-        return TimetableWidgetFactory(applicationContext)
+
+    @Inject
+    lateinit var dataRepository: StudentDataRepository
+
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
+        Log.d("WIDGET-SERVICE", "onGetViewFactory")
+        return TimetableWidgetFactory(applicationContext, intent, dataRepository)
     }
 }
 
 
-class TimetableWidgetFactory(private val context: Context) :
-    RemoteViewsService.RemoteViewsFactory {
-    @Inject
-    lateinit var dataRepository: StudentDataRepository
-    val lectureList= mutableListOf<Lecture>()
-    private val job = SupervisorJob()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+class TimetableWidgetFactory(
+    private val context: Context,
+    intent: Intent,
+    private var dataRepository: StudentDataRepository
+) : RemoteViewsService.RemoteViewsFactory {
+
+    private val mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+    private val lectureList = mutableListOf<Lecture>()
+
 
     override fun onCreate() {
-        System.out.println("onCreate")
-    }
-
-    override fun onDataSetChanged() {
-        System.out.println("onDataSetChanged")
-        coroutineScope.launch {
-            dataRepository.getTodayTimetable().collect{lecture->
-                lectureList.addAll(lecture)
-
-            }
-        }
-
+        Log.d("WIDGET-FACTORY", "onCreate")
     }
 
     override fun onDestroy() {
-        job.cancel()
     }
 
     override fun getCount(): Int = lectureList.count()
 
+    override fun onDataSetChanged() {
+        Log.d("WIDGET-FACTORY", "onDataSetChanged")
+        runBlocking {
+            dataRepository.getTodayTimetable().collect { lecture ->
+                lectureList.addAll(lecture)
+            }
+        }
+    }
+
     override fun getViewAt(position: Int): RemoteViews {
-        System.out.println("Plasmando datos")
+        Log.d("WIDGET-FACTORY", "Generando UN item")
         return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
             setTextViewText(R.id.widget_item_hora_comienzo, lectureList[position].startDate.toString())
             setTextViewText(R.id.widget_item_hora_fin, lectureList[position].endDate.toString())
