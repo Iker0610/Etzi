@@ -20,7 +20,9 @@
                 android:id="@+id/horario_agenda"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:listSelector="@android:color/transparent">
+                android:listSelector="@android:color/transparent"
+                android:divider="@null"
+                android:dividerHeight="0dp">
             </ListView>
             <TextView
                 android:id="@+id/agenda_widget_msg_iniciar_sesion"

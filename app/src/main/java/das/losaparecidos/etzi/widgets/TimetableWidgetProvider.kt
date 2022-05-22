@@ -61,7 +61,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                    //Config fecha
                    val fecha = Date()
                    val sdfDia = SimpleDateFormat("dd")
-                   val sdfMes = SimpleDateFormat("MMMM")
+                   val sdfMes = SimpleDateFormat("MMM")
                    remoteView.setTextViewText(R.id.agenda_widget_fecha_dia, sdfDia.format(fecha))
                    remoteView.setTextViewText(R.id.agenda_widget_fecha_mes, sdfMes.format(fecha))
                    agregarEventoBotonesWidget(context, remoteView)

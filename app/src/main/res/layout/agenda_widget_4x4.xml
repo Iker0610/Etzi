@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:orientation="vertical"
             android:layout_gravity="center_vertical">
 
@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Mayo"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:textSize="20dp"></TextView>
 
                 <TextView
@@ -43,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="18"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:textSize="40dp"></TextView>
             </LinearLayout>
 
@@ -62,7 +64,9 @@
                     android:id="@+id/horario_agenda"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:listSelector="@android:color/transparent"></ListView>
+                    android:listSelector="@android:color/transparent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"></ListView>
 
                 <TextView
                     android:id="@+id/agenda_widget_msg_iniciar_sesion"
