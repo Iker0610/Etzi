@@ -21,7 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
 import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseSubjectsList
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.*
 import kotlinx.coroutines.launch
@@ -31,7 +33,9 @@ import kotlinx.coroutines.launch
 fun ExamsScreen(
     recordViewModel: RecordViewModel,
     windowSizeClass: WindowSizeClass,
-    onMenuOpen: () -> Unit
+    onMenuOpen: () -> Unit,
+    onNavigate: () -> Unit,
+    accountViewModel: AccountViewModel
 ) {
     val scope = rememberCoroutineScope()
 
@@ -51,6 +55,9 @@ fun ExamsScreen(
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
+                },
+                actions = {
+                    AccountIcon(accountViewModel, onNavigate)
                 }
             )
         }

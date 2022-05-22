@@ -13,6 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.EgelaViewModel
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -28,7 +30,13 @@ import org.json.JSONObject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, egelaViewModel: EgelaViewModel) {
+fun EgelaScreen(
+    windowSizeClass: WindowSizeClass,
+    onMenuOpen: () -> Unit,
+    egelaViewModel: EgelaViewModel,
+    onNavigate: () -> Unit,
+    accountViewModel: AccountViewModel
+) {
 
     Scaffold(
         topBar = {
@@ -40,7 +48,11 @@ fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, egelaV
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
-                })
+                },
+                actions = {
+                    AccountIcon(accountViewModel, onNavigate)
+                }
+            )
         }
     ) { paddingValues ->
 
