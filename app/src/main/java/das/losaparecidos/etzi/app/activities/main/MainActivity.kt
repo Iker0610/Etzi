@@ -131,10 +131,33 @@ private fun EtziAppScreen(
 
     // Navigate to a route
     val onNavigate = { route: String ->
-        navController.navigate(route) {
-            popUpTo(route) {
-                inclusive = true
+
+        val newSectionRoute = MainActivityScreens.screenRouteToSectionRouteMapping[route] ?: MainActivityScreens.Timetable.route
+        val areFromSameSection = newSectionRoute == MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute]
+
+        if (areFromSameSection) {
+
+            navController.navigate(route) {
+
+                popUpTo(newSectionRoute) {
+                    // saveState = true
+                }
+                launchSingleTop = true
+                // restoreState = true
             }
+        } else {
+            navController.navigate(route) {
+                popUpTo(MainActivityScreens.Timetable.route)
+                launchSingleTop = true
+            }
+        }
+
+    }
+
+    // Navigate to a section
+    val onNavigateToSection = { route: String ->
+        navController.navigate(route) {
+            popUpTo(MainActivityScreens.Timetable.route)
             launchSingleTop = true
         }
     }
@@ -168,7 +191,7 @@ private fun EtziAppScreen(
                     enableBottomNavigation,
                     enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
                     exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
-                ) { EtziNavigationBar(currentSection, onNavigate) }
+                ) { EtziNavigationBar(currentSection, onNavigateToSection) }
             }
         ) { paddingValues ->
             Row(
@@ -180,7 +203,7 @@ private fun EtziAppScreen(
                     enableNavigationRail,
                     enter = slideInHorizontally(initialOffsetX = { -it }) + expandHorizontally(),
                     exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
-                ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
+                ) { EtziNavigationRail(currentSection, onNavigateToSection, onNavigationMenuOpen) }
 
                 MainNavigationGraph(
                     timetableViewModel,

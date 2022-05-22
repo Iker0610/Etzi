@@ -80,7 +80,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
 
         // Given a route get the corresponding MainActivityScreen
         // Original code from Google's Compose Navigation Codelab
-        private fun fromRoute(route: String?): MainActivityScreens =
+        fun fromRoute(route: String?): MainActivityScreens =
             when (route?.substringBefore("/")) {
                 Timetable.route -> Timetable
                 TutorialsSection.route -> TutorialsSection
