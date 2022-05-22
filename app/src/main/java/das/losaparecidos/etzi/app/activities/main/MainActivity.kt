@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
                 EtziAppScreen(timetableViewModel, navController, accountViewModel)
             }
         }
+
+        Log.d("MAINACTIVITY",intent.action.toString())
     }
 }
 

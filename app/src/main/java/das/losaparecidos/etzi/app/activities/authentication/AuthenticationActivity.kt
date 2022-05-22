@@ -45,7 +45,7 @@ class AuthenticationActivity : FragmentActivity() {
     lateinit var httpClient: APIClient
     private val authViewModel: AuthenticationViewModel by viewModels()
     private lateinit var biometricAuthManager: BiometricAuthManager
-    private var flagWidgetAction: String? = null
+    private var flagWidgetAction: String?=null
 
     /*************************************************
      **          Activity Lifecycle Methods         **
@@ -167,7 +167,10 @@ class AuthenticationActivity : FragmentActivity() {
         // Open the main activity
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("LOGGED_USER_LDAP", user.ldap)
-            setAction(flagWidgetAction)
+            if(flagWidgetAction!=null){
+                setAction(flagWidgetAction)
+            }
+
         }
 
         startActivity(intent)
