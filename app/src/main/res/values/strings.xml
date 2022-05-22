@@ -132,4 +132,5 @@
     <string name="logInToSeeTimetable">Log in to see de timetable</string>
     <string name="change_user_profile_title">Update profile image</string>
     <string name="change_user_profile_text">Change your user profile. You can change it whenever you want.</string>
+    <string name="notable">Notable</string>
 </resources>

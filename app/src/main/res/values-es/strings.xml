@@ -114,5 +114,6 @@
     <string name="confirm_logout_message">¿Estás seguro que quieres cerrar sesión?</string>
     <string name="confirm_logout_button">Cerrar</string>
     <string name="logInToSeeTimetable">Inicie sesión para ver el horario</string>
+    <string name="notable">Notable</string>
 
 </resources>

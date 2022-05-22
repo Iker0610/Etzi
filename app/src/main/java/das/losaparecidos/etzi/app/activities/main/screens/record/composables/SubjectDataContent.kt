@@ -72,6 +72,7 @@ fun SubjectDataContent(
                     distinction -> "${stringResource(id = R.string.distinction)} - $grade"
                     gradeAsFloat < 5f -> "${stringResource(id = R.string.fail)} - $grade"
                     gradeAsFloat >= 9f -> "${stringResource(id = R.string.outstanding)} - $grade"
+                    gradeAsFloat >= 7f -> "${stringResource(id = R.string.notable)} - $grade"
                     else -> "${stringResource(id = R.string.pass)} - $grade"
                 }
 

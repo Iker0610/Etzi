@@ -175,7 +175,12 @@ fun GradesScreen(
                                             text = stringResource(id = R.string.outstanding),
                                             style = MaterialTheme.typography.labelLarge,
                                         )
-                                    } else {
+                                    } else if (grade.toFloat() >= 7f) {
+                                        Text(
+                                            text = stringResource(id = R.string.notable),
+                                            style = MaterialTheme.typography.labelLarge,
+                                        )
+                                    }else {
                                         Text(
                                             text = stringResource(id = R.string.pass),
                                             style = MaterialTheme.typography.labelLarge,
