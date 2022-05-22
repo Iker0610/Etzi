@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/outline_file_open_24"
+                android:src="@drawable/outline_assignment_24"
                 android:background="?android:attr/selectableItemBackground"
                 android:tint="?android:attr/colorAccent"
                 />

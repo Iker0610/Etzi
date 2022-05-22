@@ -107,7 +107,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/outline_file_open_24"
+            android:src="@drawable/outline_assignment_24"
             android:tint="?android:attr/colorAccent" />
 
         <ImageButton
