@@ -40,11 +40,6 @@ class TimetableWidgetFactory(
 
     override fun onCreate() {
         Log.d("WIDGET-FACTORY", "onCreate")
-        runBlocking {
-            dataRepository.getTimetable().first().let { lectures ->
-                lectureList = lectures
-            }
-        }
     }
 
     override fun onDestroy() {
@@ -55,7 +50,7 @@ class TimetableWidgetFactory(
     override fun onDataSetChanged() {
         Log.d("WIDGET-FACTORY", "onDataSetChanged")
         runBlocking {
-            dataRepository.getTimetable().first().let { lectures ->
+            dataRepository.getTodayTimetable().first().let { lectures ->
                 lectureList = lectures
             }
         }

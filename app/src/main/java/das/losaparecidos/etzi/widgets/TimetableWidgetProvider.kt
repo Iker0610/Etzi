@@ -2,6 +2,7 @@ package das.losaparecidos.etzi.widgets
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -74,8 +75,15 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         super.onReceive(context, intent)
-/*
         Log.d("WIDGET", "Se ha recibido un evento broadcast onReceive")
+
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, TimetableWidgetProvider::class.java))
+
+        onUpdate(context, appWidgetManager, ids)
+
+
+/*
 
         coroutineScope.launch {
 
