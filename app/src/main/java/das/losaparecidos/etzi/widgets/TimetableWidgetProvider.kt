@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.R
@@ -15,6 +16,7 @@ import das.losaparecidos.etzi.model.repositories.LoginRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
@@ -36,27 +38,43 @@ class TimetableWidgetProvider : AppWidgetProvider() {
     ) {
         Log.d("WIDGET", "Se han actualizado los widgets (onUpdate)")
 
+        val theresLastLoggedUser = runBlocking { loginRepository.getLastLoggedUser() != null }
+
         // There may be multiple widgets active, so update all of them
         appWidgetIds.forEach { appWidgetId ->
 
             val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
             val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
             val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+            val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height))
 
-            // Initialize intent for our widget service
-            val widgetServiceIntent = Intent(context, TimetableWidgetService::class.java).apply {
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+            // Mostramos la lista
+            if (theresLastLoggedUser) {
+                // Initialize intent for our widget service
+                val widgetServiceIntent = Intent(context, TimetableWidgetService::class.java).apply {
+                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                    data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+                }
+
+                // Get our responsive layout
+                remoteView.apply {
+                    setRemoteAdapter(R.id.horario_agenda, widgetServiceIntent)
+                    setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
+                }
+
+                // Update this widget data
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.horario_agenda)
+            }
+            // Mostramos el mensaje de login
+            else{
+                remoteView.apply {
+                    setViewVisibility(R.id.horario_agenda, View.GONE)
+                    setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.VISIBLE)
+                    setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
+                }
             }
 
-            // Get our responsive layout
-            val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height)).apply {
-                setRemoteAdapter(R.id.horario_agenda, widgetServiceIntent)
-                setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
-            }
-
-            // Update this widget
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.horario_agenda);
+            // Actualizamos widget
             appWidgetManager.updateAppWidget(appWidgetId, remoteView)
         }
 
