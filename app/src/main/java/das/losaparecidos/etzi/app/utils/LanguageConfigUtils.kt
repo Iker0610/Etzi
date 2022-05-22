@@ -48,7 +48,7 @@ import javax.inject.Singleton
 enum class AppLanguage(val language: String, val code: String) {
     EN("English", "en"),
     ES("Español", "es"),
-    EU("Basque", "eu");
+    EU("Euskera", "eu");
 
 
     companion object {
