@@ -32,9 +32,11 @@ fun EtziNavigationBar(currentRoute: String?, onNavigate: (String) -> Unit) {
     NavigationBar {
 
         MainActivityScreens.mainSections.forEach { screen ->
+            val selected by derivedStateOf { currentRoute == screen.route }
+            val icon = if (selected) screen.selectedIcon else screen.unselectedIcon
 
             NavigationBarItem(
-                icon = { Icon(screen.icon, contentDescription = null) },
+                icon = { Icon(icon, contentDescription = null) },
                 label = { Text(screen.title(context)) },
                 selected = currentRoute == screen.route,
                 onClick = { onNavigate(screen.route) }
@@ -84,8 +86,11 @@ fun EtziNavigationRail(
         CenteredColumn(Modifier.fillMaxHeight(1f)) {
 
             MainActivityScreens.mainSections.forEach { screen ->
+                val selected by derivedStateOf { currentRoute == screen.route }
+                val icon = if (selected) screen.selectedIcon else screen.unselectedIcon
+
                 NavigationRailItem(
-                    icon = { Icon(screen.icon, contentDescription = null) },
+                    icon = { Icon(icon, contentDescription = null) },
                     label = { Text(screen.title(context)) },
                     selected = currentRoute == screen.route,
                     alwaysShowLabel = false,
@@ -125,29 +130,22 @@ fun EtziNavigationDrawer(
             ) {
                 MainActivityScreens.menuScreens.forEach { (section, screens) ->
 
-                    /*
-
-                    // Separador de secciones
-                    if (itsFirst) itsFirst = false
-                    else Divider(
-                        Modifier
-                            .padding(horizontal = 12.dp)
-                            .padding(top = 16.dp))
-
-                     */
-
                     // Título de sección
                     Text(
                         text = section.title(context),
-                        style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp)
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp)
+                            .padding(top = 24.dp, bottom = 8.dp)
                     )
 
                     // Secciones
                     screens.forEach { screen ->
+                        val selected by derivedStateOf { currentRoute == screen.route }
+                        val icon = if (selected) screen.selectedIcon else screen.unselectedIcon
 
                         NavigationDrawerItem(
-                            icon = { Icon(screen.icon, contentDescription = null) },
+                            icon = { Icon(icon, contentDescription = null) },
                             label = { Text(screen.title(context)) },
                             selected = currentRoute == screen.route,
                             onClick = {

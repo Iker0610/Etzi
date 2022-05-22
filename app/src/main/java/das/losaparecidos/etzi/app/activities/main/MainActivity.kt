@@ -41,7 +41,6 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
 import das.losaparecidos.etzi.app.activities.main.viewmodels.*
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
@@ -147,10 +146,33 @@ private fun EtziAppScreen(
 
     // Navigate to a route
     val onNavigate = { route: String ->
-        navController.navigate(route) {
-            popUpTo(route) {
-                inclusive = true
+
+        val newSectionRoute = MainActivityScreens.screenRouteToSectionRouteMapping[route] ?: MainActivityScreens.Timetable.route
+        val areFromSameSection = newSectionRoute == MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute]
+
+        if (areFromSameSection) {
+
+            navController.navigate(route) {
+
+                popUpTo(newSectionRoute) {
+                    // saveState = true
+                }
+                launchSingleTop = true
+                // restoreState = true
             }
+        } else {
+            navController.navigate(route) {
+                popUpTo(MainActivityScreens.Timetable.route)
+                launchSingleTop = true
+            }
+        }
+
+    }
+
+    // Navigate to a section
+    val onNavigateToSection = { route: String ->
+        navController.navigate(route) {
+            popUpTo(MainActivityScreens.Timetable.route)
             launchSingleTop = true
         }
     }
@@ -184,7 +206,7 @@ private fun EtziAppScreen(
                     enableBottomNavigation,
                     enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
                     exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
-                ) { EtziNavigationBar(currentSection, onNavigate) }
+                ) { EtziNavigationBar(currentSection, onNavigateToSection) }
             }
         ) { paddingValues ->
             Row(
@@ -196,7 +218,7 @@ private fun EtziAppScreen(
                     enableNavigationRail,
                     enter = slideInHorizontally(initialOffsetX = { -it }) + expandHorizontally(),
                     exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
-                ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
+                ) { EtziNavigationRail(currentSection, onNavigateToSection, onNavigationMenuOpen) }
 
                 MainNavigationGraph(
                     timetableViewModel,
@@ -282,13 +304,6 @@ private fun MainNavigationGraph(
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
                 TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
-            }
-
-            composable(route = MainActivityScreens.TutorialReminders.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
-                // val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
-
-                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
             }
 
             dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {

@@ -1,7 +1,9 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable
 
+import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.rememberSplineBasedDecay
@@ -15,11 +17,13 @@ import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import das.losaparecidos.etzi.R
@@ -28,10 +32,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.ui.components.CenteredRow
-import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
-import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
-import das.losaparecidos.etzi.app.ui.components.showDatePicker
+import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
@@ -39,6 +40,7 @@ import das.losaparecidos.etzi.model.entities.LectureReminder
 import das.losaparecidos.etzi.services.ReminderManager
 import das.losaparecidos.etzi.services.ReminderStatus
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
@@ -63,6 +65,15 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
     val currentSelectedDay by timetableViewModel.currentSelectedDay.collectAsState(initial = LocalDate.today)
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())
     val lectureReminderStatuses by timetableViewModel.lectureRemainders.collectAsState(initial = emptyMap())
+
+    var loadingData by remember { mutableStateOf(true) }
+
+    LaunchedEffect(true) {
+        scope.launch {
+            delay(350)
+            loadingData = false
+        }
+    }
 
     // Events
     // Set or unset item alarm
@@ -97,7 +108,46 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
         }
     }
 
-    // UI
+
+    //-----------------------------------------------------------------------------------------
+
+    // Exit dialog
+    /*************************************************
+     **                Event Handlers               **
+     *************************************************/
+
+    var showExitAlertDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler { showExitAlertDialog = true }
+
+
+    /*------------------------------------------------
+    |                    Dialogs                     |
+    ------------------------------------------------*/
+    if (showExitAlertDialog) {
+        AlertDialog(
+            icon = { Icon(Icons.Rounded.Error, null) },
+            title = { Text(stringResource(R.string.app_exit_dialog_title), textAlign = TextAlign.Center) },
+            text = { Text(stringResource(R.string.app_exit_dialog_text)) },
+            confirmButton = {
+                TextButton(onClick = { (context as Activity).finish() }) {
+                    Text(text = stringResource(id = R.string.exit_button))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitAlertDialog = false }) {
+                    Text(text = stringResource(id = R.string.cancel_button))
+                }
+            },
+            onDismissRequest = { showExitAlertDialog = false }
+        )
+    }
+
+    //-----------------------------------------------------------------------------------------
+
+    /*************************************************
+     **                User Interface               **
+     *************************************************/
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -127,20 +177,34 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
         Column(Modifier.padding(paddingValues)) {
             TimetableNavigationBar(currentSelectedDay, timetableViewModel::onSelectedDateChange)
 
-            Crossfade(targetState = timetable, animationSpec = tween(500), modifier = Modifier.weight(1f)) { timetable ->
-                when {
-                    timetable.isNotEmpty() -> {
-                        LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
-                        ) {
-                            items(timetable, key = Lecture::hashCode) { lecture ->
-                                LectureCard(lecture = lecture, lectureReminderStatuses[lecture] ?: ReminderStatus.UNAVAILABLE, onLectureRemainder)
+            Crossfade(targetState = loadingData, animationSpec = tween(500), modifier = Modifier.weight(1f)) { showLoader ->
+                if (showLoader) {
+
+                    CenteredBox(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                            .padding(32.dp)
+                    ) {
+                        CircularProgressIndicator(strokeWidth = 5.dp, modifier = Modifier.size(48.dp))
+                    }
+                } else {
+                    Crossfade(targetState = timetable, animationSpec = tween(500), modifier = Modifier.weight(1f)) { timetable ->
+                        when {
+                            timetable.isNotEmpty() -> {
+                                LazyColumn(
+                                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
+                                ) {
+                                    items(timetable, key = Lecture::hashCode) { lecture ->
+                                        LectureCard(lecture = lecture, lectureReminderStatuses[lecture] ?: ReminderStatus.UNAVAILABLE, onLectureRemainder)
+                                    }
+                                }
                             }
+
+                            else -> EmptyCollectionScreen(Icons.Rounded.EventBusy, stringResource(R.string.no_lectures_dialog_message))
                         }
                     }
-
-                    else -> EmptyCollectionScreen(Icons.Rounded.EventBusy, stringResource(R.string.no_lectures_dialog_message))
                 }
             }
         }

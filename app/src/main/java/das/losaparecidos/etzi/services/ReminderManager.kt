@@ -123,7 +123,7 @@ class ReminderManager : BroadcastReceiver() {
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
-            notify(NotificationID.LECTURE_REMINDER.id, builder.build())
+            notify(NotificationID.TUTORIAL_REMINDER.id, builder.build())
         }
     }
 
