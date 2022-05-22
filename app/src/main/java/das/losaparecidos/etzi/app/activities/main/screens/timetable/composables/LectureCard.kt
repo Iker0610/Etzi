@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsNone
+import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -28,11 +30,17 @@ import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.mockdata.lectures
+import das.losaparecidos.etzi.services.ReminderStatus
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
+fun LectureCard(
+    lecture: Lecture,
+    reminderStatus: ReminderStatus,
+    onReminderClick: (Lecture, ReminderStatus) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     // Time fomat in Tametable
     val timeFormat = "HH:mm"
@@ -146,30 +154,20 @@ fun LectureCard(lecture: Lecture, modifier: Modifier = Modifier) {
                         modifier = Modifier.padding(start = 16.dp)
                     ) {
 
-                        FilledTonalIconToggleButton(checked = false, onCheckedChange = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.NotificationsNone, null)
+                        FilledTonalIconToggleButton(
+                            checked = reminderStatus == ReminderStatus.ON,
+                            onCheckedChange = { onReminderClick(lecture, reminderStatus) },
+                            enabled = reminderStatus != ReminderStatus.UNAVAILABLE
+                        ) {
+                            val icon = when(reminderStatus){
+                                ReminderStatus.ON -> Icons.Rounded.NotificationsActive
+                                ReminderStatus.OFF -> Icons.Rounded.NotificationsNone
+                                ReminderStatus.UNAVAILABLE -> Icons.Rounded.NotificationsOff
+                            }
+                            Icon(icon, null)
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Preview
-fun LectureCardPreview() {
-    EtziTheme {
-        Scaffold {
-            Column(
-                Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(it)
-                    .padding(30.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                lectures.forEach { lecture -> LectureCard(lecture) }
             }
         }
     }

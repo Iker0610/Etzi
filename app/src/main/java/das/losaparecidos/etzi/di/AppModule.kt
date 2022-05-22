@@ -40,7 +40,9 @@ object AppModule {
     @Singleton
     @Provides
     fun providesEtziDatabase(@ApplicationContext app: Context) =
-        Room.databaseBuilder(app, EtziDatabase::class.java, "etzi").build()
+        Room.databaseBuilder(app, EtziDatabase::class.java, "etzi")
+            .fallbackToDestructiveMigration()
+            .build()
 
 
     //------------------   DAOs   ------------------//

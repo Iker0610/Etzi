@@ -69,7 +69,7 @@ class ReminderManager : BroadcastReceiver() {
      * Method to reload all alarms.
      */
     private fun reloadAlarms(context: Context) {
-        Log.i("REMINDER", "Reloading reminder alarms.")
+        Log.i("ALARMMANAGER-REMINDER", "Reloading reminder alarms.")
 
         val lectureReminders = runBlocking { return@runBlocking reminderRepository.getAllLectureReminders() }
         lectureReminders.map { lecture -> addLectureReminder(context, lecture) }
@@ -84,7 +84,7 @@ class ReminderManager : BroadcastReceiver() {
      */
     @OptIn(DelicateCoroutinesApi::class)
     private fun launchLectureReminderNotification(context: Context, lectureData: LectureReminder) {
-        Log.i("REMINDER", "Launching lecture reminder alarm.")
+        Log.i("ALARMMANAGER-REMINDER", "Launching lecture reminder alarm.")
 
         // Delete alarm from database
         GlobalScope.launch(Dispatchers.IO) { reminderRepository.removeLectureReminder(lectureData) }
@@ -108,7 +108,7 @@ class ReminderManager : BroadcastReceiver() {
      */
     @OptIn(DelicateCoroutinesApi::class)
     private fun launchTutorialReminderNotification(context: Context, tutorialData: TutorialReminder) {
-        Log.i("REMINDER", "Launching tutorial reminder alarm.")
+        Log.i("ALARMMANAGER-REMINDER", "Launching tutorial reminder alarm.")
 
         // Delete alarm from database
         GlobalScope.launch(Dispatchers.IO) { reminderRepository.removeTutorialReminder(tutorialData) }
@@ -154,7 +154,7 @@ class ReminderManager : BroadcastReceiver() {
          * If the alarm already exists then it gets updated.
          */
         fun addLectureReminder(context: Context, lectureReminder: LectureReminder) {
-            Log.i("REMINDER", "Adding lecture reminder alarm.")
+            Log.i("ALARMMANAGER-REMINDER", "Adding lecture reminder alarm.")
 
             // Generate Pending Intent
             val alarmIntent = Intent(context, ReminderManager::class.java).let { intent ->
@@ -165,17 +165,19 @@ class ReminderManager : BroadcastReceiver() {
 
             // Get alarm manager and schedule a new alarm
             val systemTZ = TimeZone.currentSystemDefault()
+            Log.d("ALARMMANAGER-REMINDER", systemTZ.toString())
 
             (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                lectureReminder.lectureDate.toInstant(systemTZ).minus(DateTimePeriod(minutes = minutesBeforeReminder), systemTZ).toEpochMilliseconds(),
+                lectureReminder.lectureDate.toInstant(TimeZone.UTC).minus(DateTimePeriod(minutes = minutesBeforeReminder), TimeZone.UTC).toEpochMilliseconds()
+                    .also { Log.d("ALARMMANAGER-REMINDER", it.toString()) },
                 alarmIntent
             )
         }
 
 
         fun addTutorialReminder(context: Context, tutorialReminder: TutorialReminder) {
-            Log.i("REMINDER", "Adding tutorial reminder alarm.")
+            Log.i("ALARMMANAGER-REMINDER", "Adding tutorial reminder alarm.")
 
             // Generate Pending Intent
             val alarmIntent = Intent(context, ReminderManager::class.java).let { intent ->
@@ -186,10 +188,11 @@ class ReminderManager : BroadcastReceiver() {
 
             // Get alarm manager and schedule a new alarm
             val systemTZ = TimeZone.currentSystemDefault()
+            Log.d("ALARMMANAGER-REMINDER", systemTZ.toString())
 
             (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                tutorialReminder.tutorialDate.toInstant(systemTZ).minus(DateTimePeriod(minutes = minutesBeforeReminder), systemTZ).toEpochMilliseconds(),
+                tutorialReminder.tutorialDate.toInstant(TimeZone.UTC).minus(DateTimePeriod(minutes = minutesBeforeReminder), TimeZone.UTC).toEpochMilliseconds(),
                 alarmIntent
             )
         }
@@ -199,7 +202,7 @@ class ReminderManager : BroadcastReceiver() {
          * Removes an existing scheduled reminder alarm if it exists.
          */
         fun removeLectureReminder(context: Context, lectureReminder: LectureReminder) {
-            Log.i("REMINDER", "Trying to remove lecture reminder alarm.")
+            Log.i("ALARMMANAGER-REMINDER", "Trying to remove lecture reminder alarm.")
 
             // Try to get existing Pending Intent
             Intent(context, ReminderManager::class.java).let { intent ->
@@ -209,13 +212,13 @@ class ReminderManager : BroadcastReceiver() {
             }?.let {
 
                 // If there's an already existing Pending Item delete associated alarm
-                Log.i("REMINDER", "Removing lecture reminder alarm.")
+                Log.i("ALARMMANAGER-REMINDER", "Removing lecture reminder alarm.")
                 (context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager)?.cancel(it)
             }
         }
 
         fun removeTutorialReminder(context: Context, tutorialReminder: TutorialReminder) {
-            Log.i("REMINDER", "Trying to remove tutorial reminder alarm.")
+            Log.i("ALARMMANAGER-REMINDER", "Trying to remove tutorial reminder alarm.")
 
             // Try to get existing Pending Intent
             Intent(context, ReminderManager::class.java).let { intent ->
@@ -225,7 +228,7 @@ class ReminderManager : BroadcastReceiver() {
             }?.let {
 
                 // If there's an already existing Pending Item delete associated alarm
-                Log.i("REMINDER", "Removing tutorial reminder alarm.")
+                Log.i("ALARMMANAGER-REMINDER", "Removing tutorial reminder alarm.")
                 (context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager)?.cancel(it)
             }
         }

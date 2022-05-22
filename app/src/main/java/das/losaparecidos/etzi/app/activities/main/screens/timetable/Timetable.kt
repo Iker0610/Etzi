@@ -1,40 +1,30 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable
 
-import android.graphics.Bitmap
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
-import das.losaparecidos.etzi.app.activities.main.screens.account.LoadingImagePlaceholder
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
@@ -45,6 +35,11 @@ import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
+import das.losaparecidos.etzi.model.entities.LectureReminder
+import das.losaparecidos.etzi.services.ReminderManager
+import das.losaparecidos.etzi.services.ReminderStatus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
@@ -60,13 +55,49 @@ import kotlin.math.ln
 fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, onNavigate: () -> Unit, accountViewModel: AccountViewModel) {
 
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
 
     val currentSelectedDay by timetableViewModel.currentSelectedDay.collectAsState(initial = LocalDate.today)
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())
+    val lectureReminderStatuses by timetableViewModel.lectureRemainders.collectAsState(initial = emptyMap())
 
+    // Events
+    // Set or unset item alarm
+    val onLectureRemainder: (Lecture, ReminderStatus) -> Unit = { lecture, remainderStatus ->
+        val baseLectureReminder = LectureReminder(lecture = lecture)
+
+        when (remainderStatus) {
+            ReminderStatus.UNAVAILABLE -> {
+                Log.d("REMAINDERS", "onItemRemainder when status is UNAVAILABLE")
+            }
+
+            ReminderStatus.OFF -> {
+                scope.launch(Dispatchers.IO) {
+                    timetableViewModel.addLectureReminder(baseLectureReminder)?.let {
+                        ReminderManager.addLectureReminder(context, it)
+
+                        scope.launch(Dispatchers.Main) {
+                            Toast.makeText(context, context.resources.getString(R.string.lecture_reminder_set_toast), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+
+            ReminderStatus.ON -> {
+                scope.launch(Dispatchers.IO) {
+                    timetableViewModel.removeLectureReminder(baseLectureReminder)?.let {
+                        ReminderManager.removeLectureReminder(context, it)
+                    }
+                }
+                Toast.makeText(context, "Remainder removed.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // UI
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -104,7 +135,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)
                         ) {
                             items(timetable, key = Lecture::hashCode) { lecture ->
-                                LectureCard(lecture = lecture)
+                                LectureCard(lecture = lecture, lectureReminderStatuses[lecture] ?: ReminderStatus.UNAVAILABLE, onLectureRemainder)
                             }
                         }
                     }

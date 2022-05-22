@@ -94,6 +94,25 @@ class Datastore @Inject constructor(
         }
     }
 
+    fun getLastLoggedUserFlow(): Flow<AuthUser?> =
+        context.dataStore.data.map { preferences ->
+            val encryptedData = preferences[PreferencesKeys.LAST_LOGGED_USER]
+
+            return@map try {
+                if (encryptedData != null) {
+                    val data = cipher.decryptData(CIPHER_KEY, encryptedData)
+                    Json.decodeFromString(data)
+                } else null
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+                null
+            } catch (e: NoCryptographicKeyException) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+
     // Set the last logged user on DataStore Preferences
     suspend fun setLastLoggedUser(user: AuthUser) {
         context.dataStore.edit { preferences ->
@@ -135,7 +154,8 @@ class Datastore @Inject constructor(
             preferences[PreferencesKeys.USER_LANG(userLdap)] = langCode
         }
     }
-    suspend fun clearPreferences(){
+
+    suspend fun clearPreferences() {
         context.dataStore.edit { preferences ->
             preferences.clear()
         }
