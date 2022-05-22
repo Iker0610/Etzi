@@ -108,13 +108,15 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
     private fun agregarEventoBotonesWidget(context: Context, remoteView: RemoteViews) {
         val intentTutorias = Intent(context, AuthenticationActivity::class.java)
-        intentTutorias.setAction(WidgetOpenerActions.OPEN_TUTORIALS.name)
+        intentTutorias.action = WidgetOpenerActions.OPEN_TUTORIALS.name
         remoteView.setOnClickPendingIntent(R.id.btn_tutorias, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_TUTORIALS.hashCode(), intentTutorias, PendingIntent.FLAG_IMMUTABLE))
+
         val intentExpediente = Intent(context, AuthenticationActivity::class.java)
-        intentExpediente.setAction(WidgetOpenerActions.OPEN_EXPEDIENTE.name)
+        intentExpediente.action = WidgetOpenerActions.OPEN_EXPEDIENTE.name
         remoteView.setOnClickPendingIntent(R.id.btn_expediente, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_EXPEDIENTE.hashCode(), intentExpediente, PendingIntent.FLAG_IMMUTABLE))
+
         val intentEgela = Intent(context, AuthenticationActivity::class.java)
-        intentEgela.setAction(WidgetOpenerActions.OPEN_EGELA.name)
+        intentEgela.action = WidgetOpenerActions.OPEN_EGELA.name
         remoteView.setOnClickPendingIntent(R.id.btn_egela, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_EGELA.hashCode(), intentEgela, PendingIntent.FLAG_IMMUTABLE))
     }
 
