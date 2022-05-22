@@ -20,6 +20,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.WidgetOpenerActions
@@ -191,6 +192,7 @@ class AuthenticationActivity : FragmentActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     private fun subscribeUser() {
         // Get FCM
+        FirebaseApp.initializeApp(this)
         val fcm = FirebaseMessaging.getInstance()
         Log.d("FCM", "DCM obtained")
 
