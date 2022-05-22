@@ -190,7 +190,7 @@ class AuthenticationActivity : FragmentActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     private fun subscribeUser() {
         // Get FCM
-        FirebaseApp.initializeApp(this)
+        // FirebaseApp.initializeApp(this)
 
         val fcm = FirebaseMessaging.getInstance()
         Log.d("FCM", "DCM obtained")
