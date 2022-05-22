@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import kotlinx.coroutines.delay
@@ -90,7 +92,6 @@ fun Splash(alpha: Float) {
             Card {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.padding(vertical = 32.dp, horizontal = 64.dp)
                 ) {
                     Icon(
@@ -99,7 +100,7 @@ fun Splash(alpha: Float) {
                         modifier = Modifier.size(120.dp))
                     Text(
                         text = "Etzi",
-                        style = MaterialTheme.typography.displayLarge,
+                        style = MaterialTheme.typography.displayLarge.copy(fontWeight = FontWeight.SemiBold),
                     )
                 }
             }
