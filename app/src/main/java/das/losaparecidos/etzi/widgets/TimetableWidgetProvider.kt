@@ -17,6 +17,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.DateTimePeriod
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -47,6 +50,14 @@ class TimetableWidgetProvider : AppWidgetProvider() {
             val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
             val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
             val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height))
+            if(getLayoutResponsive(width, height)==R.layout.agenda_widget_4x4){
+                val fecha = Date()
+                val sdfDia = SimpleDateFormat("dd")
+                val sdfMes = SimpleDateFormat("MMMM")
+
+                remoteView.setTextViewText(R.id.agenda_widget_fecha_dia,sdfDia.format(fecha))
+                remoteView.setTextViewText(R.id.agenda_widget_fecha_mes,sdfMes.format(fecha))
+            }
 
             // Mostramos la lista
             if (theresLastLoggedUser) {

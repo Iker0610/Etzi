@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:orientation="horizontal">
         <!-- Fecha -->
         <LinearLayout
@@ -19,13 +19,14 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="70dp"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -60,7 +61,8 @@
                 <ListView
                     android:id="@+id/horario_agenda"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></ListView>
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"></ListView>
 
                 <TextView
                     android:id="@+id/agenda_widget_msg_iniciar_sesion"
@@ -91,6 +93,7 @@
         android:layout_weight="1">
 
         <ImageButton
+            android:id="@+id/btn_tutorias"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -99,6 +102,7 @@
             android:tint="?android:attr/colorAccent" />
 
         <ImageButton
+            android:id="@+id/btn_expediente"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -107,6 +111,7 @@
             android:tint="?android:attr/colorAccent" />
 
         <ImageButton
+            android:id="@+id/btn_egela"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"

@@ -8,10 +8,12 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
 
 
@@ -59,8 +61,10 @@ class TimetableWidgetFactory(
     override fun getViewAt(position: Int): RemoteViews {
         Log.d("WIDGET-FACTORY", "Generando UN item")
         return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
-            setTextViewText(R.id.widget_item_hora_comienzo, lectureList[position].startDate.toString())
-            setTextViewText(R.id.widget_item_hora_fin, lectureList[position].endDate.toString())
+            val horaComienzo=lectureList[position].startDate
+            val horaFin=lectureList[position].endDate
+            setTextViewText(R.id.widget_item_hora_comienzo, horaComienzo.format("HH:mm"))
+            setTextViewText(R.id.widget_item_hora_fin, horaFin.format("HH:mm"))
             setTextViewText(R.id.widget_item_asignatura, lectureList[position].subjectName)
             setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
             setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
