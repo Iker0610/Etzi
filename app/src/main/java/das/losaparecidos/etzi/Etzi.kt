@@ -126,3 +126,12 @@ enum class NotificationID(val id: Int) {
     LECTURE_REMINDER(20),
     TUTORIAL_REMINDER(21),
 }
+
+
+
+//WIDGET PENDING INTENTS
+enum class WidgetOpenerActions(){
+    OPEN_TUTORIALS,
+    OPEN_EXPEDIENTE,
+    OPEN_EGELA
+}

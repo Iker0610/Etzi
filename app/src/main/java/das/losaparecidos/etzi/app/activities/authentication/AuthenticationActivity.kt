@@ -22,6 +22,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.WidgetOpenerActions
 import das.losaparecidos.etzi.app.activities.authentication.screens.AnimatedSplashScreen
 import das.losaparecidos.etzi.app.activities.authentication.screens.AuthenticationScreen
 import das.losaparecidos.etzi.app.activities.main.MainActivity
@@ -132,6 +133,7 @@ class AuthenticationActivity : FragmentActivity() {
                 }
             }
         }
+        Log.d("AuthenticationActivity",+intent.getStringExtra("WIDGET_ACTION"))
     }
 
 

@@ -1,5 +1,6 @@
 package das.losaparecidos.etzi.widgets
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -11,7 +12,10 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.Etzi
 import das.losaparecidos.etzi.R
+import das.losaparecidos.etzi.WidgetOpenerActions
+import das.losaparecidos.etzi.app.activities.authentication.AuthenticationActivity
 import das.losaparecidos.etzi.model.repositories.LoginRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,19 +56,20 @@ class TimetableWidgetProvider : AppWidgetProvider() {
             val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height))
 
             //Acciones específicas en función del RemoteView
-            switch(getLayoutResponsive(width,height)){
-               case R.layout.agenda_widget_4x4:
-                    //Config decha
-                    val fecha = Date()
-                    val sdfDia = SimpleDateFormat("dd")
-                    val sdfMes = SimpleDateFormat("MMMM")
-                    remoteView.setTextViewText(R.id.agenda_widget_fecha_dia,sdfDia.format(fecha))
-                    remoteView.setTextViewText(R.id.agenda_widget_fecha_mes,sdfMes.format(fecha))
-                    //Config botones
-               case R.layout.agenda_widget_2x4:
-                    remoteView.setOnClickPendingIntent(R.id.btn_tutorias, /*TODO*/)
-                    remoteView.setOnClickPendingIntent(R.id.btn_expediente, /*TODO*/)
-                    remoteView.setOnClickPendingIntent(R.id.btn_egela, /*TODO*/)
+            when (getLayoutResponsive(width,height)){
+               R.layout.agenda_widget_4x4-> {
+                   //Config fecha
+                   val fecha = Date()
+                   val sdfDia = SimpleDateFormat("dd")
+                   val sdfMes = SimpleDateFormat("MMMM")
+                   remoteView.setTextViewText(R.id.agenda_widget_fecha_dia, sdfDia.format(fecha))
+                   remoteView.setTextViewText(R.id.agenda_widget_fecha_mes, sdfMes.format(fecha))
+                   agregarEventoBotonesWidget(context, remoteView)
+               }
+                R.layout.agenda_widget_2x4->{
+                    agregarEventoBotonesWidget(context, remoteView)
+               }
+
             }
 
             // Mostramos la lista
@@ -99,6 +104,18 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
         // Call super
         super.onUpdate(context, appWidgetManager, appWidgetIds)
+    }
+
+    private fun agregarEventoBotonesWidget(context: Context, remoteView: RemoteViews) {
+        val intentTutorias = Intent(context, AuthenticationActivity::class.java)
+        intentTutorias.putExtra("WIDGET_ACTION",WidgetOpenerActions.OPEN_TUTORIALS.name)
+        remoteView.setOnClickPendingIntent(R.id.btn_tutorias, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_TUTORIALS.hashCode(), intentTutorias, PendingIntent.FLAG_IMMUTABLE))
+        val intentExpediente = Intent(context, AuthenticationActivity::class.java)
+        intentExpediente.putExtra("WIDGET_ACTION",WidgetOpenerActions.OPEN_EXPEDIENTE.name)
+        remoteView.setOnClickPendingIntent(R.id.btn_expediente, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_EXPEDIENTE.hashCode(), intentExpediente, PendingIntent.FLAG_IMMUTABLE))
+        val intentEgela = Intent(context, AuthenticationActivity::class.java)
+        intentEgela.putExtra("WIDGET_ACTION",WidgetOpenerActions.OPEN_EGELA.name)
+        remoteView.setOnClickPendingIntent(R.id.btn_egela, PendingIntent.getActivity(context, WidgetOpenerActions.OPEN_EGELA.hashCode(), intentEgela, PendingIntent.FLAG_IMMUTABLE))
     }
 
     override fun onEnabled(context: Context) {
