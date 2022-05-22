@@ -1,21 +1,28 @@
 package das.losaparecidos.etzi.app.activities.main.screens.egela
 
 import android.webkit.CookieManager
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.EgelaViewModel
+import das.losaparecidos.etzi.app.ui.components.CenteredBox
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -25,7 +32,9 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +46,8 @@ fun EgelaScreen(
     onNavigate: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
+    val initialized by rememberSaveable { mutableStateOf(true) }
+    var loadingData by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -56,28 +67,50 @@ fun EgelaScreen(
         }
     ) { paddingValues ->
 
-        val ldap = egelaViewModel.loggedUser.ldap
-        val pass = egelaViewModel.loggedUser.password
-        val datosEgela: JSONObject = runBlocking{getCookieEgela(ldap, pass)}
         val egela = rememberWebViewState("https://egela.ehu.eus")
 
+        Crossfade(
+            targetState = loadingData, animationSpec = tween(500), modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) { showLoader ->
+            if (showLoader) {
 
-        WebView(
-            egela,
-            Modifier.padding(paddingValues)
-        )
+                CenteredBox(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(32.dp)
+                ) {
+                    CircularProgressIndicator(strokeWidth = 5.dp, modifier = Modifier.size(48.dp))
+                }
+            } else {
+                WebView(egela, Modifier.fillMaxSize())
+            }
+        }
 
-        try {
-            val cookie = datosEgela.get("cookie").toString().substring(0, datosEgela.get("cookie").toString().indexOf("/") + 1)
-            CookieManager.getInstance().setCookie("https://egela.ehu.eus", cookie)
-        }catch (e: Exception){
-            pass
+        LaunchedEffect(initialized) {
+            (Dispatchers.IO) {
+                try {
+                    val ldap = egelaViewModel.loggedUser.ldap
+                    val password = egelaViewModel.loggedUser.password
+
+                    val egelaData: JSONObject = getCookieEgela(ldap, password)
+
+                    val cookie = egelaData.get("cookie").toString().substring(0, egelaData.get("cookie").toString().indexOf("/") + 1)
+                    CookieManager.getInstance().setCookie("https://egela.ehu.eus", cookie)
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    loadingData = false
+                }
+            }
         }
     }
 }
 
 @OptIn(InternalAPI::class)
-suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withContext(Dispatchers.IO) {
+private suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withContext(Dispatchers.IO) {
 
     //////////////////////////////////////// PRIMERA PETICIÓN ////////////////////////////////////////
 
@@ -96,13 +129,13 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
     }
 
     // Conseguimos el token
-    val token = getToken(responseGetToken.body<String>())
+    val token = getToken(responseGetToken.body())
     if (token == "fail") {
         return@withContext JSONObject()
     }
 
 
-    val primeraCookie = responseGetToken.headers.get("Set-Cookie")
+    val primeraCookie = responseGetToken.headers["Set-Cookie"]
 
 
     //////////////////////////////////////// SEGUNDA PETICIÓN ////////////////////////////////////////
@@ -126,8 +159,8 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
     val resultado = JSONObject()
 
     if (status1 == 303) { // Comprobamos la respuesta de la petición
-        val cookieEntera = response1.headers.get("Set-Cookie")
-        val location = response1.headers.get("Location")
+        val cookieEntera = response1.headers["Set-Cookie"]
+        val location = response1.headers["Location"]
 
         val cookie = cookieEntera.toString().substring(0, cookieEntera.toString().indexOf("/") + 1) // Obtenemos la cookie
 
@@ -143,7 +176,7 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
             resultado.put("cookie", cookie)
         }
 
-    }else{
+    } else {
         // Si el usuario no tiene cuenta en egela (Si es un usuario de prueba no tiene cuenta real de la universidad)
         return@withContext JSONObject()
     }
@@ -152,7 +185,7 @@ suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withCon
     return@withContext resultado
 }
 
-fun getToken(body: String): String {
+private fun getToken(body: String): String {
     try {
         // Obtenemos el inputtoken
         val inputToken = "<input type=\"hidden\" name=\"logintoken\" value=\".*\""
@@ -161,6 +194,7 @@ fun getToken(body: String): String {
         if (token != null) {
             return token.value.substring(46, token.value.length - 1)
         }
-    } catch (e: Exception) { }
+    } catch (e: Exception) {
+    }
     return "fail"
 }
