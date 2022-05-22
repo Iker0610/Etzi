@@ -3,14 +3,18 @@
 package das.losaparecidos.etzi.app.activities.main.screens.tutorials
 
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EventBusy
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -23,9 +27,12 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +42,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
+import das.losaparecidos.etzi.app.activities.main.screens.account.LoadingImagePlaceholder
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.composables.TutorialCard
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
 import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
@@ -49,6 +59,8 @@ fun TutorialsScreen(
     windowSizeClass: WindowSizeClass,
     onMenuOpen: () -> Unit,
     onFilter: () -> Unit = {},
+    accountViewModel: AccountViewModel,
+    onNavigate: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -77,6 +89,7 @@ fun TutorialsScreen(
                     IconButton(onClick = onFilter) {
                         Icon(Icons.Rounded.FilterAlt, contentDescription = "Open filter dialog")
                     }
+                    AccountIcon(accountViewModel, onNavigate)
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -306,6 +319,6 @@ fun LazyListScope.professorCollapsable(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun TutorialsScreenPreview() {
     EtziTheme {
-        TutorialsScreen(viewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
+        TutorialsScreen(viewModel(), windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {}, {}, viewModel(),{})
     }
 }

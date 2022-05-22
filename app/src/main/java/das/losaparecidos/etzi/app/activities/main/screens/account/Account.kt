@@ -29,15 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -57,7 +53,6 @@ import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 import das.losaparecidos.etzi.model.entities.Student
-import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
@@ -75,7 +70,6 @@ fun AccountScreen(
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
     val profilePicture: Bitmap? = accountViewModel.profilePicture
     var showSelectLangDialog by rememberSaveable { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
 
     /*************************************************
      **                    Events                   **
@@ -120,12 +114,9 @@ fun AccountScreen(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { onBack() }) {
-                            Icon(Icons.Filled.ArrowBack, null)
-                        }
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
                     }
-
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -147,7 +138,7 @@ fun AccountScreen(
             Box(contentAlignment = Alignment.BottomEnd) {
                 Box {
                     if (profilePicture == null) {
-                        LoadingImagePlaceholder(size = 138.dp)
+                        //LoadingImagePlaceholder(size = 138.dp)
                     } else {
                         Image(
                             bitmap = profilePicture.asImageBitmap(),
@@ -212,10 +203,8 @@ fun AccountScreen(
             }
 
             OutlinedButton(
-                onClick = { /* TODO cerrar sesión (poner dialog de confirmación cuando la cosa funsione)*/
+                onClick = {
                     accountViewModel.onLogout()
-                    // llevar al usuario a la pantalla del login
-                    // how the hell i'm supposed to do that si no está en la navegación la pantalla
                     context.startActivity(Intent(context, AuthenticationActivity::class.java))
                     exitProcess(0)
                 }
@@ -228,13 +217,31 @@ fun AccountScreen(
         }
     }
 }
-
+@Composable
+fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: ()-> Unit){
+    val profilePicture: Bitmap? = accountViewModel.profilePicture
+    Box(Modifier.padding(16.dp)) {
+        if (profilePicture == null) {
+            LoadingImagePlaceholder(size = 28.dp)
+        } else {
+            Image(
+                bitmap = profilePicture.asImageBitmap(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .clickable { onNavigate() },
+            )
+        }
+    }
+}
 /*************************************************
  **          Image Loading Placeholder          **
  *************************************************/
 
 @Composable
-private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
+fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     // Creates an `InfiniteTransition` that runs infinite child animation values.
     val infiniteTransition = rememberInfiniteTransition()
     val alpha by infiniteTransition.animateFloat(
@@ -256,7 +263,7 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
     )
 
     Icon(
-        Icons.Rounded.Image, contentDescription = null,
+        Icons.Rounded.AccountCircle, contentDescription = null,
         modifier = Modifier
             .size(size)
             .clip(CircleShape)
@@ -269,7 +276,7 @@ private fun LoadingImagePlaceholder(size: Dp = 140.dp) {
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
-    EtziTheme() {
-        AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp)), {})
+    EtziTheme{
+        AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp))) {}
     }
 }

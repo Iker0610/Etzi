@@ -1,35 +1,47 @@
 package das.losaparecidos.etzi.app.activities.main.screens.timetable
 
+import android.graphics.Bitmap
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
+import das.losaparecidos.etzi.app.activities.main.screens.account.LoadingImagePlaceholder
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.composables.LectureCard
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.ui.components.*
+import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
+import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
+import das.losaparecidos.etzi.app.ui.components.showDatePicker
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.app.utils.today
 import das.losaparecidos.etzi.model.entities.Lecture
@@ -45,7 +57,7 @@ import kotlin.math.ln
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, onNavigate: () -> Unit) {
+fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, onNavigate: () -> Unit, accountViewModel: AccountViewModel) {
 
     val context = LocalContext.current
 
@@ -54,7 +66,6 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
 
     val currentSelectedDay by timetableViewModel.currentSelectedDay.collectAsState(initial = LocalDate.today)
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())
-
 
 
     Scaffold(
@@ -76,11 +87,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
                     }) {
                         Icon(Icons.Rounded.Today, null)
                     }
-                    IconButton(onClick = {
-                        onNavigate()
-                    }) {
-                        Icon(MainActivityScreens.Account.icon, null)
-                    }
+                    AccountIcon(accountViewModel, onNavigate)
                 },
                 scrollBehavior = scrollBehavior
             )

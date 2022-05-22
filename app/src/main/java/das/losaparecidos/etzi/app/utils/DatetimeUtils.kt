@@ -25,6 +25,7 @@ fun LocalDateTime.format(formatPattern: String): String = this.format(DateTimeFo
 fun LocalDateTime.format(formatter: DateTimeFormatter): String = this.toJavaLocalDateTime().format(formatter)
 
 val LocalDateTime.epochSecond get(): Long = this.toInstant(TimeZone.currentSystemDefault()).epochSeconds
+val LocalDateTime.epochUTCMilliseconds get(): Long = this.toInstant(TimeZone.UTC).toEpochMilliseconds()
 
 fun LocalDateTime.Companion.fromEpochSeconds(seconds: Long): LocalDateTime =
     Instant.fromEpochSeconds(seconds).toLocalDateTime(TimeZone.currentSystemDefault())

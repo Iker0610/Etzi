@@ -99,4 +99,13 @@
     <string name="student_data">Student Information</string>
     <string name="language_label">Change your language</string>
     <string name="profile_not_taken_toast_msg">No picture taken</string>
+    <string name="academic_year">Academic Year</string>
+    <string name="ordinaryExam">Ordinary exam</string>
+    <string name="extraordinaryExam">Extraordinary exam</string>
+    <string name="time">Time</string>
+    <string name="exams_screen_title">Exams timetable</string>
+    <string name="quarter">quarter</string>
+    <string name="no_exams">There are no exams scheduled yet</string>
+    <string name="exam">Exam</string>
+    <string name="tutorial">Tutorial</string>
 </resources>
