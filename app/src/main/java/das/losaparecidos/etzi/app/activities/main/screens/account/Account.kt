@@ -244,8 +244,8 @@ fun AccountScreen(
                                     .clickable { openChooseImageDialog = true }
                             )
 
-                            FilledTonalIconButton(onClick = { openChooseImageDialog = true }, Modifier.size(42.dp)) {
-                                Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(24.dp))
+                            FilledTonalIconButton(onClick = { openChooseImageDialog = true }, Modifier.size(32.dp).padding(bottom = 8.dp, end = 8.dp)) {
+                                Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(18.dp))
                             }
 
                         }
