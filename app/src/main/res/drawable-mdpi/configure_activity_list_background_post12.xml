@@ -20,6 +20,6 @@
     <corners android:radius="16dp" />
     <stroke
         android:width="2dp"
-        android:color="?android:attr/colorBackground" />
-    <solid android:color="?android:attr/colorBackground"></solid>
+        android:color="@color/material_dynamic_secondary80" />
+    <solid android:color="@color/material_dynamic_secondary80"></solid>
 </shape>

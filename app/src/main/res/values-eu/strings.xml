@@ -106,4 +106,22 @@
     <string name="notable">Oso ongi</string>
     <string name="provisional_grade_notification_title">Nota berria jarrita</string>
     <string name="provisional_grade_notification_text">%1$s-ko nota igo da.</string>
+    <string name="tutorial_reminder_channel_name">Tutoretzen abisuak</string>
+    <string name="tutorial_reminder_channel_description">Erabiltzaileak konfiguratutako tutorialen abisuekin erlazionatutako jakinarazpenak.</string>
+    <string name="lecture_reminder_channel_name">Klaseko abisuak</string>
+    <string name="lecture_reminder_channel_description">Erabiltzaileak konfiguratutako klaseen abisuekin erlazionatutako jakinarazpenak.</string>
+    <string name="lecture_reminder_notification_title">%1$s-etan klasea daukazu</string>
+    <string name="lecture_reminder_notification_text">%2$s-etan %1$s-ko klasea daukazu %3$s ikasgelan.</string>
+    <string name="tutorial_reminder_notification_title">Tutoria bat daukazu %1$s-etan.</string>
+    <string name="tutorial_reminder_notification_text">%2$s-etan %1$s-ekin tutoria daukazu %3$s ikasgelan.</string>
+    <string name="lecture_reminder_set_toast">Klaseko abisua aktibatuta.</string>
+    <string name="lecture_reminder_removed_toast">Klaseko abisua ezabatuta.</string>
+    <string name="tutorial_reminder_set_toast">Tutoretzako abisua aktibatuta.</string>
+    <string name="tutorial_reminder_removed_toast">Tutoretzako abisua ezabatuta.</string>
+    <string name="remove_notification">Jakinarazpena ezabatu</string>
+    <string name="app_exit_dialog_title">Etzitik irten</string>
+    <string name="app_exit_dialog_text">Ziur zaude atera nahi duzula?</string>
+    <string name="exit_button">Irten</string>
+    <string name="change_user_profile_title">Profileko argazkia aldatu</string>
+    <string name="change_user_profile_text">Aldatu zure erabiltzailearen profila. Nahi duzunean aldatu dezakezu.</string>
 </resources>
