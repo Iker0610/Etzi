@@ -263,10 +263,10 @@ fun AuthenticationScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             CenteredRow {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_ehu_logo),
                     contentDescription = "UPV/EHU logo",
-                    modifier = Modifier.size(50.dp)
+                    modifier = Modifier.size(50.dp),
                 )
 
                 Text(
