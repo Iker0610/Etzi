@@ -1,11 +1,9 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
-import YearCreditsScreen
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import QuarterSubjectsList
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ContentPasteOff
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -15,47 +13,42 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
+import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseSubjectsList
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.ui.components.CenteredBox
-import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
-import das.losaparecidos.etzi.app.ui.components.pagerTabIndicatorOffset
+import das.losaparecidos.etzi.app.ui.components.*
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
-fun CreditsScreen(
+fun ExamsScreen(
     recordViewModel: RecordViewModel,
     windowSizeClass: WindowSizeClass,
     onMenuOpen: () -> Unit,
     onNavigate: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
-
     val scope = rememberCoroutineScope()
 
-    val courses by recordViewModel.enrolledCourseSet.collectAsState(initial = emptySet())
-    val record by recordViewModel.recordGroupedByCourse.collectAsState(initial = emptyMap())
-    val approvedCreditsInDegree by recordViewModel.approvedCreditsInDegree.collectAsState(initial = 0)
+    val courseRecord by recordViewModel.actualCourseRecord.collectAsState(initial = emptyList())
 
+    val quarters = IntArray(2) { it + 1 }
     val pagerState = rememberPagerState()
-
 
     Scaffold(
         topBar = {
-            DynamicMediumTopAppBar(
-                windowSizeClass,
-                title = { Text(text = MainActivityScreens.Credits.title(LocalContext.current)) },
+            DynamicLargeMediumTopAppBar(
+                windowSizeClass = windowSizeClass,
+                title = { Text(text = MainActivityScreens.Exams.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         IconButton(onClick = onMenuOpen) {
@@ -69,8 +62,9 @@ fun CreditsScreen(
             )
         }
     ) { paddingValues ->
+
         when {
-            recordViewModel.loadingData || courses.isEmpty() -> {
+            recordViewModel.loadingData -> {
                 CenteredBox(
                     Modifier
                         .fillMaxSize()
@@ -81,28 +75,43 @@ fun CreditsScreen(
                 }
             }
 
-            else -> {
+            courseRecord.isNotEmpty() -> {
+
                 Column(modifier = Modifier.padding(paddingValues)) {
                     TabRow(
                         selectedTabIndex = pagerState.currentPage,
                         indicator = { tabPositions -> TabRowDefaults.Indicator(Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)) }
                     ) {
-                        courses.forEachIndexed { index, course ->
+                        quarters.forEachIndexed { index, course ->
                             Tab(
-                                text = { Text("${course}º ${stringResource(id = R.string.course)}") },
+                                text = { Text("${course}º ${stringResource(id = R.string.quarter)}") },
                                 selected = pagerState.currentPage == index,
                                 onClick = { scope.launch { pagerState.animateScrollToPage(index) } }
                             )
                         }
                     }
+
                     HorizontalPager(
-                        count = courses.size,
+                        count = quarters.size,
                         state = pagerState,
-                    ) { pageIndex ->
-                        YearCreditsScreen(record[pageIndex + 1] ?: emptyList(), approvedCreditsInDegree)
+
+                        ) { pageIndex ->
+
+                        if (pageIndex == 1) {
+                            QuarterSubjectsList(subjects = courseRecord.filter {
+                                it.subjectCalls[0].examDate.monthNumber in 5..7
+                            })
+                        }
+
+                        else {
+                            QuarterSubjectsList(subjects = courseRecord.filter {
+                                it.subjectCalls[0].examDate.monthNumber > 11 && it.subjectCalls[0].examDate.monthNumber < 2
+                            })
+                        }
                     }
                 }
             }
+            else -> EmptyCollectionScreen(Icons.Rounded.ContentPasteOff, stringResource(id = R.string.no_exams), Modifier.padding(paddingValues))
         }
     }
 }

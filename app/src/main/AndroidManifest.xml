@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="das.losaparecidos.etzi">
 
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".Etzi"
         android:allowBackup="true"
@@ -88,7 +94,6 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-
             </intent-filter>
 
             <meta-data
@@ -109,6 +114,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/cache_file_paths" />
         </provider>
+
+        <!-- Reminder Notification Service -->
+        <receiver
+            android:name=".services.ReminderManager"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

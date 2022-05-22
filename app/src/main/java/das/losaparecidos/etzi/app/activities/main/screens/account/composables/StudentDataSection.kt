@@ -27,7 +27,7 @@ fun StudentDataSection(student: Student, modifier: Modifier = Modifier) {
 
         DataSection(stringResource(R.string.email_label), student.email)
 
-        DataSection(stringResource(R.string.ldap_title), student.enrolledDegree)
+        DataSection(stringResource(R.string.degree_label), student.enrolledDegree)
     }
 }
 

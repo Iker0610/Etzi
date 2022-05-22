@@ -48,7 +48,7 @@
     <string name="masterclass">Magistral</string>
 
     <!-- Expediente -->
-    <string name="course">Curso</string>
+    <string name="course">curso</string>
     <string name="pending">Créditos pendientes de obtener</string>
     <string name="unassessed">Créditos pendientes de evaluar</string>
     <string name="expedient">Créditos aprobados</string>
@@ -86,7 +86,7 @@
     <string name="pass">Aprobado</string>
     <string name="outstanding">Sobresaliente</string>
     <string name="saveToCalendar">Guardar en calendario</string>
-    <string name="ativateNotification">Activar notificación</string>
+    <string name="activateNotification">Activar notificación</string>
     <string name="chooseCalendarOrNotification">¿Quieres almacenar la fecha en el calendario o activar una notificación para una hora antes?</string>
     <string name="reminder">Recordatorios</string>
     <string name="student_full_name_label">Nombre completo</string>
@@ -96,8 +96,20 @@
     <string name="language_label">Cambiar idioma</string>
     <string name="settings">Ajustes</string>
     <string name="student_data">Datos del estudiante</string>
+    <string name="ordinaryExam">Examen ordinario</string>
+    <string name="extraordinaryExam">Examen extraordinario</string>
+    <string name="time">Hora</string>
+    <string name="exams_screen_title">Calendario de exámenes</string>
+    <string name="quarter">cuatrimestre</string>
     <string name="profile_not_taken_toast_msg">No se ha tomado una instantánea</string>
-    <string name="select_lang_dialog_text">Selecciona tu idioma deseado</string>
-    <string name="academic_year">Año Académico</string>
+    <string name="select_lang_dialog_text">Selecciona el idioma deseado.</string>
+    <string name="academic_year">Año</string>
+    <string name="no_exams">Todavía no hay exámenes programados</string>
+    <string name="exam">Examen</string>
+    <string name="no_tutorials_dialog_message">No hay tutorías disponibles</string>
+    <string name="tutorial">Tutoria</string>
+    <string name="chooseFromGallery">Escoger imagen de galería</string>
+    <string name="takeFromCamera">Sacar foto desde la cámara</string>
+    <string name="changePhoto">Cambiar foto</string>
 
 </resources>

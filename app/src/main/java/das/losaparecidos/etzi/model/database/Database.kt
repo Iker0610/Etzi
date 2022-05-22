@@ -7,12 +7,9 @@ import androidx.room.TypeConverters
 import das.losaparecidos.etzi.app.utils.epochSecond
 import das.losaparecidos.etzi.app.utils.epochSeconds
 import das.losaparecidos.etzi.app.utils.fromEpochSeconds
-import das.losaparecidos.etzi.model.database.daos.RemainderDao
+import das.losaparecidos.etzi.model.database.daos.ReminderDao
 import das.losaparecidos.etzi.model.database.daos.StudentCacheDataDao
-import das.losaparecidos.etzi.model.entities.Building
-import das.losaparecidos.etzi.model.entities.LectureEntity
-import das.losaparecidos.etzi.model.entities.Professor
-import das.losaparecidos.etzi.model.entities.Student
+import das.losaparecidos.etzi.model.entities.*
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.decodeFromString
@@ -22,21 +19,21 @@ import kotlinx.serialization.json.Json
 /**
  * Room database definition abstract class (it's later instantiated in Hilt's module).
  *
- * Version: 2
+ * Version: 3
  *
  * Entities: [LectureEntity], [Building], [Professor], [Student]
- * Defined DAOs: [StudentCacheDataDao], [RemainderDao]
+ * Defined DAOs: [StudentCacheDataDao], [ReminderDao]
  *
  */
 
 @Database(
-    version = 2,
-    entities = [LectureEntity::class, Building::class, Professor::class, Student::class],
+    version = 3,
+    entities = [LectureEntity::class, Building::class, Professor::class, Student::class, LectureReminder::class, TutorialReminder::class],
 )
 @TypeConverters(Converters::class)
 abstract class EtziDatabase : RoomDatabase() {
     abstract fun timetableDao(): StudentCacheDataDao
-    abstract fun reminderDao(): RemainderDao
+    abstract fun reminderDao(): ReminderDao
 }
 
 

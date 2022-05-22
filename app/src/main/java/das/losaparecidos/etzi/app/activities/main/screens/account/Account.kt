@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.*
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Image
@@ -15,6 +18,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,7 +26,6 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -38,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import das.losaparecidos.etzi.R
@@ -45,10 +49,7 @@ import das.losaparecidos.etzi.app.activities.authentication.AuthenticationActivi
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.composables.StudentDataSection
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
-import das.losaparecidos.etzi.app.ui.components.CenteredColumn
-import das.losaparecidos.etzi.app.ui.components.DynamicLargeMediumTopAppBar
-import das.losaparecidos.etzi.app.ui.components.ListItem
-import das.losaparecidos.etzi.app.ui.components.MaterialDivider
+import das.losaparecidos.etzi.app.ui.components.*
 import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
@@ -57,6 +58,7 @@ import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
+@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -76,12 +78,26 @@ fun AccountScreen(
      *************************************************/
     val toastMsg = stringResource(R.string.profile_not_taken_toast_msg)
 
-    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { pictureTaken ->
+    // Camera photo
+    val imagePickerLauncherFromCamera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { pictureTaken ->
         if (pictureTaken) accountViewModel.setProfileImage()
         else Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
     }
 
-    fun onEditImageRequest() {
+    // Gallery photo
+    val imagePickerLauncherFromGallery = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { pictureTaken ->
+        pictureTaken?.let {
+            val source = ImageDecoder.createSource(context.contentResolver, it)
+            val bitmap = ImageDecoder.decodeBitmap(source)
+
+            bitmap.let { bm ->
+                accountViewModel.setProfileImage(bm)
+            }
+        }
+    }
+
+    fun onEditImageRequest(fromCamera: Boolean) {
+
         val profileImageDir = File(context.cacheDir, "images/profile/")
         Files.createDirectories(profileImageDir.toPath())
 
@@ -89,7 +105,9 @@ fun AccountScreen(
         val contentUri: Uri = getUriForFile(context, "das.losaparecidos.etzi.fileprovider", newProfileImagePath)
         accountViewModel.profilePicturePath = newProfileImagePath.path
 
-        imagePickerLauncher.launch(contentUri)
+        if (fromCamera) imagePickerLauncherFromCamera.launch(contentUri)
+        else imagePickerLauncherFromGallery.launch("image/*")
+
     }
 
 
@@ -98,14 +116,52 @@ fun AccountScreen(
             selectedLanguage = prefLanguage,
             onLanguageSelected = {
                 accountViewModel.onLanguageChanged(it, context)
-                showSelectLangDialog = false },
+                showSelectLangDialog = false
+            },
             onDismiss = { showSelectLangDialog = false }
         )
     }
 
-
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
+
+    var openChooseImageDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (openChooseImageDialog) {
+
+        Dialog(onDismissRequest = { openChooseImageDialog = false }) {
+            ElevatedCard(
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.Start) {
+
+                    CenteredRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                        Icon(Icons.Rounded.Collections, null)
+                        TextButton(
+                            onClick = {
+                                onEditImageRequest(fromCamera = false)
+                                openChooseImageDialog = false
+                            }
+                        ) { Text(stringResource(id = R.string.chooseFromGallery)) }
+                    }
+
+                    CenteredRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                        Icon(Icons.Rounded.CameraAlt, null)
+                        TextButton(
+                            onClick = {
+                                onEditImageRequest(fromCamera = true)
+                                openChooseImageDialog = false
+                            }
+                        ) { Text(stringResource(id = R.string.takeFromCamera)) }
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -114,12 +170,9 @@ fun AccountScreen(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Account.title(context)) },
                 navigationIcon = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        IconButton(onClick = { onBack() }) {
-                            Icon(Icons.Filled.ArrowBack, null)
-                        }
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
                     }
-
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -138,24 +191,34 @@ fun AccountScreen(
             |                    Dialogs                     |
             ------------------------------------------------*/
 
-            Box(contentAlignment = Alignment.BottomEnd) {
-                Box {
-                    if (profilePicture == null) {
-                        //LoadingImagePlaceholder(size = 138.dp)
-                    } else {
-                        Image(
-                            bitmap = profilePicture.asImageBitmap(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.size(120.dp)
-                        )
+
+            CenteredColumn() {
+                ElevatedCard(modifier = Modifier.padding(horizontal = 32.dp)) {
+                    Box(contentAlignment = Alignment.BottomEnd) {
+                        if (profilePicture == null) {
+                            //LoadingImagePlaceholder(size = 138.dp)
+                        } else {
+
+
+                            Image(
+                                bitmap = profilePicture.asImageBitmap(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clickable { openChooseImageDialog = true }
+                            )
+
+                            FilledTonalIconButton(onClick = { openChooseImageDialog = true }, Modifier.size(42.dp)) {
+                                Icon(Icons.Rounded.Edit, contentDescription = null, Modifier.size(24.dp))
+                            }
+
+                        }
                     }
+
                 }
 
 
-                FilledTonalIconButton(onClick = { onEditImageRequest() }, Modifier.size(32.dp)) {
-                    Icon(Icons.Rounded.PhotoCamera, contentDescription = null, Modifier.size(20.dp))
-                }
 //                Box(
 //                    contentAlignment = Alignment.Center,
 //                    modifier = Modifier
@@ -220,25 +283,27 @@ fun AccountScreen(
         }
     }
 }
+
 @Composable
-fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: ()-> Unit){
+fun AccountIcon(accountViewModel: AccountViewModel, onNavigate: () -> Unit) {
     val profilePicture: Bitmap? = accountViewModel.profilePicture
     Box(Modifier.padding(16.dp)) {
         if (profilePicture == null) {
-            LoadingImagePlaceholder(size = 36.dp)
+            LoadingImagePlaceholder(size = 28.dp)
         } else {
             Image(
                 bitmap = profilePicture.asImageBitmap(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(28.dp)
                     .clip(CircleShape)
                     .clickable { onNavigate() },
             )
         }
     }
 }
+
 /*************************************************
  **          Image Loading Placeholder          **
  *************************************************/
@@ -279,7 +344,7 @@ fun LoadingImagePlaceholder(size: Dp = 140.dp) {
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun AccountScreenPreview() {
-    EtziTheme{
+    EtziTheme {
         AccountScreen(viewModel(), WindowSizeClass.calculateFromSize(DpSize(300.dp, 300.dp))) {}
     }
 }

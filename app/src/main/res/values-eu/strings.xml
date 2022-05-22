@@ -23,7 +23,7 @@
     <string name="masterclass">Magistrala</string>
 
     <!-- Expediente -->
-    <string name="course">Maila</string>
+    <string name="course">maila</string>
     <string name="pending">Kredituak lortzeko zain</string>
     <string name="unassessed">Kredituak ebaluatzeko zain</string>
     <string name="expedient">Kreditu gainditutak</string>
@@ -75,7 +75,7 @@
     <string name="pass">Gaindituta</string>
     <string name="outstanding">Bikain</string>
     <string name="saveToCalendar">Gorde egutegian</string>
-    <string name="ativateNotification">Jakinarazpena aktibatu</string>
+    <string name="activateNotification">Jakinarazpena aktibatu</string>
     <string name="chooseCalendarOrNotification">Data egutegian gorde edo jakinarazpena bat aktibatu nahi duzu?</string>
     <string name="reminder">Abisuak</string>
     <string name="student_full_name_label">Izen-Abizenak</string>
@@ -87,4 +87,17 @@
     <string name="settings">Doikuntzak</string>
     <string name="profile_not_taken_toast_msg">Ez da argazkirik atera</string>
     <string name="academic_year">Ikasturtea</string>
+    <string name="ordinaryExam">Ohiko azterketa</string>
+    <string name="extraordinaryExam">Ezohiko azterketa</string>
+    <string name="time">Ordua</string>
+    <string name="exams_screen_title">Azterketen ordutegia</string>
+    <string name="quarter">lauhileko</string>
+    <string name="no_exams">Oraindik ez daude azterketarik programatuta</string>
+    <string name="exam">Azterketa</string>
+    <string name="select_lang_dialog_text">Aukeratu nahi duzun hizkuntza.</string>
+    <string name="no_tutorials_dialog_message">Ez daude tutoriarik</string>
+    <string name="tutorial">Tutoría</string>
+    <string name="chooseFromGallery">Aukeratu argazkia galeriatik</string>
+    <string name="takeFromCamera">Atera argazkia kamerarekin</string>
+    <string name="changePhoto">Aldatu argazkia</string>
 </resources>

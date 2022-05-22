@@ -34,16 +34,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
 import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
+import das.losaparecidos.etzi.app.activities.main.screens.record.ExamsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
-import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
+import das.losaparecidos.etzi.app.activities.main.viewmodels.*
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationRail
@@ -292,32 +290,41 @@ private fun MainNavigationGraph(
 
         navigation(
             route = MainActivityScreens.Record.route,
-            startDestination = MainActivityScreens.Grades.route
+            startDestination = MainActivityScreens.Subjects.route
         ) {
             composable(route = MainActivityScreens.Grades.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, navigateBack)
+                GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, onNavigateToAccount)
             }
 
             composable(route = MainActivityScreens.Subjects.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
+            }
+
+            composable(route = MainActivityScreens.Exams.route) {
+                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+                val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
+
+                ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen(windowSizeClass, onNavigationMenuOpen)
+            val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
+            val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
 
         composable(route = MainActivityScreens.Account.route) {
