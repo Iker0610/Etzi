@@ -45,7 +45,7 @@ class AuthenticationActivity : FragmentActivity() {
     lateinit var httpClient: APIClient
     private val authViewModel: AuthenticationViewModel by viewModels()
     private lateinit var biometricAuthManager: BiometricAuthManager
-
+    private lateinit var flagWidgetAction: String
 
     /*************************************************
      **          Activity Lifecycle Methods         **
@@ -133,9 +133,13 @@ class AuthenticationActivity : FragmentActivity() {
                 }
             }
         }
-        Log.d("AuthenticationActivity",+intent.getStringExtra("WIDGET_ACTION"))
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        flagWidgetAction = intent.getStringExtra("WIDGET_ACTION")
+    }
 
     /*************************************************
      **           Login and Sign In Events          **
