@@ -33,7 +33,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     Timetable("timetable", Icons.Filled.CalendarToday),
     TutorialsSection("tutorials_section", Icons.Filled.SupervisedUserCircle),
     Tutorials("tutorials", Icons.Filled.SupervisedUserCircle),
-    TutorialReminders("tutorial_reminders", Icons.Filled.SupervisedUserCircle),
     Record("record", Icons.Filled.FileOpen),
     Subjects("subjects",Icons.Filled.Book),
     Credits("credits", Icons.Filled.CardMembership),
@@ -55,7 +54,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     // Utility variables and methods
     companion object {
 
-        val screensWithNavigationElements = setOf(Timetable, Tutorials, TutorialReminders, Grades, Credits, Subjects, Exams, Egela)
+        val screensWithNavigationElements = setOf(Timetable, Tutorials, Grades, Credits, Subjects, Exams, Egela)
 
         // List of screens that must appear in navigation rail / navigation bar
         val mainSections = setOf(Timetable, TutorialsSection, Record, Egela)
@@ -63,7 +62,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         // List of screens that must appear in navigation drawer
         val menuScreens = mapOf(
             Timetable to setOf(Timetable),
-            TutorialsSection to setOf(Tutorials, TutorialReminders),
+            TutorialsSection to setOf(Tutorials),
             Record to setOf(Subjects, Grades, Credits, Exams),
             Egela to setOf(Egela)
         )
@@ -71,7 +70,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         val screenRouteToSectionRouteMapping = mapOf(
             Timetable.route to Timetable.route,
             Tutorials.route to TutorialsSection.route,
-            TutorialReminders.route to TutorialsSection.route,
             Grades.route to Record.route,
             Subjects.route to Record.route,
             Credits.route to Record.route,
@@ -87,7 +85,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
                 Timetable.route -> Timetable
                 TutorialsSection.route -> TutorialsSection
                 Tutorials.route -> Tutorials
-                TutorialReminders.route -> TutorialReminders
                 Record.route-> Record
                 Subjects.route -> Subjects
                 Credits.route -> Credits

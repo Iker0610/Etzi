@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -54,12 +55,16 @@ import das.losaparecidos.etzi.app.ui.components.form.SectionTitle
 import das.losaparecidos.etzi.app.ui.theme.EtziTheme
 import das.losaparecidos.etzi.app.utils.LanguagePickerDialog
 import das.losaparecidos.etzi.model.entities.Student
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
-@RequiresApi(Build.VERSION_CODES.P)
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun AccountScreen(
@@ -68,6 +73,8 @@ fun AccountScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     val student by accountViewModel.studentData.collectAsState(initial = Student("", "", "", "", ""))
     val prefLanguage by accountViewModel.prefLang.collectAsState(accountViewModel.currentSetLang)
     val profilePicture: Bitmap? = accountViewModel.profilePicture
@@ -86,12 +93,16 @@ fun AccountScreen(
 
     // Gallery photo
     val imagePickerLauncherFromGallery = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { pictureTaken ->
-        pictureTaken?.let {
-            val source = ImageDecoder.createSource(context.contentResolver, it)
-            val bitmap = ImageDecoder.decodeBitmap(source)
+        pictureTaken?.let { uri ->
+            GlobalScope.launch(Dispatchers.IO) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                    accountViewModel.setProfileImage(BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri)))
+                } else {
+                    val source = ImageDecoder.createSource(context.contentResolver, uri)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
 
-            bitmap.let { bm ->
-                accountViewModel.setProfileImage(bm)
+                    bitmap.let { bm -> accountViewModel.setProfileImage(bm) }
+                }
             }
         }
     }

@@ -39,7 +39,6 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
 import das.losaparecidos.etzi.app.activities.main.viewmodels.*
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
@@ -270,13 +269,6 @@ private fun MainNavigationGraph(
                 TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
             }
 
-            composable(route = MainActivityScreens.TutorialReminders.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
-                // val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
-
-                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
-            }
-
             dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
@@ -323,7 +315,7 @@ private fun MainNavigationGraph(
 
         composable(route = MainActivityScreens.Egela.route) {
             val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
-            val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
+            val egelaViewModel: EgelaViewModel = hiltViewModel(egelaBackStackEntry)
             EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
 
