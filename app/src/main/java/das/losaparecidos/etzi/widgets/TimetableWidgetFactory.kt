@@ -73,7 +73,7 @@ class TimetableWidgetFactory(
                 setTextViewText(R.id.widget_item_edificio, lectureList[position].building.name)
                 setTextViewText(R.id.widget_item_aula, lectureList[position].lectureRoom.fullCode)
             }
-            else -> return RemoteViews(context.packageName, R.layout.agenda_widget_item).apply {
+            else -> return RemoteViews(context.packageName, R.layout.agenda_widget_item_post12).apply {
                 Log.d("WIDGET-FACTORY", "Fallback de layout - versión nueva")
                 val horaComienzo=lectureList[position].startDate
                 val horaFin=lectureList[position].endDate
