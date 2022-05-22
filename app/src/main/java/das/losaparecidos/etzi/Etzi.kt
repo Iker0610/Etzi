@@ -2,6 +2,7 @@ package das.losaparecidos.etzi
 
 import android.app.Application
 import android.app.NotificationChannel
+import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
@@ -50,6 +51,19 @@ class Etzi : Application(), Configuration.Provider {
         }
 
 
+        // Create the Tutorial Reminder Channel
+        val provisionalGradesChannelName = getString(NotificationChannelID.PROVISIONAL_GRADES.nameId)
+        val provisionalGradesChannelDescription = getString(NotificationChannelID.PROVISIONAL_GRADES.descriptionId)
+
+        val provisionalGradesChannel = NotificationChannel(
+            NotificationChannelID.PROVISIONAL_GRADES.name,
+            provisionalGradesChannelName,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = provisionalGradesChannelDescription
+        }
+
+
         // Create the Lecture Reminder Channel
         val lectureReminderChannelName = getString(NotificationChannelID.LECTURE_REMINDER.nameId)
         val lectureReminderChannelDescription = getString(NotificationChannelID.LECTURE_REMINDER.descriptionId)
@@ -81,11 +95,21 @@ class Etzi : Application(), Configuration.Provider {
         // Get notification manager
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
+        // Create the notification group
+        val remainderChannelGroupName = getString(NotificationChannelID.REMAINDER_GROUP.nameId)
+        val remainderChannelGroup = NotificationChannelGroup(NotificationChannelID.REMAINDER_GROUP.name, remainderChannelGroupName)
+
+        notificationManager.createNotificationChannelGroup(remainderChannelGroup)
+
+        // Add channels to group
+        lectureReminderChannel.group = NotificationChannelID.REMAINDER_GROUP.name
+        tutorialReminderChannel.group = NotificationChannelID.REMAINDER_GROUP.name
 
         // Register the channels with the system
         notificationManager.createNotificationChannel(ehuInformationChannel)
         notificationManager.createNotificationChannel(lectureReminderChannel)
         notificationManager.createNotificationChannel(tutorialReminderChannel)
+        notificationManager.createNotificationChannel(provisionalGradesChannel)
     }
 
 
@@ -123,7 +147,7 @@ enum class NotificationChannelID(val nameId: Int, val descriptionId: Int) {
 }
 
 enum class NotificationID(val id: Int) {
-    CORPORATION_NOTIFICATION(1),
+    EHU_NOTIFICATION(1),
 
     LECTURE_REMINDER(20),
     TUTORIAL_REMINDER(21),
