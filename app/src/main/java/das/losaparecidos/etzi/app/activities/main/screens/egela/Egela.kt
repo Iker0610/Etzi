@@ -1,7 +1,5 @@
 package das.losaparecidos.etzi.app.activities.main.screens.egela
 
-import android.content.Context
-import android.util.Log
 import android.webkit.CookieManager
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
-import das.losaparecidos.etzi.model.repositories.LoginRepository
+import das.losaparecidos.etzi.app.activities.main.viewmodels.EgelaViewModel
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -25,21 +23,12 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
-import it.skrape.core.htmlDocument
-import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.extractIt
-import it.skrape.fetcher.response
-import it.skrape.fetcher.skrape
-import it.skrape.selects.eachTagName
-import it.skrape.selects.html5.input
 import kotlinx.coroutines.*
 import org.json.JSONObject
-import java.net.HttpURLConnection
-import java.net.URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit, egelaViewModel: EgelaViewModel) {
 
     Scaffold(
         topBar = {
@@ -55,10 +44,11 @@ fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
         }
     ) { paddingValues ->
 
-        LoginRepository
-
-        val datosEgela: JSONObject = runBlocking() { getCookieEgela() }
+        val ldap = egelaViewModel.loggedUser.ldap
+        val pass = egelaViewModel.loggedUser.password
+        val datosEgela: JSONObject = runBlocking() { getCookieEgela(ldap, pass) }
         val egela = rememberWebViewState("https://egela.ehu.eus")
+
 
         WebView(
             egela,
@@ -71,7 +61,7 @@ fun EgelaScreen(windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
 }
 
 @OptIn(InternalAPI::class)
-suspend fun getCookieEgela(): JSONObject = withContext(Dispatchers.IO) {
+suspend fun getCookieEgela(ldap: String, password: String): JSONObject = withContext(Dispatchers.IO) {
 
     //////////////////////////////////////// PRIMERA PETICIÓN ////////////////////////////////////////
 
@@ -95,6 +85,7 @@ suspend fun getCookieEgela(): JSONObject = withContext(Dispatchers.IO) {
         return@withContext JSONObject()
     }
 
+
     val primeraCookie = responseGetToken.headers.get("Set-Cookie")
 
 
@@ -109,8 +100,8 @@ suspend fun getCookieEgela(): JSONObject = withContext(Dispatchers.IO) {
         }
         body = FormDataContent(Parameters.build {
             append("logintoken", token)
-            append("username", "915018")
-            append("password", "")
+            append("username", ldap)
+            append("password", password)
         })
     }
     println(response1.body<String>())

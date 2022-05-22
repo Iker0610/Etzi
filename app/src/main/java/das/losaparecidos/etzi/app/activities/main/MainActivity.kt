@@ -41,10 +41,7 @@ import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScr
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
-import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.TimetableViewModel
-import das.losaparecidos.etzi.app.activities.main.viewmodels.TutorialsViewModel
+import das.losaparecidos.etzi.app.activities.main.viewmodels.*
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationDrawer
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationRail
@@ -325,7 +322,9 @@ private fun MainNavigationGraph(
         }
 
         composable(route = MainActivityScreens.Egela.route) {
-            EgelaScreen(windowSizeClass, onNavigationMenuOpen)
+            val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
+            val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel)
         }
 
         composable(route = MainActivityScreens.Account.route) {
