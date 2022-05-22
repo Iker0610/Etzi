@@ -112,8 +112,8 @@
     <string name="tutorial_reminder_channel_description">User configured tutorial reminder related notifications.</string>
     <string name="lecture_reminder_channel_name">Lecture Remainders</string>
     <string name="lecture_reminder_channel_description">User configured lecture reminder related notifications.</string>
-    <string name="lecture_remainder_notification_title">You have a lecture at %1$s</string>
-    <string name="lecture_remainder_notification_text">You have a %1$s lecture at %2$s in the %3$s room.</string>
-    <string name="tutorial_remainder_notification_title">You have a tutorial at %1$s</string>
-    <string name="tutorial_remainder_notification_text">You have a tutorial with %1$s at %2$s in the %3$s room.</string>
+    <string name="lecture_reminder_notification_title">You have a lecture at %1$s</string>
+    <string name="lecture_reminder_notification_text">You have a %1$s lecture at %2$s in the %3$s room.</string>
+    <string name="tutorial_reminder_notification_title">You have a tutorial at %1$s</string>
+    <string name="tutorial_reminder_notification_text">You have a tutorial with %1$s at %2$s in the %3$s room.</string>
 </resources>

@@ -10,11 +10,11 @@ import javax.inject.Inject
 
 class ReminderRepository @Inject constructor(
     private val datastore: Datastore,
-    private val remainderDao: ReminderDao
+    private val reminderDao: ReminderDao
 ) {
     suspend fun addLectureReminder(lectureReminder: LectureReminder): Boolean {
         return try {
-            remainderDao.addLectureReminder(lectureReminder)
+            reminderDao.addLectureReminder(lectureReminder)
             true
         } catch (e: SQLiteConstraintException) {
             false
@@ -23,23 +23,23 @@ class ReminderRepository @Inject constructor(
 
     suspend fun removeLectureReminder(lectureReminder: LectureReminder): Boolean {
         return try {
-            remainderDao.deleteLectureReminder(lectureReminder)
+            reminderDao.deleteLectureReminder(lectureReminder)
             true
         } catch (e: SQLiteConstraintException) {
             false
         }
     }
 
-    suspend fun getAllLectureRemainders() = remainderDao.getAllLectureRemainders()
+    suspend fun getAllLectureReminders() = reminderDao.getAllLectureReminders()
 
-    fun getStudentLectureRemainders(ldap: String) = remainderDao.getStudentLectureRemainders(ldap)
+    fun getStudentLectureReminders(ldap: String) = reminderDao.getStudentLectureReminders(ldap)
 
 
     //------------------------------------------------------------------------------
 
     suspend fun addTutorialReminder(tutorialReminder: TutorialReminder): Boolean {
         return try {
-            remainderDao.addTutorialReminder(tutorialReminder)
+            reminderDao.addTutorialReminder(tutorialReminder)
             true
         } catch (e: SQLiteConstraintException) {
             false
@@ -48,14 +48,14 @@ class ReminderRepository @Inject constructor(
 
     suspend fun removeTutorialReminder(tutorialReminder: TutorialReminder): Boolean {
         return try {
-            remainderDao.deleteTutorialReminder(tutorialReminder)
+            reminderDao.deleteTutorialReminder(tutorialReminder)
             true
         } catch (e: SQLiteConstraintException) {
             false
         }
     }
 
-    suspend fun getAllTutorialRemainders() = remainderDao.getAllTutorialRemainders()
+    suspend fun getAllTutorialReminders() = reminderDao.getAllTutorialReminders()
 
-    fun getStudentTutorialRemainders(ldap: String) = remainderDao.getStudentTutorialRemainders(ldap)
+    fun getStudentTutorialReminders(ldap: String) = reminderDao.getStudentTutorialReminders(ldap)
 }

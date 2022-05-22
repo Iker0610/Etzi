@@ -20,11 +20,11 @@ interface ReminderDao {
 
     @Transaction
     @Query("SELECT * FROM lecture_reminders")
-    suspend fun getAllLectureRemainders(): List<LectureReminder>
+    suspend fun getAllLectureReminders(): List<LectureReminder>
 
     @Transaction
     @Query("SELECT * FROM lecture_reminders WHERE student_ldap = :ldap")
-    fun getStudentLectureRemainders(ldap: String): Flow<List<LectureReminder>>
+    fun getStudentLectureReminders(ldap: String): Flow<List<LectureReminder>>
 
 
     //------------------------------------------------------------------------------
@@ -38,10 +38,10 @@ interface ReminderDao {
 
     @Transaction
     @Query("SELECT * FROM tutorial_reminders")
-    suspend fun getAllTutorialRemainders(): List<TutorialReminder>
+    suspend fun getAllTutorialReminders(): List<TutorialReminder>
 
     @Transaction
     @Query("SELECT * FROM tutorial_reminders WHERE student_ldap = :ldap")
-    fun getStudentTutorialRemainders(ldap: String): Flow<List<TutorialReminder>>
+    fun getStudentTutorialReminders(ldap: String): Flow<List<TutorialReminder>>
 }
 
