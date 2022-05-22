@@ -50,12 +50,43 @@ class Etzi : Application(), Configuration.Provider {
         }
 
 
+        // Create the Lecture Reminder Channel
+        val lectureReminderChannelName = getString(NotificationChannelID.LECTURE_REMINDER.nameId)
+        val lectureReminderChannelDescription = getString(NotificationChannelID.LECTURE_REMINDER.descriptionId)
+
+        val lectureReminderChannel = NotificationChannel(
+            NotificationChannelID.LECTURE_REMINDER.name,
+            lectureReminderChannelName,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = lectureReminderChannelDescription
+        }
+
+
+
+        // Create the Tutorial Reminder Channel
+        val tutorialReminderChannelName = getString(NotificationChannelID.TUTORIAL_REMINDER.nameId)
+        val tutorialReminderChannelDescription = getString(NotificationChannelID.TUTORIAL_REMINDER.descriptionId)
+
+        val tutorialReminderChannel = NotificationChannel(
+            NotificationChannelID.TUTORIAL_REMINDER.name,
+            tutorialReminderChannelName,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = tutorialReminderChannelDescription
+        }
+
+
+        //-------------------------------------------------------------------
+
         // Get notification manager
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
 
         // Register the channels with the system
         notificationManager.createNotificationChannel(ehuInformationChannel)
+        notificationManager.createNotificationChannel(lectureReminderChannel)
+        notificationManager.createNotificationChannel(tutorialReminderChannel)
     }
 
 
@@ -83,11 +114,15 @@ It uses an enum class what gives better readability over the code, and avoids ID
 */
 
 enum class NotificationChannelID(val nameId: Int, val descriptionId: Int) {
-    EHU_INFORMATION(R.string.ehu_information_channel_name, R.string.ehu_information_channel_description)
+    EHU_INFORMATION(R.string.ehu_information_channel_name, R.string.ehu_information_channel_description),
+
+    LECTURE_REMINDER(R.string.lecture_reminder_channel_name, R.string.lecture_reminder_channel_description),
+    TUTORIAL_REMINDER(R.string.tutorial_reminder_channel_name, R.string.tutorial_reminder_channel_description),
 }
 
 enum class NotificationID(val id: Int) {
-    USER_CREATED(0),
     CORPORATION_NOTIFICATION(1),
-    VISIT_ALARM(2)
+
+    LECTURE_REMINDER(20),
+    TUTORIAL_REMINDER(21),
 }

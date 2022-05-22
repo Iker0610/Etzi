@@ -20,7 +20,6 @@ import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.model.entities.Professor
 import kotlinx.datetime.LocalDateTime
-import java.util.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +39,8 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
             CenteredColumn {
 
                 CenteredColumn(
-                    modifier = Modifier.padding(32.dp),) {
+                    modifier = Modifier.padding(32.dp),
+                ) {
                     Icon(Icons.Rounded.Info, null)
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -81,7 +81,7 @@ fun NotificationOrCalendarDialog(tutorialDate: LocalDateTime, professor: Profess
                         onClick = {
                             addTutorialOnCalendar(ctx, professor, tutorialDate, tutorial)
                             onDismiss
-                        }) 
+                        })
                     { Text(stringResource(id = R.string.saveToCalendar), color = MaterialTheme.colorScheme.tertiary) }
 
 

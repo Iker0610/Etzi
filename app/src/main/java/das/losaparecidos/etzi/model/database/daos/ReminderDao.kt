@@ -1,11 +1,9 @@
 package das.losaparecidos.etzi.model.database.daos
 
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
+import das.losaparecidos.etzi.model.entities.LectureReminder
+import das.losaparecidos.etzi.model.entities.TutorialReminder
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,18 +11,37 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface ReminderDao {
-//    @Insert
-//    suspend fun addAlarm(alarm: VisitAlarm)
-//
-//    @Delete
-//    suspend fun removeAlarm(alarm: VisitAlarm)
-//
-//    @Transaction
-//    @Query("SELECT * FROM VisitAlarm")
-//    fun getAllAlarms(): Flow<List<VisitAlarm>>
-//
-//    @Transaction
-//    @Query("SELECT * FROM VisitData WHERE id IN (:idList)")
-//    fun getVisitCardsByIds(idList: List<String>): Flow<List<VisitCard>>
+
+    @Insert
+    suspend fun addLectureReminder(lectureReminder: LectureReminder)
+
+    @Delete
+    suspend fun deleteLectureReminder(lectureReminder: LectureReminder)
+
+    @Transaction
+    @Query("SELECT * FROM lecture_reminders")
+    suspend fun getAllLectureRemainders(): List<LectureReminder>
+
+    @Transaction
+    @Query("SELECT * FROM lecture_reminders WHERE student_ldap = :ldap")
+    fun getStudentLectureRemainders(ldap: String): Flow<List<LectureReminder>>
+
+
+    //------------------------------------------------------------------------------
+
+
+    @Insert
+    suspend fun addTutorialReminder(tutorialReminder: TutorialReminder)
+
+    @Delete
+    suspend fun deleteTutorialReminder(tutorialReminder: TutorialReminder)
+
+    @Transaction
+    @Query("SELECT * FROM tutorial_reminders")
+    suspend fun getAllTutorialRemainders(): List<TutorialReminder>
+
+    @Transaction
+    @Query("SELECT * FROM tutorial_reminders WHERE student_ldap = :ldap")
+    fun getStudentTutorialRemainders(ldap: String): Flow<List<TutorialReminder>>
 }
 
