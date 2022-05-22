@@ -23,6 +23,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
+import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
+import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
 import das.losaparecidos.etzi.app.ui.components.CenteredBox
 import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
@@ -32,7 +34,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
-fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeClass, onMenuOpen: () -> Unit) {
+fun CreditsScreen(
+    recordViewModel: RecordViewModel,
+    windowSizeClass: WindowSizeClass,
+    onMenuOpen: () -> Unit,
+    onNavigate: () -> Unit,
+    accountViewModel: AccountViewModel
+) {
 
     val scope = rememberCoroutineScope()
 
@@ -54,6 +62,9 @@ fun CreditsScreen(recordViewModel: RecordViewModel, windowSizeClass: WindowSizeC
                             Icon(Icons.Rounded.Menu, null)
                         }
                     }
+                },
+                actions = {
+                    AccountIcon(accountViewModel, onNavigate)
                 }
             )
         }
