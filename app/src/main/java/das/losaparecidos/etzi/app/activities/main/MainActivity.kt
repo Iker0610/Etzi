@@ -231,6 +231,12 @@ private fun EtziAppScreen(
         }
     }
 
+    LaunchedEffect(rememberInitialization) {
+        initialScreenRoute?.let {
+            scope.launch { onNavigateToSection(it) }
+        }
+    }
+
     //------------   Debug Log Screen   ------------//
     LaunchedEffect(currentRoute) {
         Log.d("navigation",
