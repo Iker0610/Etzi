@@ -19,6 +19,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +32,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.WidgetOpenerActions
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
 import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
@@ -69,11 +71,19 @@ class MainActivity : AppCompatActivity() {
             EtziTheme {
                 accountViewModel.reloadLang(accountViewModel.prefLang.collectAsState(initial = accountViewModel.currentSetLang).value, this)
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(timetableViewModel, navController, accountViewModel)
+
+                val initialScreenRoute = when (intent.action) {
+                    WidgetOpenerActions.OPEN_EGELA.name -> MainActivityScreens.Egela.route
+                    WidgetOpenerActions.OPEN_EXPEDIENTE.name -> MainActivityScreens.Record.route
+                    WidgetOpenerActions.OPEN_TUTORIALS.name -> MainActivityScreens.TutorialsSection.route
+                    else -> null
+                }
+
+                EtziAppScreen(timetableViewModel, navController, accountViewModel, initialScreenRoute)
+
             }
         }
-
-        Log.d("MAINACTIVITY",intent.action.toString())
+        // intent.action?.let { Log.d("MAINACTIVITY", it) }
     }
 }
 
@@ -82,8 +92,11 @@ class MainActivity : AppCompatActivity() {
 private fun EtziAppScreen(
     timetableViewModel: TimetableViewModel,
     navController: NavHostController,
-    accountViewModel: AccountViewModel
+    accountViewModel: AccountViewModel,
+    initialScreenRoute: String?
 ) {
+    val rememberInitialization = rememberSaveable { mutableStateOf(true) }
+
     /*************************************************
      **             Variables and States            **
      *************************************************/
@@ -195,7 +208,6 @@ private fun EtziAppScreen(
             }
         }
     }
-
 
     //------------   Debug Log Screen   ------------//
     LaunchedEffect(currentRoute) {
@@ -325,7 +337,7 @@ private fun MainNavigationGraph(
 
         composable(route = MainActivityScreens.Egela.route) {
             val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
-            val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
+            val egelaViewModel: EgelaViewModel = hiltViewModel(egelaBackStackEntry)
             EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
 
