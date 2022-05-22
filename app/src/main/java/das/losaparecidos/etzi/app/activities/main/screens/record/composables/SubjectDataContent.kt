@@ -71,9 +71,8 @@ fun SubjectDataContent(
                 val gradeText = when {
                     distinction -> "${stringResource(id = R.string.distinction)} - $grade"
                     gradeAsFloat < 5f -> "${stringResource(id = R.string.fail)} - $grade"
-                    gradeAsFloat < 6f -> "${stringResource(id = R.string.pass)} - $grade"
-                    gradeAsFloat < 8f -> "${stringResource(id = R.string.pass)} - $grade"
-                    else -> "${stringResource(id = R.string.outstanding)} - $grade"
+                    gradeAsFloat >= 9f -> "${stringResource(id = R.string.outstanding)} - $grade"
+                    else -> "${stringResource(id = R.string.pass)} - $grade"
                 }
 
                 Text(
