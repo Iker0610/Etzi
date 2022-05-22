@@ -256,21 +256,22 @@ fun LazyListScope.subjectCollapsableSection(
         }
     }
 
-    if (expand) {
-        subjectWithTutorial.professors.forEach { professor ->
-            professorCollapsable(
-                parentSubject = subjectWithTutorial.subjectName,
-                professor = professor,
-                collapsible = !singleProfessorSelection,
-                expanded = currentExpandedProfessor == professor.email,
-                onExpand = {
-                    currentExpandedProfessor = if (currentExpandedProfessor != professor.email) professor.email else null
-                },
-                tutorialReminderStates = tutorialReminderStates,
-                onTutorialRemainderClick = onTutorialRemainderClick,
-            )
-        }
+
+    subjectWithTutorial.professors.forEach { professor ->
+        professorCollapsable(
+            parentSubject = subjectWithTutorial.subjectName,
+            professor = professor,
+            collapsible = !singleProfessorSelection,
+            expanded = currentExpandedProfessor == professor.email,
+            parentExpanded = expand,
+            onExpand = {
+                currentExpandedProfessor = if (currentExpandedProfessor != professor.email) professor.email else null
+            },
+            tutorialReminderStates = tutorialReminderStates,
+            onTutorialRemainderClick = onTutorialRemainderClick,
+        )
     }
+
 }
 
 
@@ -279,6 +280,7 @@ fun LazyListScope.professorCollapsable(
     professor: ProfessorWithTutorials,
     collapsible: Boolean = true,
     expanded: Boolean = true,
+    parentExpanded: Boolean,
     onExpand: () -> Unit = {},
     tutorialReminderStates: Map<String, ReminderStatus>,
     onTutorialRemainderClick: (Tutorial, Professor, ReminderStatus) -> Unit,
@@ -300,33 +302,41 @@ fun LazyListScope.professorCollapsable(
             )
         )
 
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onExpand,
-            color = backgroundColor
+        AnimatedVisibility(
+            visible = parentExpanded,
+            enter = fadeIn(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing)) + expandVertically(),
+            exit = fadeOut(animationSpec = TweenSpec(200, 0, FastOutLinearInEasing)) + shrinkVertically()
         ) {
-            CenteredRow(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onExpand,
+                color = backgroundColor
             ) {
-                Text(text = professor.fullName, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium), modifier = Modifier.weight(1f))
-
-                IconButton(
-                    modifier = Modifier.padding(start = 24.dp),
-                    onClick = onExpand,
-                    enabled = collapsible
+                CenteredRow(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    val color = if (collapsible) LocalContentColor.current else Color.Transparent
-                    Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", tint = color, modifier = Modifier.rotate(angle))
-                }
+                    Text(text = professor.fullName, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium), modifier = Modifier.weight(1f))
 
+                    IconButton(
+                        modifier = Modifier.padding(start = 24.dp),
+                        onClick = onExpand,
+                        enabled = collapsible
+                    ) {
+                        val color = if (collapsible) LocalContentColor.current else Color.Transparent
+                        Icon(Icons.Rounded.ExpandMore, contentDescription = "Expand more for detail", tint = color, modifier = Modifier.rotate(angle))
+                    }
+
+                }
             }
+
         }
     }
 
     item(key = "$parentSubject&&${professor.email}&&tutorialsSpacer") {
         AnimatedVisibility(
-            visible = expand,
+            visible = parentExpanded && expand,
             enter = fadeIn(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing)) + expandVertically(),
             exit = fadeOut(animationSpec = TweenSpec(200, 0, FastOutLinearInEasing)) + shrinkVertically()
         ) {
@@ -342,7 +352,7 @@ fun LazyListScope.professorCollapsable(
         key = { "$parentSubject&&${professor.email}&&${it.startDate}" }
     ) { tutorial ->
         AnimatedVisibility(
-            visible = expand,
+            visible = parentExpanded && expand,
             enter = fadeIn(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing)) + expandVertically(),
             exit = fadeOut(animationSpec = TweenSpec(100, 0, FastOutLinearInEasing)) + shrinkVertically(animationSpec = TweenSpec(200, 200, FastOutLinearInEasing))
         ) {
