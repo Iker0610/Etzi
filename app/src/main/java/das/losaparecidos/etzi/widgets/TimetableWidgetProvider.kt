@@ -32,8 +32,6 @@ class TimetableWidgetProvider : AppWidgetProvider() {
     @Inject
     lateinit var loginRepository: LoginRepository
 
-    @Inject
-    lateinit var dataRepository: StudentDataRepository
 
 
 //    override fun onUpdate(
@@ -66,7 +64,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
         coroutineScope.launch {
 
             // New data
-            val timetable: Flow<List<Lecture>>? = loginRepository.getLastLoggedUser()?.let { dataRepository.getTodayTimetable() }
+            //val timetable: Flow<List<Lecture>>? = loginRepository.getLastLoggedUser()//.let { dataRepository.getTodayTimetable() }
 
 
             val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -80,8 +78,8 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                 val height = opciones.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
                 val widgetMainLayout = RemoteViews(context.packageName, getLayoutResponsive(width, height))
 
-
-                if (timetable != null) {
+                if(loginRepository.getLastLoggedUser()!=null){
+                /*if (timetable != null) {
                     timetable.collect { lectures ->
 
 
@@ -93,7 +91,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                             widgetMainLayout.setViewVisibility(R.id.horario_agenda, View.VISIBLE)
                             widgetMainLayout.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
                             widgetMainLayout.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
-                        }
+                        }*/
 
 /*
                         val newIntent = Intent(context, TimetableWidgetService::class.java).apply {
@@ -108,21 +106,18 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
                         // Set up the intent that starts the StackViewService, which will
                         // provide the views for this collection.
-                        val updateIntent = Intent(context, TimetableWidgetService::class.java).apply {
+                        val updateIntent = Intent(context, TimetableWidgetService::class.java)/*.apply {
                             // Add the widget ID to the intent extras.
                             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, idWidget)
                             data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-                        }
-
-                        widgetMainLayout.setRemoteAdapter(
-                            R.id.horario_agenda,
-                            RemoteViews.RemoteCollectionItems.Builder()
-                                .addItem()
-
-                        )
+                        }*/
+                        System.out.println("INTENT Y SET REMOTELAYOUT")
+                        widgetMainLayout.setRemoteAdapter(R.id.horario_agenda, updateIntent)
+                        //widgetMainLayout.setRemoteAdapter(R.id.horario_agenda, updateIntent)
+                        appWidgetManager.notifyAppWidgetViewDataChanged(idWidget, R.id.horario_agenda)
 
                         // Instantiate the RemoteViews object for the widget layout.
-                        widgetMainLayout.apply {
+                        /*widgetMainLayout.apply {
                             // Set up the RemoteViews object to use a RemoteViews adapter.
                             // This adapter connects to a RemoteViewsService through the
                             // specified intent.
@@ -132,10 +127,9 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                             // The empty view is displayed when the collection has no items.
                             // It should be in the same layout used to instantiate the
                             // RemoteViews object.
-                            setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
-
-                        }
-                    }
+                            //setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
+                        }*/
+                        appWidgetManager.updateAppWidget(idWidget, widgetMainLayout)
                 } else {
                     widgetMainLayout.setViewVisibility(R.id.horario_agenda, View.GONE)
                     widgetMainLayout.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.VISIBLE)
