@@ -2,7 +2,8 @@ package das.losaparecidos.etzi.app.activities.main
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 
@@ -10,7 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Enum class that defines the different routes of the apk.
  *
  * @property route route for the navigation graph.
- * @property icon unique icon to be displayed that represents the route.
+ * @property selectedIcon unique icon to be displayed that represents the route.
  */
 
 /*
@@ -29,18 +30,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Preferencias / Perfil ✓
  * Acceso a egela ✓
  */
-enum class MainActivityScreens(var route: String, var icon: ImageVector) {
-    Timetable("timetable", Icons.Filled.CalendarToday),
-    TutorialsSection("tutorials_section", Icons.Filled.SupervisedUserCircle),
-    Tutorials("tutorials", Icons.Filled.SupervisedUserCircle),
-    TutorialReminders("tutorial_reminders", Icons.Filled.SupervisedUserCircle),
-    Record("record", Icons.Filled.FileOpen),
-    Subjects("subjects",Icons.Filled.Book),
-    Credits("credits", Icons.Filled.CardMembership),
-    Grades("grades", Icons.Filled.Grade),
-    Exams("exams", Icons.Filled.EventNote),
-    Account("account", Icons.Filled.Person),
-    Egela("egela", Icons.Filled.Web);
+enum class MainActivityScreens(var route: String, var selectedIcon: ImageVector, var unselectedIcon: ImageVector) {
+    Timetable("timetable", Icons.Rounded.CalendarMonth, Icons.Outlined.CalendarMonth),
+    TutorialsSection("tutorials_section", Icons.Rounded.SupervisedUserCircle, Icons.Outlined.SupervisedUserCircle),
+    Tutorials("tutorials", Icons.Rounded.SupervisedUserCircle, Icons.Outlined.SupervisedUserCircle),
+    Record("record", Icons.Rounded.Assignment, Icons.Outlined.Assignment),
+    Subjects("subjects", Icons.Rounded.Book, Icons.Outlined.Book),
+    Credits("credits", Icons.Rounded.CardMembership, Icons.Outlined.CardMembership),
+    Grades("grades", Icons.Rounded.Grade, Icons.Outlined.Grade),
+    Exams("exams", Icons.Rounded.EventNote, Icons.Outlined.EventNote),
+    Account("account", Icons.Rounded.Person, Icons.Outlined.Person),
+    Egela("egela", Icons.Rounded.Web, Icons.Outlined.Web);
 
 
     // Get if this MainActivityScreen is one of the main screens
@@ -55,7 +55,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
     // Utility variables and methods
     companion object {
 
-        val screensWithNavigationElements = setOf(Timetable, Tutorials, TutorialReminders, Grades, Credits, Subjects, Exams, Egela)
+        val screensWithNavigationElements = setOf(Timetable, Tutorials, Grades, Credits, Subjects, Exams, Egela)
 
         // List of screens that must appear in navigation rail / navigation bar
         val mainSections = setOf(Timetable, TutorialsSection, Record, Egela)
@@ -63,7 +63,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         // List of screens that must appear in navigation drawer
         val menuScreens = mapOf(
             Timetable to setOf(Timetable),
-            TutorialsSection to setOf(Tutorials, TutorialReminders),
+            TutorialsSection to setOf(Tutorials),
             Record to setOf(Subjects, Grades, Credits, Exams),
             Egela to setOf(Egela)
         )
@@ -71,7 +71,6 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
         val screenRouteToSectionRouteMapping = mapOf(
             Timetable.route to Timetable.route,
             Tutorials.route to TutorialsSection.route,
-            TutorialReminders.route to TutorialsSection.route,
             Grades.route to Record.route,
             Subjects.route to Record.route,
             Credits.route to Record.route,
@@ -87,8 +86,7 @@ enum class MainActivityScreens(var route: String, var icon: ImageVector) {
                 Timetable.route -> Timetable
                 TutorialsSection.route -> TutorialsSection
                 Tutorials.route -> Tutorials
-                TutorialReminders.route -> TutorialReminders
-                Record.route-> Record
+                Record.route -> Record
                 Subjects.route -> Subjects
                 Credits.route -> Credits
                 Grades.route -> Grades

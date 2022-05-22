@@ -106,7 +106,6 @@ fun NotificationOrCalendarDialog(
             }
         }
     }
-
 }
 
 fun addTutorialOnCalendar(ctx: Context, professor: Professor, tutorialDate: LocalDateTime, tutorial: String) {

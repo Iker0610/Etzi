@@ -19,6 +19,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +32,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import das.losaparecidos.etzi.WidgetOpenerActions
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountScreen
 import das.losaparecidos.etzi.app.activities.main.screens.egela.EgelaScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.CreditsScreen
@@ -39,7 +41,6 @@ import das.losaparecidos.etzi.app.activities.main.screens.record.GradesScreen
 import das.losaparecidos.etzi.app.activities.main.screens.record.SubjectsScreen
 import das.losaparecidos.etzi.app.activities.main.screens.timetable.TimetableScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsFilterDialog
-import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsRemindersScreen
 import das.losaparecidos.etzi.app.activities.main.screens.tutorials.TutorialsScreen
 import das.losaparecidos.etzi.app.activities.main.viewmodels.*
 import das.losaparecidos.etzi.app.ui.components.EtziNavigationBar
@@ -69,11 +70,19 @@ class MainActivity : AppCompatActivity() {
             EtziTheme {
                 accountViewModel.reloadLang(accountViewModel.prefLang.collectAsState(initial = accountViewModel.currentSetLang).value, this)
                 val navController: NavHostController = rememberAnimatedNavController()
-                EtziAppScreen(timetableViewModel, navController, accountViewModel)
+
+                val initialScreenRoute = when (intent.action) {
+                    WidgetOpenerActions.OPEN_EGELA.name -> MainActivityScreens.Egela.route
+                    WidgetOpenerActions.OPEN_EXPEDIENTE.name -> MainActivityScreens.Record.route
+                    WidgetOpenerActions.OPEN_TUTORIALS.name -> MainActivityScreens.TutorialsSection.route
+                    else -> null
+                }
+
+                EtziAppScreen(timetableViewModel, navController, accountViewModel, initialScreenRoute)
+
             }
         }
-
-        Log.d("MAINACTIVITY",intent.action.toString())
+        // intent.action?.let { Log.d("MAINACTIVITY", it) }
     }
 }
 
@@ -82,8 +91,11 @@ class MainActivity : AppCompatActivity() {
 private fun EtziAppScreen(
     timetableViewModel: TimetableViewModel,
     navController: NavHostController,
-    accountViewModel: AccountViewModel
+    accountViewModel: AccountViewModel,
+    initialScreenRoute: String?
 ) {
+    val rememberInitialization = rememberSaveable { mutableStateOf(true) }
+
     /*************************************************
      **             Variables and States            **
      *************************************************/
@@ -134,10 +146,33 @@ private fun EtziAppScreen(
 
     // Navigate to a route
     val onNavigate = { route: String ->
-        navController.navigate(route) {
-            popUpTo(route) {
-                inclusive = true
+
+        val newSectionRoute = MainActivityScreens.screenRouteToSectionRouteMapping[route] ?: MainActivityScreens.Timetable.route
+        val areFromSameSection = newSectionRoute == MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute]
+
+        if (areFromSameSection) {
+
+            navController.navigate(route) {
+
+                popUpTo(newSectionRoute) {
+                    // saveState = true
+                }
+                launchSingleTop = true
+                // restoreState = true
             }
+        } else {
+            navController.navigate(route) {
+                popUpTo(MainActivityScreens.Timetable.route)
+                launchSingleTop = true
+            }
+        }
+
+    }
+
+    // Navigate to a section
+    val onNavigateToSection = { route: String ->
+        navController.navigate(route) {
+            popUpTo(MainActivityScreens.Timetable.route)
             launchSingleTop = true
         }
     }
@@ -171,7 +206,7 @@ private fun EtziAppScreen(
                     enableBottomNavigation,
                     enter = slideInVertically(initialOffsetY = { it }) + expandVertically(),
                     exit = slideOutVertically(targetOffsetY = { it }) + shrinkVertically()
-                ) { EtziNavigationBar(currentSection, onNavigate) }
+                ) { EtziNavigationBar(currentSection, onNavigateToSection) }
             }
         ) { paddingValues ->
             Row(
@@ -183,7 +218,7 @@ private fun EtziAppScreen(
                     enableNavigationRail,
                     enter = slideInHorizontally(initialOffsetX = { -it }) + expandHorizontally(),
                     exit = slideOutHorizontally(targetOffsetX = { -it }) + shrinkHorizontally()
-                ) { EtziNavigationRail(currentSection, onNavigate, onNavigationMenuOpen) }
+                ) { EtziNavigationRail(currentSection, onNavigateToSection, onNavigationMenuOpen) }
 
                 MainNavigationGraph(
                     timetableViewModel,
@@ -196,6 +231,11 @@ private fun EtziAppScreen(
         }
     }
 
+    LaunchedEffect(rememberInitialization) {
+        initialScreenRoute?.let {
+            scope.launch { onNavigateToSection(it) }
+        }
+    }
 
     //------------   Debug Log Screen   ------------//
     LaunchedEffect(currentRoute) {
@@ -272,13 +312,6 @@ private fun MainNavigationGraph(
                 TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
             }
 
-            composable(route = MainActivityScreens.TutorialReminders.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
-                // val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
-
-                TutorialsRemindersScreen(windowSizeClass, onNavigationMenuOpen)
-            }
-
             dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
@@ -325,7 +358,7 @@ private fun MainNavigationGraph(
 
         composable(route = MainActivityScreens.Egela.route) {
             val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
-            val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
+            val egelaViewModel: EgelaViewModel = hiltViewModel(egelaBackStackEntry)
             EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
 
