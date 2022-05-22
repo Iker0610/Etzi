@@ -264,7 +264,6 @@ private fun MainNavigationGraph(
      *************************************************/
 
     //-----------   Utility variables   ------------//
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
 

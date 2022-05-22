@@ -26,6 +26,11 @@
 
 -dontwarn com.google.firebase.messaging.TopicOperation$TopicOperations
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzyv {
+  <fields>;
+}
+
 #--------------------------------------------------------------------------------------------------------------
 
 

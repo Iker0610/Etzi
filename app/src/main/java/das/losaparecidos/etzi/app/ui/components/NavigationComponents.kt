@@ -116,7 +116,6 @@ fun EtziNavigationDrawer(
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    var itsFirst = true
 
     ModalNavigationDrawer(
         gesturesEnabled = gesturesEnabled,

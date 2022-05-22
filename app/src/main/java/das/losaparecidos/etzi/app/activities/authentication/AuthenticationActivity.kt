@@ -77,8 +77,6 @@ class AuthenticationActivity : FragmentActivity() {
         ------------------------------------------------*/
         setContent {
             EtziTheme {
-                val scope = rememberCoroutineScope()
-
                 // Initialize Navigation (used for transition between splash screen and auth screen)
                 val navController = rememberAnimatedNavController()
 
@@ -193,6 +191,7 @@ class AuthenticationActivity : FragmentActivity() {
     private fun subscribeUser() {
         // Get FCM
         FirebaseApp.initializeApp(this)
+
         val fcm = FirebaseMessaging.getInstance()
         Log.d("FCM", "DCM obtained")
 
