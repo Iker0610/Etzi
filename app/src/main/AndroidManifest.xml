@@ -101,7 +101,6 @@
 
         <service
             android:name=".widgets.TimetableWidgetService"
-            android:exported="false"
             android:permission="android.permission.BIND_REMOTE_VIEWS" />
 
         <!-- File provider for profile picture-->

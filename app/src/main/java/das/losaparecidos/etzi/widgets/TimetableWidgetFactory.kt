@@ -10,12 +10,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class TimetableWidgetService : RemoteViewsService() {
+class TimetableWidgetService @Inject constructor() : RemoteViewsService() {
 
     @Inject
     lateinit var dataRepository: StudentDataRepository
@@ -34,23 +35,28 @@ class TimetableWidgetFactory(
 ) : RemoteViewsService.RemoteViewsFactory {
 
     private val mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-    private val lectureList = mutableListOf<Lecture>()
+    private var lectureList: List<Lecture> = listOf()
 
 
     override fun onCreate() {
         Log.d("WIDGET-FACTORY", "onCreate")
+        runBlocking {
+            dataRepository.getTimetable().first().let { lectures ->
+                lectureList = lectures
+            }
+        }
     }
 
     override fun onDestroy() {
     }
 
-    override fun getCount(): Int = lectureList.count()
+    override fun getCount(): Int = lectureList.size
 
     override fun onDataSetChanged() {
         Log.d("WIDGET-FACTORY", "onDataSetChanged")
         runBlocking {
-            dataRepository.getTodayTimetable().collect { lecture ->
-                lectureList.addAll(lecture)
+            dataRepository.getTimetable().first().let { lectures ->
+                lectureList = lectures
             }
         }
     }

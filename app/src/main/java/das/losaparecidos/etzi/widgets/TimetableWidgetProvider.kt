@@ -2,12 +2,11 @@ package das.losaparecidos.etzi.widgets
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.RemoteViews
 import dagger.hilt.android.AndroidEntryPoint
 import das.losaparecidos.etzi.R
@@ -15,7 +14,6 @@ import das.losaparecidos.etzi.model.repositories.LoginRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -38,13 +36,31 @@ class TimetableWidgetProvider : AppWidgetProvider() {
         Log.d("WIDGET", "Se han actualizado los widgets (onUpdate)")
 
         // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            val opciones = appWidgetManager.getAppWidgetOptions(appWidgetId)
-            val width = opciones.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-            val height = opciones.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-            val remoteViews = RemoteViews(context.packageName, getLayoutResponsive(width, height))
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+        appWidgetIds.forEach { appWidgetId ->
+
+            val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+            val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+            val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+
+            // Initialize intent for our widget service
+            val widgetServiceIntent = Intent(context, TimetableWidgetService::class.java).apply {
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+            }
+
+            // Get our responsive layout
+            val remoteView = RemoteViews(context.packageName, getLayoutResponsive(width, height)).apply {
+                setRemoteAdapter(R.id.horario_agenda, widgetServiceIntent)
+                setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
+            }
+
+            // Update this widget
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.horario_agenda);
+            appWidgetManager.updateAppWidget(appWidgetId, remoteView)
         }
+
+        // Call super
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
     }
 
     override fun onEnabled(context: Context) {
@@ -58,7 +74,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         super.onReceive(context, intent)
-
+/*
         Log.d("WIDGET", "Se ha recibido un evento broadcast onReceive")
 
         coroutineScope.launch {
@@ -79,7 +95,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                 val widgetMainLayout = RemoteViews(context.packageName, getLayoutResponsive(width, height))
 
                 if (loginRepository.getLastLoggedUser() != null) {
-                    /*if (timetable != null) {
+                    *//*if (timetable != null) {
                         timetable.collect { lectures ->
 
 
@@ -91,9 +107,9 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                                 widgetMainLayout.setViewVisibility(R.id.horario_agenda, View.VISIBLE)
                                 widgetMainLayout.setViewVisibility(R.id.agenda_widget_msg_iniciar_sesion, View.GONE)
                                 widgetMainLayout.setViewVisibility(R.id.agenda_widget_msg_no_clases, View.GONE)
-                            }*/
+                            }*//*
 
-/*
+*//*
                         val newIntent = Intent(context, TimetableWidgetService::class.java).apply {
                             //putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, idWidget)
                             //data= Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
@@ -101,16 +117,16 @@ class TimetableWidgetProvider : AppWidgetProvider() {
 
                         }
                         widgetMainLayout.setRemoteAdapter(R.id.horario_agenda, newIntent)
-                        appWidgetManager.updateAppWidget(idWidget, widgetMainLayout)*/
+                        appWidgetManager.updateAppWidget(idWidget, widgetMainLayout)*//*
 
 
                     // Set up the intent that starts the StackViewService, which will
                     // provide the views for this collection.
-                    val updateIntent = Intent(context, TimetableWidgetService::class.java)/*.apply {
+                    val updateIntent = Intent(context, TimetableWidgetService::class.java)*//*.apply {
                             // Add the widget ID to the intent extras.
                             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, idWidget)
                             data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-                        }*/
+                        }*//*
 
                     Log.d("WIDGET", "INTENT Y SET REMOTELAYOUT")
 
@@ -119,7 +135,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                     appWidgetManager.notifyAppWidgetViewDataChanged(idWidget, R.id.horario_agenda)
 
                     // Instantiate the RemoteViews object for the widget layout.
-                    /*widgetMainLayout.apply {
+                    *//*widgetMainLayout.apply {
                         // Set up the RemoteViews object to use a RemoteViews adapter.
                         // This adapter connects to a RemoteViewsService through the
                         // specified intent.
@@ -130,7 +146,7 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                         // It should be in the same layout used to instantiate the
                         // RemoteViews object.
                         //setEmptyView(R.id.horario_agenda, R.id.agenda_widget_msg_no_clases)
-                    }*/
+                    }*//*
                     appWidgetManager.updateAppWidget(idWidget, widgetMainLayout)
                 } else {
                     widgetMainLayout.setViewVisibility(R.id.horario_agenda, View.GONE)
@@ -140,14 +156,8 @@ class TimetableWidgetProvider : AppWidgetProvider() {
                 }
             }
         }
+        */
     }
-
-    private fun getLayoutResponsive(width: Int, height: Int): Int = when {
-        width > 270 && height > 250 -> R.layout.agenda_widget_4x4
-        width > 265 && height > 118 -> R.layout.agenda_widget_2x4
-        else -> R.layout.agenda_widget_2x3
-    }
-
 
     override fun onAppWidgetOptionsChanged(
         context: Context,
@@ -156,5 +166,14 @@ class TimetableWidgetProvider : AppWidgetProvider() {
         newOptions: Bundle?
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+    }
+
+    companion object {
+
+        fun getLayoutResponsive(width: Int, height: Int): Int = when {
+            width > 270 && height > 250 -> R.layout.agenda_widget_4x4
+            width > 265 && height > 118 -> R.layout.agenda_widget_2x4
+            else -> R.layout.agenda_widget_2x3
+        }
     }
 }
