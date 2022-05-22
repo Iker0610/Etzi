@@ -66,7 +66,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
 
     LaunchedEffect(true) {
         scope.launch {
-            delay(500)
+            delay(350)
             loadingData = false
         }
     }
