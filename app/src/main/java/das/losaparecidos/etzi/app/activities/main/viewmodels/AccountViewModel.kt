@@ -67,7 +67,7 @@ class AccountViewModel @Inject constructor(
         }
     }
     //-------------   Profile Related   ------------//
-    private fun setProfileImage(image: Bitmap) {
+    fun setProfileImage(image: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             profilePicture = null
             profilePicture = studentDataRepository.setUserProfileImage(image)

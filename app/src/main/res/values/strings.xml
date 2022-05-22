@@ -99,7 +99,7 @@
     <string name="student_data">Student Information</string>
     <string name="language_label">Change your language</string>
     <string name="profile_not_taken_toast_msg">No picture taken</string>
-    <string name="academic_year">Academic Year</string>
+    <string name="academic_year">Year</string>
     <string name="ordinaryExam">Ordinary exam</string>
     <string name="extraordinaryExam">Extraordinary exam</string>
     <string name="time">Time</string>
@@ -121,4 +121,7 @@
     <string name="tutorial_reminder_set_toast">Tutorial reminder set.</string>
     <string name="tutorial_reminder_removed_toast">Tutorial reminder removed.</string>
     <string name="remove_notification">Remove Notification</string>
+    <string name="chooseFromGallery">Choose image from Gallery</string>
+    <string name="takeFromCamera">Take photo from camera</string>
+    <string name="changePhoto">Change photo</string>
 </resources>

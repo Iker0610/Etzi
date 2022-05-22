@@ -28,7 +28,7 @@ fun SubjectDataContent(
                 text = "${stringResource(id = R.string.type)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.weight(0.2f)
+                modifier = Modifier.weight(0.3f)
             )
             Spacer(modifier = Modifier.weight(0.05f))
 
@@ -43,7 +43,7 @@ fun SubjectDataContent(
                 text = "${stringResource(id = R.string.academic_year)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.weight(0.2f)
+                modifier = Modifier.weight(0.3f)
             )
             Spacer(modifier = Modifier.weight(0.05f))
 
@@ -58,7 +58,7 @@ fun SubjectDataContent(
                 text = "${stringResource(id = R.string.grade)}:",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.weight(0.2f)
+                modifier = Modifier.weight(0.3f)
             )
             Spacer(modifier = Modifier.weight(0.05f))
 

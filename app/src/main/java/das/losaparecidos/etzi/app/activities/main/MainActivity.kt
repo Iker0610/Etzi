@@ -303,28 +303,28 @@ private fun MainNavigationGraph(
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
 
             composable(route = MainActivityScreens.Credits.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
 
             composable(route = MainActivityScreens.Exams.route) {
                 val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
-                ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen)
+                ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
         }
 
         composable(route = MainActivityScreens.Egela.route) {
             val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
             val egelaViewModel: EgelaViewModel  = hiltViewModel(egelaBackStackEntry)
-            EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel)
+            EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
 
         composable(route = MainActivityScreens.Account.route) {

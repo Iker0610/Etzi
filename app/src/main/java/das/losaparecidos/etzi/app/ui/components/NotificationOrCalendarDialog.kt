@@ -79,7 +79,7 @@ fun NotificationOrCalendarDialog(
                 ) {
 
                     ElevatedButton(
-                        shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp, topStart = 12.dp, topEnd = 12.dp),
+                        shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp, topStart = 16.dp, topEnd = 16.dp),
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             onNotificationClick()
@@ -92,7 +92,7 @@ fun NotificationOrCalendarDialog(
                     }
 
                     ElevatedButton(
-                        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomStart = 12.dp, bottomEnd = 12.dp),
+                        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomStart = 16.dp, bottomEnd = 16.dp),
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             addTutorialOnCalendar(ctx, professor, tutorialDate, tutorial)
