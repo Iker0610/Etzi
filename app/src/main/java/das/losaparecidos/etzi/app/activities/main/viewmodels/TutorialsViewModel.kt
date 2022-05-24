@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import das.losaparecidos.etzi.app.utils.now
 import das.losaparecidos.etzi.app.utils.today
-import das.losaparecidos.etzi.model.entities.TutorialReminder
 import das.losaparecidos.etzi.model.entities.ProfessorWithTutorials
 import das.losaparecidos.etzi.model.entities.SubjectTutorial
+import das.losaparecidos.etzi.model.entities.TutorialReminder
 import das.losaparecidos.etzi.model.repositories.ReminderRepository
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import das.losaparecidos.etzi.services.ReminderManager
@@ -24,8 +24,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.*
-import kotlinx.datetime.TimeZone
-import java.util.*
 import javax.inject.Inject
 
 

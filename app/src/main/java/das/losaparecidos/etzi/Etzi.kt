@@ -157,7 +157,7 @@ enum class NotificationID(val id: Int) {
 
 
 //WIDGET PENDING INTENTS
-enum class WidgetOpenerActions() {
+enum class WidgetOpenerActions {
     OPEN_TUTORIALS,
     OPEN_EXPEDIENTE,
     OPEN_EGELA

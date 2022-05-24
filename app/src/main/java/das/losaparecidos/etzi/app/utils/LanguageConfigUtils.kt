@@ -11,15 +11,11 @@ import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import das.losaparecidos.etzi.R
-import das.losaparecidos.etzi.app.ui.components.CenteredRow
 import das.losaparecidos.etzi.app.ui.components.ListItem
-import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -119,7 +115,6 @@ class LanguageManager @Inject constructor() {
  * It follows Material Design's Confirmation Dialog design pattern, as stated in:
  * https://material.io/components/dialogs#confirmation-dialog
  *
- * @param title Dialog title.
  * @param selectedLanguage Current selected language.
  * @param onLanguageSelected Callback for onLanguageSelected event.
  * @param onDismiss Callback for dismiss event.

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 
 class ReminderRepository @Inject constructor(
-    private val datastore: Datastore,
+    datastore: Datastore,
     private val reminderDao: ReminderDao
 ) {
     private val loggedUser = datastore.getLastLoggedUserFlow()

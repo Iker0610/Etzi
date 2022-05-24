@@ -6,7 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
 
@@ -23,7 +22,7 @@ fun SubjectDataContent(
         modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceAround
     ) {
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.type)}:",
                 style = MaterialTheme.typography.labelLarge,
@@ -38,7 +37,7 @@ fun SubjectDataContent(
                 modifier = Modifier.weight(0.7f)
             )
         }
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.academic_year)}:",
                 style = MaterialTheme.typography.labelLarge,
@@ -48,12 +47,12 @@ fun SubjectDataContent(
             Spacer(modifier = Modifier.weight(0.05f))
 
             Text(
-                text = "${subjectEnrollment.subject.academicYear.year} - ${subjectEnrollment.subject.academicYear.year+1}",
+                text = "${subjectEnrollment.subject.academicYear.year} - ${subjectEnrollment.subject.academicYear.year + 1}",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(0.7f)
             )
         }
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.grade)}:",
                 style = MaterialTheme.typography.labelLarge,
@@ -65,10 +64,11 @@ fun SubjectDataContent(
             // Si existe la convocatoria actual, está evaluada y la nota NO es provisional
             if (subjectEnrollment.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.provisional == false) {
 
-                val gradeAsFloat = grade.toFloat()
+                val gradeAsFloat = grade.toFloatOrNull()
                 val distinction = subjectEnrollment.subjectCalls.last().subjectCallAttendances.first().distinction
 
                 val gradeText = when {
+                    gradeAsFloat == null -> ""
                     distinction -> "${stringResource(id = R.string.distinction)} - $grade"
                     gradeAsFloat < 5f -> "${stringResource(id = R.string.fail)} - $grade"
                     gradeAsFloat >= 9f -> "${stringResource(id = R.string.outstanding)} - $grade"

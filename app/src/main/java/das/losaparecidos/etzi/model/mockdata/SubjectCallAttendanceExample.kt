@@ -2,8 +2,6 @@ import das.losaparecidos.etzi.model.entities.Subject
 import das.losaparecidos.etzi.model.entities.SubjectCall
 import das.losaparecidos.etzi.model.entities.SubjectCallAttendance
 import das.losaparecidos.etzi.model.entities.SubjectEnrollment
-import das.losaparecidos.etzi.model.mockdata.subjects
-import io.ktor.util.*
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
