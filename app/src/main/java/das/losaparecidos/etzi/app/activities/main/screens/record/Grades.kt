@@ -39,7 +39,7 @@ fun GradesScreen(
 
     Scaffold(
         topBar = {
-            DynamicLargeMediumTopAppBar(
+            DynamicMediumTopAppBar(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Grades.title(LocalContext.current)) },
                 navigationIcon = {
