@@ -1,7 +1,10 @@
 package das.losaparecidos.etzi.app.activities.main.screens.record
 
 import QuarterSubjectsList
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentPasteOff
 import androidx.compose.material.icons.rounded.Menu
@@ -13,19 +16,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.activities.main.MainActivityScreens
 import das.losaparecidos.etzi.app.activities.main.screens.account.AccountIcon
-import das.losaparecidos.etzi.app.activities.main.screens.record.composables.CourseSubjectsList
 import das.losaparecidos.etzi.app.activities.main.viewmodels.AccountViewModel
 import das.losaparecidos.etzi.app.activities.main.viewmodels.RecordViewModel
-import das.losaparecidos.etzi.app.ui.components.*
+import das.losaparecidos.etzi.app.ui.components.CenteredBox
+import das.losaparecidos.etzi.app.ui.components.DynamicMediumTopAppBar
+import das.losaparecidos.etzi.app.ui.components.EmptyCollectionScreen
+import das.losaparecidos.etzi.app.ui.components.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
@@ -46,7 +51,7 @@ fun ExamsScreen(
 
     Scaffold(
         topBar = {
-            DynamicLargeMediumTopAppBar(
+            DynamicMediumTopAppBar(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Exams.title(LocalContext.current)) },
                 navigationIcon = {
@@ -101,9 +106,7 @@ fun ExamsScreen(
                             QuarterSubjectsList(subjects = courseRecord.filter {
                                 it.subjectCalls[0].examDate.monthNumber in 5..7
                             })
-                        }
-
-                        else {
+                        } else {
                             QuarterSubjectsList(subjects = courseRecord.filter {
                                 it.subjectCalls[0].examDate.monthNumber > 11 || it.subjectCalls[0].examDate.monthNumber < 2
                             })
