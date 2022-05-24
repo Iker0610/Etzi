@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat.startActivity
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.app.ui.components.CenteredColumn
 import das.losaparecidos.etzi.app.ui.components.CenteredRow
+import das.losaparecidos.etzi.app.ui.components.MaterialDivider
 import das.losaparecidos.etzi.app.utils.epochUTCMilliseconds
 import das.losaparecidos.etzi.app.utils.format
 import das.losaparecidos.etzi.model.entities.SubjectCall
@@ -46,84 +47,73 @@ fun QuarterSubjectsList(subjects: List<SubjectEnrollment>) {
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Column(Modifier.padding(vertical = 16.dp, horizontal = 24.dp)) {
 
-                CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
+                    CenteredRow(horizontalArrangement = Arrangement.SpaceBetween) {
 
-                    // Poner título
-                    Text(
-                        text = subjectEnrollment.subject.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(horizontal = 32.dp)
-                            .padding(top = 16.dp)
-                            .weight(1f)
-                    )
+                        // Poner título
+                        Text(
+                            text = subjectEnrollment.subject.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.weight(1f)
+                        )
 
-                    // Curso
-                    Surface(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        CenteredRow(
-                            modifier = Modifier.padding(
-                                vertical = 4.dp,
-                                horizontal = 8.dp
-                            )
+                        // Curso
+                        Surface(
+                            modifier = Modifier.padding(start = 16.dp),
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = MaterialTheme.shapes.small
                         ) {
-                            Text(
-                                text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
-                                style = MaterialTheme.typography.labelMedium,
-                            )
-                        }
-                    }
-                }
-
-                // Datos de la asignatura
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 16.dp)
-                ) {
-
-                    // Por cada convocatoria
-                    subjectEnrollment.subjectCalls.forEach { subjectCall ->
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        CenteredRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-                            Column {
-
-                                if (subjectCall.callType == "Ordinaria") {
-                                    Text(
-                                        text = "${stringResource(id = R.string.ordinaryExam)}:",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = MaterialTheme.colorScheme.tertiary
-                                    )
-                                } else {
-                                    Text(
-                                        text = "${stringResource(id = R.string.extraordinaryExam)}:",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = MaterialTheme.colorScheme.tertiary
-                                    )
-                                }
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                ExamDateTime(subjectCall = subjectCall)
-                            }
-                            IconButton(onClick = { addExamOnCalendar(ctx, subjectEnrollment.subject.name, subjectCall.examDate) }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.calendar_add_on), null,
-                                    tint = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier.size(32.dp, 32.dp)
+                            CenteredRow(
+                                modifier = Modifier.padding(
+                                    vertical = 4.dp,
+                                    horizontal = 8.dp
+                                )
+                            ) {
+                                Text(
+                                    text = "${subjectEnrollment.subject.course}º ${stringResource(id = R.string.course)}",
+                                    style = MaterialTheme.typography.labelMedium,
                                 )
                             }
-
-
                         }
+                    }
 
+                    MaterialDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+                    // Datos de la asignatura
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(vertical = 8.dp)) {
+
+                        // Por cada convocatoria
+                        subjectEnrollment.subjectCalls.forEach { subjectCall ->
+
+
+                            CenteredRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+
+                                Column {
+
+                                    if (subjectCall.callType == "Ordinaria") {
+                                        Text(
+                                            text = "${stringResource(id = R.string.ordinaryExam)}:",
+                                            style = MaterialTheme.typography.labelLarge,
+                                            color = MaterialTheme.colorScheme.tertiary
+                                        )
+                                    } else {
+                                        Text(
+                                            text = "${stringResource(id = R.string.extraordinaryExam)}:",
+                                            style = MaterialTheme.typography.labelLarge,
+                                            color = MaterialTheme.colorScheme.tertiary
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    ExamDateTime(subjectCall = subjectCall)
+                                }
+                                FilledTonalIconButton(onClick = { addExamOnCalendar(ctx, subjectEnrollment.subject.name, subjectCall.examDate) }) {
+                                    Icon(painter = painterResource(id = R.drawable.calendar_add_on), null)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -135,13 +125,7 @@ fun QuarterSubjectsList(subjects: List<SubjectEnrollment>) {
 @Composable
 private fun ExamDateTime(subjectCall: SubjectCall) {
 
-    CenteredRow(
-        //modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-
-        Spacer(Modifier.width(8.dp))
-
+    Row{
         // Fecha del examen
         Icon(
             Icons.Rounded.Event, null,
