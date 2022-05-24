@@ -65,7 +65,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
 
                     CenteredColumn(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
 
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.classroom)}:",
                                 style = MaterialTheme.typography.labelLarge,
@@ -73,7 +73,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             )
                             Text(text = lectureRoom.number.toString(), style = MaterialTheme.typography.bodyLarge)
                         }
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.floor)}:",
                                 style = MaterialTheme.typography.labelLarge,
@@ -81,7 +81,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             )
                             Text(text = lectureRoom.floor.toString(), style = MaterialTheme.typography.bodyLarge)
                         }
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.building)}:",
                                 style = MaterialTheme.typography.labelLarge,
@@ -121,7 +121,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                 ) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                         // Aula
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.classroom)}:",
                                 style = MaterialTheme.typography.labelLarge,
@@ -130,7 +130,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             Text(text = lectureRoom.number.toString(), style = MaterialTheme.typography.bodyLarge)
                         }
                         // Planta
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.floor)}:",
                                 style = MaterialTheme.typography.labelLarge,
@@ -139,7 +139,7 @@ private fun DialogContent(lectureRoom: LectureRoom, onDismiss: () -> Unit) {
                             Text(text = lectureRoom.floor.toString(), style = MaterialTheme.typography.bodyLarge)
                         }
                         // Edificio
-                        CenteredColumn() {
+                        CenteredColumn {
                             Text(
                                 "${stringResource(id = R.string.building)}:",
                                 style = MaterialTheme.typography.labelLarge,

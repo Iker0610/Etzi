@@ -226,7 +226,7 @@ private fun EtziNavigationRailPreview() {
             ) {
                 val scope = rememberCoroutineScope()
 
-                EtziNavigationRail(ventanaActual, setVentanaActual, {})
+                EtziNavigationRail(ventanaActual, setVentanaActual) {}
                 EtziLogo(paddingValues)
             }
         }

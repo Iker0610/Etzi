@@ -23,7 +23,7 @@ class StudentDataRepository @Inject constructor(
     private suspend fun fetchStudentData() = apiClient.getStudentData()
 
     private suspend fun fetchTimetable() = apiClient.getTimetable()
-    fun getTimetable() = studentCacheDataDao.getTimetable()
+    private fun getTimetable() = studentCacheDataDao.getTimetable()
     fun getTodayTimetable() = studentCacheDataDao.getTodayTimetable()
     fun getGroupedTimetable() = getTimetable().map { timetable -> timetable.groupBy { lecture -> lecture.startDate.date.toString() } }
 

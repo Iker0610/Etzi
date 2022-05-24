@@ -22,7 +22,7 @@ fun SubjectDataContent(
         modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceAround
     ) {
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.type)}:",
                 style = MaterialTheme.typography.labelLarge,
@@ -37,7 +37,7 @@ fun SubjectDataContent(
                 modifier = Modifier.weight(0.7f)
             )
         }
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.academic_year)}:",
                 style = MaterialTheme.typography.labelLarge,
@@ -52,7 +52,7 @@ fun SubjectDataContent(
                 modifier = Modifier.weight(0.7f)
             )
         }
-        Row() {
+        Row {
             Text(
                 text = "${stringResource(id = R.string.grade)}:",
                 style = MaterialTheme.typography.labelLarge,

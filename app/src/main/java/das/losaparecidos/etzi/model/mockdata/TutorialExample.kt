@@ -1,8 +1,5 @@
 package das.losaparecidos.etzi.model.mockdata
 
-import das.losaparecidos.etzi.model.entities.*
-import kotlinx.datetime.LocalDateTime
-
 /*val tutorials = mutableListOf(
 
     SubjectTutorial(

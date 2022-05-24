@@ -39,7 +39,7 @@ fun GradesScreen(
 
     Scaffold(
         topBar = {
-            DynamicLargeMediumTopAppBar(
+            DynamicMediumTopAppBar(
                 windowSizeClass = windowSizeClass,
                 title = { Text(text = MainActivityScreens.Grades.title(LocalContext.current)) },
                 navigationIcon = {
@@ -124,8 +124,7 @@ fun GradesScreen(
                             ) {
 
                                 // Curso
-                                CenteredColumn(
-                                ) {
+                                CenteredColumn{
                                     Text(
                                         text = "${stringResource(id = R.string.course).capitalize(Locale.current)}:",
                                         style = MaterialTheme.typography.labelLarge,
@@ -138,8 +137,7 @@ fun GradesScreen(
                                 }
 
                                 // Convocatoria
-                                Column(
-                                ) {
+                                Column {
                                     Text(
                                         text = "${stringResource(id = R.string.call)}:",
                                         style = MaterialTheme.typography.labelLarge,
@@ -152,8 +150,7 @@ fun GradesScreen(
                                 }
 
                                 // Nota
-                                Column(
-                                ) {
+                                Column {
                                     Text(
                                         text = "${stringResource(id = R.string.grade)}:",
                                         style = MaterialTheme.typography.labelLarge,
@@ -180,7 +177,7 @@ fun GradesScreen(
                                             text = stringResource(id = R.string.notable),
                                             style = MaterialTheme.typography.labelLarge,
                                         )
-                                    }else {
+                                    } else {
                                         Text(
                                             text = stringResource(id = R.string.pass),
                                             style = MaterialTheme.typography.labelLarge,

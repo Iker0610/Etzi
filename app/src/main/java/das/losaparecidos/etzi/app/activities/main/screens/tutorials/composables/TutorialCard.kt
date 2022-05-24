@@ -151,7 +151,7 @@ fun TutorialCard(
                                 putExtra(Intent.EXTRA_EMAIL, arrayOf(professor.email))
                                 putExtra(Intent.EXTRA_SUBJECT, emailSubject)
                                 putExtra(Intent.EXTRA_TEXT, emailSalutation)
-                                selector = selectorIntent;
+                                selector = selectorIntent
                             }
 
                             startActivity(context, emailIntent, null)

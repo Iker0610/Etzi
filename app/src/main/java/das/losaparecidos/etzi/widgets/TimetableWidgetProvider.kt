@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import dagger.hilt.android.AndroidEntryPoint
-import das.losaparecidos.etzi.Etzi
 import das.losaparecidos.etzi.R
 import das.losaparecidos.etzi.WidgetOpenerActions
 import das.losaparecidos.etzi.app.activities.authentication.AuthenticationActivity
@@ -21,9 +20,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.DateTimePeriod
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 /**
