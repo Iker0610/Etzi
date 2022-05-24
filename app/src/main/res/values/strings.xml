@@ -1,3 +1,142 @@
 <resources>
-    <string name="app_name">Etzi</string>
+    <string name="app_name" translatable="false">Etzi</string>
+
+    <!-- Channels -->
+    <string name="ehu_information_channel_name">UPV/EHU Information</string>
+    <string name="ehu_information_channel_description">UPV/EHU sended informative notifications and alerts.</string>
+
+    <!-- Buttons -->
+    <string name="ok_button" translatable="false">OK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
+    <string name="enroll_button">Enroll</string>
+
+    <!-- Login Screen -->
+    <string name="server_error_dialog_title">An unexpected error occurred. Try later.</string>
+    <string name="ldap_title" translatable="false">LDAP</string>
+    <string name="password_label">Password</string>
+    <string name="password_placeholder">Password</string>
+    <string name="password_icon_visible">Password visible</string>
+    <string name="password_icon_hidden">Password hidden</string>
+    <string name="biometric_auth_failed_toast_message">Authentication Failed. Try again.</string>
+    <string name="biometric_auth_error_toast_message">Authentication error: %1$s</string>
+    <string name="biometric_auth_prompt_title">Login as %1$s</string>
+    <string name="biometric_auth_prompt_text">Log in using your device\'s biometric credentials</string>
+    <string name="login_label">Sign In</string>
+    <string name="remind_me_label">Remind me</string>
+    <string name="biometrics_button">Biometric Authetication</string>
+    <string name="saved_credentials_not_longer_valid_dialog_title">Saved credentials are not valid</string>
+    <string name="saved_credentials_not_longer_valid_dialog_text">The previus logged user\'s credentials are not longer valid. This may be because the user does not longer exist or due to a password change.</string>
+    <string name="saved_credentials_not_longer_valid_dialog_solution_text">In order to continue you must logging again with the username and password.</string>
+    <string name="processing">Processing</string>
+    <string name="incorrect_login_error_message">Incorrect username or password.</string>
+    <string name="invalid_account_login_dialog_title">Invalid Account</string>
+    <string name="invalid_account_login_dialog_text">You haven\'t logged with a valid account before. Log with into an account with a valid password in order to enable biometrics.</string>
+    <string name="no_biometrics_enrolled_dialog_title">No biometrics enrolled</string>
+    <string name="no_biometrics_enrolled_dialog_text_1">Your device is capable of biometric login but none is enrolled.</string>
+    <string name="no_biometrics_enrolled_dialog_text_2">Do you want to configure them?</string>
+
+    <!-- Horario -->
+    <string name="subgroup">Subgroup</string>
+    <string name="professor">Professor</string>
+    <string name="subject">Subject</string>
+    <string name="roomInfo">Room info</string>
+    <string name="floor">Floor</string>
+    <string name="building">Building</string>
+    <string name="classroom">Classroom</string>
+    <string name="masterclass">Masterclass</string>
+
+    <!-- Expediente -->
+    <string name="course">course</string>
+    <string name="pending">Credits pending to obtain</string>
+    <string name="unassessed">Credits pending evaluation</string>
+    <string name="expedient">Approved credits</string>
+    <string name="course_total">Total course credits</string>
+
+    <!-- Date time picker -->
+    <string name="select_date_label">Select date</string>
+
+    <!-- Screen titles -->
+    <string name="timetable_screen_title">Timetable</string>
+    <string name="tutorials_section_screen_title">Tutorials</string>
+    <string name="tutorials_screen_title">Tutorials</string>
+    <string name="tutorial_reminders_screen_title">Tutorial reminders</string>
+    <string name="record_screen_title">Record</string>
+    <string name="subjects_screen_title">Subjects</string>
+    <string name="credits_screen_title">Credits</string>
+    <string name="grades_screen_title">Provisional grades</string>
+    <string name="account_screen_title">Account</string>
+    <string name="egela_screen_title">eGela</string>
+    <string name="date_from_label">From</string>
+    <string name="date_to_label">To</string>
+    <string name="total_degree">Total credits approved in all courses</string>
+    <string name="call">Call</string>
+    <string name="grade">Grade</string>
+    <string name="noGrades">There are not provisional grades</string>
+    <string name="professors_label">Professors</string>
+    <string name="distinction">Distinction</string>
+    <string name="type">Type</string>
+    <string name="date">Date</string>
+    <string name="no_lectures_dialog_message">There are no lectures for today</string>
+    <string name="date_range">Date Range</string>
+    <string name="email_salutation">Dear sir/madam</string>
+    <string name="email_subject">Tutorial dated for %1$s</string>
+    <string name="email_label" translatable="false">Email</string>
+    <string name="fail">No pass</string>
+    <string name="pass">Pass</string>
+    <string name="outstanding">Outstanding</string>
+    <string name="no_tutorials_dialog_message">There are no tutorials available</string>
+    <string name="saveToCalendar">Save to calendar</string>
+    <string name="activateNotification">Activate notification</string>
+    <string name="chooseCalendarOrNotification">Do you want to save the date in the calendar or activate a notification for an hour before?</string>
+    <string name="reminder">Reminder</string>
+    <string name="student_full_name_label">Full name</string>
+    <string name="degree_label">Degree</string>
+    <string name="select_lang_dialog_title">Select Language</string>
+    <string name="logout_label">Logout</string>
+    <string name="select_lang_dialog_text">Choose your preferred language for the application.</string>
+    <string name="settings">Settings</string>
+    <string name="student_data">Student Information</string>
+    <string name="language_label">Change your language</string>
+    <string name="profile_not_taken_toast_msg">No picture taken</string>
+    <string name="academic_year">Year</string>
+    <string name="ordinaryExam">Ordinary exam</string>
+    <string name="extraordinaryExam">Extraordinary exam</string>
+    <string name="time">Time</string>
+    <string name="exams_screen_title">Exams timetable</string>
+    <string name="quarter">quarter</string>
+    <string name="no_exams">There are no exams scheduled yet</string>
+    <string name="exam">Exam</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="tutorial_reminder_channel_name">Tutorial Reminders</string>
+    <string name="tutorial_reminder_channel_description">User configured tutorial reminder related notifications.</string>
+    <string name="lecture_reminder_channel_name">Lecture Reminders</string>
+    <string name="lecture_reminder_channel_description">User configured lecture reminder related notifications.</string>
+    <string name="lecture_reminder_notification_title">You have a lecture at %1$s</string>
+    <string name="lecture_reminder_notification_text">You have a %1$s lecture at %2$s in the %3$s room.</string>
+    <string name="tutorial_reminder_notification_title">You have a tutorial at %1$s</string>
+    <string name="tutorial_reminder_notification_text">You have a tutorial with %1$s at %2$s in the %3$s room.</string>
+    <string name="lecture_reminder_set_toast">Lecture reminder set.</string>
+    <string name="lecture_reminder_removed_toast">Lecture reminder removed.</string>
+    <string name="tutorial_reminder_set_toast">Tutorial reminder set.</string>
+    <string name="tutorial_reminder_removed_toast">Tutorial reminder removed.</string>
+    <string name="remove_notification">Remove Notification</string>
+    <string name="chooseFromGallery">Choose image from Gallery</string>
+    <string name="takeFromCamera">Take photo from camera</string>
+    <string name="changePhoto">Change photo</string>
+    <string name="confirm_logout_message">Are you sure you want to logout?</string>
+    <string name="confirm_logout_button">Logout</string>
+    <string name="app_exit_dialog_title">Exit Etzi</string>
+    <string name="app_exit_dialog_text">Are you sure you want to exit?</string>
+    <string name="exit_button">Exit</string>
+    <string name="logInToSeeTimetable">Log in to see de timetable</string>
+    <string name="change_user_profile_title">Update profile image</string>
+    <string name="change_user_profile_text">Change your user profile. You can change it whenever you want.</string>
+    <string name="notable">Notable</string>
+    <string name="reminder_channel_group_name">Reminders</string>
+    <string name="reminder_channel_group_description">Remainder notifications.</string>
+    <string name="provisional_grades_channel_name">Provisional grades upload</string>
+    <string name="provisional_grades_channel_description">Notifies about provisional grade uploads.</string>
+    <string name="provisional_grade_notification_title">New note available</string>
+    <string name="provisional_grade_notification_text">The %1$s grade has been raised.</string>
 </resources>

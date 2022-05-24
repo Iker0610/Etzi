@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--android:background="@drawable/agenda_widget_borde_radius"-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/agenda_widget_borde_radius"
+    android:layout_margin="2dp"
+    android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="16:50"
+                android:textSize="10dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:id="@+id/widget_item_hora_comienzo"
+                android:textColor="?android:attr/textColorPrimaryInverse"></TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="16:50"
+                android:textSize="10dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:id="@+id/widget_item_hora_fin"
+                android:textColor="?android:attr/textColorPrimaryInverse"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Servicios Telemáticos Avanzados"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textStyle="bold"
+                android:textSize="12dp"
+                android:id="@+id/widget_item_asignatura"
+                android:textColor="?android:attr/textColorPrimaryInverse"
+                android:layout_margin="2dp"
+
+                ></TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="EIB/BIE II - M"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textSize="10dp"
+                    android:id="@+id/widget_item_edificio"
+                    android:textColor="?android:attr/textColorPrimaryInverse"></TextView>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/widget_item_aula"
+                    android:text="P2M12"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="10dp"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:background="@drawable/agenda_widget_borde_radius_aula">
+                </TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+</LinearLayout>

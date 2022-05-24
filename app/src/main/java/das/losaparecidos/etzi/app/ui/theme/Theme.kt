@@ -74,7 +74,7 @@ private val DarkThemeColors = darkColorScheme(
 fun EtziTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     useDynamicColor: Boolean = true,
-    content: @Composable() () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val dynamicColor = useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
@@ -97,7 +97,7 @@ fun EtziTheme(
 
     MaterialTheme(
         colorScheme = colors,
-        typography = AppTypography,
+        typography = EtziTypography,
         content = content
     )
 }

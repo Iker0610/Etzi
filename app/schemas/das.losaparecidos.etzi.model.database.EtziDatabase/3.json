@@ -1,0 +1,353 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "b1845a8512e3ad07c3888274ed6a6594",
+    "entities": [
+      {
+        "tableName": "lecture",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_name` TEXT NOT NULL, `academic_year` INTEGER NOT NULL, `degree` TEXT NOT NULL, `subgroup` INTEGER NOT NULL, `professor_email` TEXT NOT NULL, `room_number` INTEGER NOT NULL, `room_floor` INTEGER NOT NULL, `room_building` TEXT NOT NULL, `start_date` INTEGER NOT NULL, `end_date` INTEGER NOT NULL, PRIMARY KEY(`subject_name`, `academic_year`, `degree`, `subgroup`, `start_date`), FOREIGN KEY(`room_building`) REFERENCES `building`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`professor_email`) REFERENCES `professor`(`email`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "subjectName",
+            "columnName": "subject_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "academicYear",
+            "columnName": "academic_year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "degree",
+            "columnName": "degree",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subgroup",
+            "columnName": "subgroup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "professorEmail",
+            "columnName": "professor_email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roomNumber",
+            "columnName": "room_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roomFloor",
+            "columnName": "room_floor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roomBuilding",
+            "columnName": "room_building",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "start_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "end_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "subject_name",
+            "academic_year",
+            "degree",
+            "subgroup",
+            "start_date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_lecture_academic_year_start_date_subgroup",
+            "unique": false,
+            "columnNames": [
+              "academic_year",
+              "start_date",
+              "subgroup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_lecture_academic_year_start_date_subgroup` ON `${TABLE_NAME}` (`academic_year`, `start_date`, `subgroup`)"
+          },
+          {
+            "name": "index_lecture_professor_email",
+            "unique": false,
+            "columnNames": [
+              "professor_email"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_lecture_professor_email` ON `${TABLE_NAME}` (`professor_email`)"
+          },
+          {
+            "name": "index_lecture_room_building",
+            "unique": false,
+            "columnNames": [
+              "room_building"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_lecture_room_building` ON `${TABLE_NAME}` (`room_building`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "building",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "room_building"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "professor",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "professor_email"
+            ],
+            "referencedColumns": [
+              "email"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "building",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `abbreviation` TEXT NOT NULL, `name` TEXT NOT NULL, `address` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "abbreviation",
+            "columnName": "abbreviation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "professor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `surname` TEXT NOT NULL, `email` TEXT NOT NULL, PRIMARY KEY(`email`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "surname",
+            "columnName": "surname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "email"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "student",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ldap` TEXT NOT NULL, `email` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `enrolled_degree` TEXT NOT NULL, PRIMARY KEY(`ldap`))",
+        "fields": [
+          {
+            "fieldPath": "ldap",
+            "columnName": "ldap",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "surname",
+            "columnName": "surname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enrolledDegree",
+            "columnName": "enrolled_degree",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ldap"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "lecture_reminders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`student_ldap` TEXT NOT NULL, `lecture_room` TEXT NOT NULL, `subject` TEXT NOT NULL, `degree` TEXT NOT NULL, `lecture_date` INTEGER NOT NULL, PRIMARY KEY(`student_ldap`, `lecture_room`, `subject`, `degree`, `lecture_date`))",
+        "fields": [
+          {
+            "fieldPath": "studentLdap",
+            "columnName": "student_ldap",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lectureRoom",
+            "columnName": "lecture_room",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subject",
+            "columnName": "subject",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "degree",
+            "columnName": "degree",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lectureDate",
+            "columnName": "lecture_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "student_ldap",
+            "lecture_room",
+            "subject",
+            "degree",
+            "lecture_date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tutorial_reminders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`student_ldap` TEXT NOT NULL, `professor_full_name` TEXT NOT NULL, `professor_email` TEXT NOT NULL, `lecture_room` TEXT NOT NULL, `tutorial_date` INTEGER NOT NULL, PRIMARY KEY(`student_ldap`, `tutorial_date`, `professor_email`))",
+        "fields": [
+          {
+            "fieldPath": "studentLdap",
+            "columnName": "student_ldap",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "professorFullName",
+            "columnName": "professor_full_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "professorEmail",
+            "columnName": "professor_email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lectureRoom",
+            "columnName": "lecture_room",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tutorialDate",
+            "columnName": "tutorial_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "student_ldap",
+            "tutorial_date",
+            "professor_email"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b1845a8512e3ad07c3888274ed6a6594')"
+    ]
+  }
+}

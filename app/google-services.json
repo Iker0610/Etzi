@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "194142128543",
+    "project_id": "etzi-24c87",
+    "storage_bucket": "etzi-24c87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194142128543:android:c95d4b66b4dc560aaa55aa",
+        "android_client_info": {
+          "package_name": "das.losaparecidos.etzi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194142128543-oe21m73h12dm4imd7kr6rq0uhalnqn6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh3OVkq-SC7H712RPB4oMXvxdmyjLm4Is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194142128543-oe21m73h12dm4imd7kr6rq0uhalnqn6v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
