@@ -93,7 +93,7 @@ fun QuarterSubjectsList(subjects: List<SubjectEnrollment>) {
 
                         CenteredRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
-                            Column() {
+                            Column {
 
                                 if (subjectCall.callType == "Ordinaria") {
                                     Text(
@@ -150,7 +150,7 @@ private fun ExamDateTime(subjectCall: SubjectCall) {
                 .size(18.dp)
         )
         Text(
-            text = subjectCall.examDate.format("MMM dd").uppercase(java.util.Locale.getDefault()),
+            text = subjectCall.examDate.format("MMM dd").uppercase(Locale.getDefault()),
             style = MaterialTheme.typography.labelLarge
         )
 

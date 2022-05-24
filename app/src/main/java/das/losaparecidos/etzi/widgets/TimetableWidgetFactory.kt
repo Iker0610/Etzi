@@ -14,7 +14,6 @@ import das.losaparecidos.etzi.model.entities.Lecture
 import das.losaparecidos.etzi.model.repositories.StudentDataRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.util.*
 import javax.inject.Inject
 
 
