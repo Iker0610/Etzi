@@ -30,7 +30,7 @@ fun <T> FilterChipGroup(
             val itemText = itemToStringMapper(item)
             FilterChip(
                 selected = state,
-                selectedIcon = { Icon(Icons.Rounded.Check, "Selected item $itemText") },
+                trailingIcon = if (state) {{ Icon(Icons.Rounded.Check, "Selected item $itemText") }} else null,
                 onClick = { onItemToggle(item) },
                 label = { Text(text = itemText) },
             )

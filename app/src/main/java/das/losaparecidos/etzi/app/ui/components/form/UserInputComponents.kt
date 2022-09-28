@@ -46,6 +46,7 @@ import java.time.format.FormatStyle
  * @param isValid If the field's current value is valid. If false the field changes it's appearance to reflect this state.
  * @param ignoreFirstTime Apply [isValid] even if the user hasn't interacted with the field yet.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ValidatorTextField(
     value: String,
@@ -234,6 +235,7 @@ fun DateRangeDoubleField(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangeField(
     modifier: Modifier = Modifier,

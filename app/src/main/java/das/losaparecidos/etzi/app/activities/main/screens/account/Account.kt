@@ -149,9 +149,7 @@ fun AccountScreen(
         )
     }
 
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
-
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var openChooseImageDialog by rememberSaveable { mutableStateOf(false) }
 
     if (openChooseImageDialog) {

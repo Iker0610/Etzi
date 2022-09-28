@@ -106,8 +106,7 @@ fun TutorialsScreen(
     var currentExpandedSubject: String? by rememberSaveable { mutableStateOf(null) }
     val currentExpandedProfessor = rememberSaveable { mutableStateOf<String?>(null) }
 
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

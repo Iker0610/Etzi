@@ -7,10 +7,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MaterialDivider(modifier: Modifier = Modifier, startIndent: Dp = 0.dp) {
+fun MaterialDivider(modifier: Modifier = Modifier) {
     androidx.compose.material3.Divider(
         modifier,
-        startIndent = startIndent,
         color = MaterialTheme.colorScheme.surfaceVariant
     )
 }

@@ -1,17 +1,13 @@
 package das.losaparecidos.etzi.app.ui.components
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MediumTopAppBar
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicMediumTopAppBar(
     windowSizeClass: WindowSizeClass,
@@ -30,17 +26,18 @@ fun DynamicMediumTopAppBar(
             colors = colors,
         )
     } else {
-        SmallTopAppBar(
+        TopAppBar(
             title = title,
             modifier = modifier,
             navigationIcon = navigationIcon,
             actions = actions,
-            colors = colors,
+            colors = colors
         )
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicLargeTopAppBar(
     windowSizeClass: WindowSizeClass,
@@ -59,17 +56,18 @@ fun DynamicLargeTopAppBar(
             colors = colors,
         )
     } else {
-        SmallTopAppBar(
+        TopAppBar(
             title = title,
             modifier = modifier,
             navigationIcon = navigationIcon,
             actions = actions,
-            colors = colors,
+            colors = colors
         )
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicLargeMediumTopAppBar(
     windowSizeClass: WindowSizeClass,

@@ -51,7 +51,7 @@ fun EgelaScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text(text = MainActivityScreens.Egela.title(LocalContext.current)) },
                 navigationIcon = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {

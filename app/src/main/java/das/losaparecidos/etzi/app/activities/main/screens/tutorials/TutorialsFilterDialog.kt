@@ -69,7 +69,7 @@ fun TutorialsFilterDialog(
         modifier = Modifier.fillMaxSize(),
         containerColor = backgroundColor,
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text(text = MainActivityScreens.Tutorials.title(LocalContext.current)) },
                 navigationIcon = {
                     IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, null) }
@@ -114,13 +114,13 @@ fun TutorialsFilterDialog(
 
                 startDateTrailingIcon = {
                     IconButton(onClick = { tutorialsFilterViewModel.startDate = LocalDate.today }, modifier = Modifier.size(20.dp)) {
-                        Icon(Icons.Rounded.RestartAlt , null, tint = MaterialTheme.colorScheme.secondary)
+                        Icon(Icons.Rounded.RestartAlt, null, tint = MaterialTheme.colorScheme.secondary)
                     }
                 },
 
                 endDateTrailingIcon = {
                     IconButton(onClick = { tutorialsFilterViewModel.endDate = null }, modifier = Modifier.size(20.dp)) {
-                        Icon(Icons.Rounded.HighlightOff , null, tint = MaterialTheme.colorScheme.secondary)
+                        Icon(Icons.Rounded.HighlightOff, null, tint = MaterialTheme.colorScheme.secondary)
                     }
                 }
             )

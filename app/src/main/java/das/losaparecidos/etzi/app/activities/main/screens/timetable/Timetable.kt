@@ -59,8 +59,7 @@ fun TimetableScreen(timetableViewModel: TimetableViewModel, windowSizeClass: Win
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember { TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec) }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val currentSelectedDay by timetableViewModel.currentSelectedDay.collectAsState(initial = LocalDate.today)
     val timetable by timetableViewModel.timeTable.collectAsState(initial = emptyList())

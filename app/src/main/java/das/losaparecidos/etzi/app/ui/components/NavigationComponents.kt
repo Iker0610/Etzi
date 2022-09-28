@@ -121,39 +121,40 @@ fun EtziNavigationDrawer(
         gesturesEnabled = gesturesEnabled,
         drawerState = drawerState,
         drawerContent = {
+            ModalDrawerSheet {
+                Column(
+                    Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 12.dp, vertical = 32.dp)
+                ) {
+                    MainActivityScreens.menuScreens.forEach { (section, screens) ->
 
-            Column(
-                Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 12.dp, vertical = 32.dp)
-            ) {
-                MainActivityScreens.menuScreens.forEach { (section, screens) ->
-
-                    // Título de sección
-                    Text(
-                        text = section.title(context),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp)
-                            .padding(top = 24.dp, bottom = 8.dp)
-                    )
-
-                    // Secciones
-                    screens.forEach { screen ->
-                        val selected by derivedStateOf { currentRoute == screen.route }
-                        val icon = if (selected) screen.selectedIcon else screen.unselectedIcon
-
-                        NavigationDrawerItem(
-                            icon = { Icon(icon, contentDescription = null) },
-                            label = { Text(screen.title(context)) },
-                            selected = currentRoute == screen.route,
-                            onClick = {
-                                scope.launch {
-                                    onNavigate(screen.route)
-                                    drawerState.close()
-                                }
-                            }
+                        // Título de sección
+                        Text(
+                            text = section.title(context),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp)
+                                .padding(top = 24.dp, bottom = 8.dp)
                         )
+
+                        // Secciones
+                        screens.forEach { screen ->
+                            val selected by derivedStateOf { currentRoute == screen.route }
+                            val icon = if (selected) screen.selectedIcon else screen.unselectedIcon
+
+                            NavigationDrawerItem(
+                                icon = { Icon(icon, contentDescription = null) },
+                                label = { Text(screen.title(context)) },
+                                selected = currentRoute == screen.route,
+                                onClick = {
+                                    scope.launch {
+                                        onNavigate(screen.route)
+                                        drawerState.close()
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -224,8 +225,6 @@ private fun EtziNavigationRailPreview() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                val scope = rememberCoroutineScope()
-
                 EtziNavigationRail(ventanaActual, setVentanaActual) {}
                 EtziLogo(paddingValues)
             }
@@ -246,7 +245,7 @@ private fun EtziNavigationDrawerPreview() {
         EtziNavigationDrawer(ventanaActual, setVentanaActual, navigationDrawerState, true) {
             Scaffold(
                 topBar = {
-                    SmallTopAppBar(
+                    TopAppBar(
                         title = { Text("Prueba") },
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { navigationDrawerState.open() } }) {
