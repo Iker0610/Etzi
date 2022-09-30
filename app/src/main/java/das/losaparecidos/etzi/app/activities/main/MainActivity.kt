@@ -109,23 +109,21 @@ private fun EtziAppScreen(
 
     //-------------   Nav-Controller   -------------//
     val currentNavBackStackEntry by navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
-    val currentRoute by derivedStateOf { currentNavBackStackEntry?.destination?.route }
-    val currentSection by derivedStateOf { MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute] }
+    val currentRoute by remember(currentNavBackStackEntry) { derivedStateOf { currentNavBackStackEntry?.destination?.route } }
+    val currentSection by remember(currentRoute) { derivedStateOf { MainActivityScreens.screenRouteToSectionRouteMapping[currentRoute] } }
 
 
     //-----------   Navigation States   ------------//
-    val enableNavigationElements by derivedStateOf {
-        MainActivityScreens.hasNavigationElements(
-            currentRoute
-        )
+    val enableNavigationElements by remember(currentRoute) {
+        derivedStateOf { MainActivityScreens.hasNavigationElements(currentRoute) }
     }
-    val enableBottomNavigation by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact }
-    val enableNavigationRail by derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact }
+    val enableBottomNavigation by remember(enableNavigationElements, windowSizeClass) { derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact } }
+    val enableNavigationRail by remember(enableNavigationElements, windowSizeClass) { derivedStateOf { enableNavigationElements && windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact } }
 
 
     //-----------   Navigation-drawer   ------------//
     val navigationDrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val enableNavigationDrawerGestures by derivedStateOf { enableNavigationElements && navigationDrawerState.isOpen }
+    val enableNavigationDrawerGestures by remember(enableNavigationElements, navigationDrawerState) { derivedStateOf { enableNavigationElements && navigationDrawerState.isOpen } }
 
 
     /*************************************************
@@ -304,15 +302,15 @@ private fun MainNavigationGraph(
             route = MainActivityScreens.TutorialsSection.route,
             startDestination = MainActivityScreens.Tutorials.route
         ) {
-            composable(route = MainActivityScreens.Tutorials.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+            composable(route = MainActivityScreens.Tutorials.route) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
                 TutorialsScreen(tutorialsViewModel, windowSizeClass, onNavigationMenuOpen, { navController.navigate("dialog_filter") }, accountViewModel, onNavigateToAccount)
             }
 
-            dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
+            dialog(route = "dialog_filter", dialogProperties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.TutorialsSection.route) }
                 val tutorialsViewModel: TutorialsViewModel = hiltViewModel(recordBackStackEntry)
 
                 TutorialsFilterDialog(
@@ -326,37 +324,37 @@ private fun MainNavigationGraph(
             route = MainActivityScreens.Record.route,
             startDestination = MainActivityScreens.Subjects.route
         ) {
-            composable(route = MainActivityScreens.Grades.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+            composable(route = MainActivityScreens.Grades.route) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
                 GradesScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, accountViewModel, onNavigateToAccount)
             }
 
-            composable(route = MainActivityScreens.Subjects.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+            composable(route = MainActivityScreens.Subjects.route) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
                 SubjectsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
 
-            composable(route = MainActivityScreens.Credits.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+            composable(route = MainActivityScreens.Credits.route) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
                 CreditsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
 
-            composable(route = MainActivityScreens.Exams.route) {
-                val recordBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Record.route) }
+            composable(route = MainActivityScreens.Exams.route) { backStackEntry ->
+                val recordBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.Record.route) }
                 val recordViewModel: RecordViewModel = hiltViewModel(recordBackStackEntry)
 
                 ExamsScreen(recordViewModel, windowSizeClass, onNavigationMenuOpen, onNavigateToAccount, accountViewModel)
             }
         }
 
-        composable(route = MainActivityScreens.Egela.route) {
-            val egelaBackStackEntry = remember { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
+        composable(route = MainActivityScreens.Egela.route) { backStackEntry ->
+            val egelaBackStackEntry = remember(backStackEntry) { navController.getBackStackEntry(MainActivityScreens.Egela.route) }
             val egelaViewModel: EgelaViewModel = hiltViewModel(egelaBackStackEntry)
             EgelaScreen(windowSizeClass, onNavigationMenuOpen, egelaViewModel, onNavigateToAccount, accountViewModel)
         }
