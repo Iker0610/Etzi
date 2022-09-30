@@ -135,5 +135,8 @@
     <string name="exit_button">Salir</string>
     <string name="change_user_profile_title">Actualizar foto de perfil</string>
     <string name="change_user_profile_text">Cambia tu perfil de usuario. Puedes cambiarlo cuando quieras.</string>
+    <string name="avg_grade_text">Nota media</string>
+    <string name="ordinary_text">Ordinaria</string>
+    <string name="extraordinary_text">Extraordinaria</string>
 
 </resources>

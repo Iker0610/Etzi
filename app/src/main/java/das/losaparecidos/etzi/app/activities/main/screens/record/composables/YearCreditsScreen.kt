@@ -38,7 +38,8 @@ fun YearCreditsScreen(subjectEnrollments: List<SubjectEnrollment>, totalCredits:
             }
 
             // Si la asignatura está aprobada y NO es provisional
-            else if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.toFloat() >= 5f
+            else if (subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.isNotEmpty() &&
+                subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.toFloat() >= 5f
                 && !subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional
             ) {
 

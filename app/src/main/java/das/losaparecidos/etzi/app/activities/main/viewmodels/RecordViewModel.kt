@@ -49,6 +49,7 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
 
     // Por cada asignatura obtenemos la matriculación más reciente
     private val lastEnrollmentPerSubjectRecords: Flow<List<SubjectEnrollment>> = snapshotFlow {
+
         fullRawRecord.groupBy { "${it.subject.degree}&&&&${it.subject.name}" }.mapNotNull { (_, enrollmentList) -> enrollmentList.maxByOrNull { it.subject.academicYear } }
     }
 
@@ -62,6 +63,33 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
         }
     }
 
+    val averageGrade: Flow<Double> = snapshotFlow {
+
+        var grade = 0.0
+        var approvedCredits = 0.0
+
+        fullRawRecord.forEach { subjectEnrollment ->
+
+            // Si está matriculado (existe una convocatoria) en la asignatura, la nota está aprobada y NO es provisional
+            if (subjectEnrollment.subjectCalls.isNotEmpty() &&
+                subjectEnrollment.subjectCalls.last().subjectCallAttendances.isNotEmpty() &&
+                subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.isNotEmpty() &&
+                subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.toFloat() >= 5f &&
+                !subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].provisional
+            ) {
+
+                // Sumar nota*créditos
+                grade += subjectEnrollment.subjectCalls.last().subjectCallAttendances[0].grade.toDouble() * subjectEnrollment.subject.credits.toDouble()
+
+                //Sumar créditos aprobados
+                approvedCredits += subjectEnrollment.subject.credits.toDouble()
+            }
+
+        }
+
+        grade / approvedCredits
+    }
+
     val recordGroupedByCourse: Flow<Map<Int, List<SubjectEnrollment>>> = recordWithLastCallAttendance
         .map { recordList -> recordList.groupBy { record -> record.subject.course } }
 
@@ -69,7 +97,7 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
         .map { records ->
             records.filter {
                 it.subject.academicYear.year == LocalDateTime.now.year
-                || (LocalDateTime.now.year - it.subject.academicYear.year == 1 && LocalDateTime.now.monthNumber < 8)
+                        || (LocalDateTime.now.year - it.subject.academicYear.year == 1 && LocalDateTime.now.monthNumber < 8)
             }
         }
 
@@ -95,16 +123,17 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
 
                 val isSubjectPassed = subjectEnrollment.subjectCalls
                     .flatMap { it.subjectCallAttendances }
-                    .any { subjectCallAttendance -> !subjectCallAttendance.provisional && subjectCallAttendance.grade.toFloat() >= 5f }
+                    .any { subjectCallAttendance -> !subjectCallAttendance.provisional && subjectCallAttendance.grade.isNotEmpty() && subjectCallAttendance.grade.toFloat() >= 5f }
 
                 return@fold if (isSubjectPassed) credits + subjectEnrollment.subject.credits else credits
             }
         }
+}
 
 
-    /*************************************************
-     **                    Events                   **
-     *************************************************/
+/*************************************************
+ **                    Events                   **
+ *************************************************/
 //
 //    fun obtainProvisionalSubjectGrades() = fullRecord.filter {
 //        it.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.provisional ?: false
@@ -117,4 +146,3 @@ class RecordViewModel @Inject constructor(private val studentDataRepository: Stu
 //        if ((subjectEnrollment.subjectCalls.lastOrNull()?.subjectCallAttendances?.firstOrNull()?.grade?.toFloat() ?: 0f) >= 5f)
 //            credits + subjectEnrollment.subject.credits else credits
 //    }
-}

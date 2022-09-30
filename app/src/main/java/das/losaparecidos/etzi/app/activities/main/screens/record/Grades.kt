@@ -143,8 +143,12 @@ fun GradesScreen(
                                         style = MaterialTheme.typography.labelLarge,
                                         color = MaterialTheme.colorScheme.tertiary
                                     )
+                                    var call = stringResource(id = R.string.ordinary_text)
+                                    if (subjectEnrollment.subjectCalls.last().callType == "Extraordinaria") {
+                                        call = stringResource(id = R.string.extraordinary_text)
+                                    }
                                     Text(
-                                        text = subjectEnrollment.subjectCalls.last().callType,
+                                        text = call ,
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                 }

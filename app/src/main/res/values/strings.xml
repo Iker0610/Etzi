@@ -139,4 +139,7 @@
     <string name="provisional_grades_channel_description">Notifies about provisional grade uploads.</string>
     <string name="provisional_grade_notification_title">New note available</string>
     <string name="provisional_grade_notification_text">The %1$s grade has been raised.</string>
+    <string name="avg_grade_text">Average grade</string>
+    <string name="ordinary_text">Ordinary</string>
+    <string name="extraordinary_text">Extraordinary</string>
 </resources>

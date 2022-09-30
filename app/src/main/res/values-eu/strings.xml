@@ -124,4 +124,7 @@
     <string name="exit_button">Irten</string>
     <string name="change_user_profile_title">Profileko argazkia aldatu</string>
     <string name="change_user_profile_text">Aldatu zure erabiltzailearen profila. Nahi duzunean aldatu dezakezu.</string>
+    <string name="avg_grade_text">Batez besteko nota</string>
+    <string name="ordinary_text">Ohikoa</string>
+    <string name="extraordinary_text">Ezohikoa</string>
 </resources>
